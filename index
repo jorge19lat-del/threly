@@ -1158,12 +1158,479 @@
     .wf-steps::before { display: none; }
     section { padding: 80px 0 !important; }
   }
-</style>
-</head>
-<body>
 
-<!-- ═══════════ NAV ═══════════ -->
-<nav>
+  /* ── SPA ROUTER ── */
+  .page { display: none; }
+  .page.active { display: block; }
+  .sub-nav-left { display: flex; align-items: center; gap: 32px; }
+  .sub-nav-back { font-size: 13px; color: var(--ink-3); cursor: pointer; transition: color .2s; display: flex; align-items: center; gap: 6px; }
+  .sub-nav-back:hover { color: var(--ink); }
+  .sub-nav-back::before { content: '←'; font-size: 14px; }
+  .sub-nav-feature { font-size: 13px; color: var(--ink-4); padding-left: 32px; border-left: 1px solid var(--border-mid); }
+  .sub-nav-feature span { color: var(--ink-2); font-weight: 500; }
+
+  :root {
+    --bg:          #F5F5F5;
+    --bg-alt:      #EBEBEB;
+    --bg-deep:     #E2E2E2;
+    --bg-card:     #FFFFFF;
+    --bg-card-2:   #F9F9F9;
+    --ink:         #0B0B0C;
+    --ink-2:       #2E2E2E;
+    --ink-3:       #6B6B6B;
+    --ink-4:       #9A9A9A;
+    --border:      rgba(11,11,12,0.07);
+    --border-mid:  rgba(11,11,12,0.13);
+    --border-str:  rgba(11,11,12,0.18);
+    --accent:      #974CFF;
+    --accent-hover:#8240e8;
+    --accent-glow: rgba(151,76,255,0.15);
+    --accent-soft: rgba(151,76,255,0.07);
+    --accent-mid:  rgba(151,76,255,0.16);
+    --accent-light:#c084fc;
+    --success:     #16A34A;
+    --success-bg:  rgba(22,163,74,0.08);
+    --warning:     #B45309;
+    --warning-bg:  rgba(180,83,9,0.08);
+    --danger:      #E07B39;
+    --danger-bg:   rgba(224,123,57,0.10);
+    --font: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: var(--font); font-size: 16px;
+    line-height: 1.6; overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 4px; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: 64px; padding: 0 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(245,245,245,0.9); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-left { display: flex; align-items: center; gap: 32px; }
+  .logo { font-size: 18px; font-weight: 700; color: var(--ink); text-decoration: none; letter-spacing: -0.3px; }
+  .logo span { color: var(--accent); }
+  .nav-back {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 13px; color: var(--ink-3); text-decoration: none;
+    transition: color .2s;
+  }
+  .nav-back:hover { color: var(--ink); }
+  .nav-back::before { content: '←'; font-size: 14px; }
+  .nav-feature {
+    font-size: 13px; color: var(--ink-4);
+    padding-left: 32px; border-left: 1px solid var(--border-mid);
+  }
+  .nav-feature span { color: var(--ink-2); font-weight: 500; }
+  .btn-primary {
+    padding: 8px 20px; background: var(--accent); border: none;
+    border-radius: 6px; color: #fff; font-family: var(--font);
+    font-size: 14px; font-weight: 500; cursor: pointer;
+    text-decoration: none; transition: all .2s;
+  }
+  .btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 6px 20px var(--accent-glow); }
+
+  /* ── HERO ── */
+  #hero {
+    padding: 160px 48px 100px;
+    text-align: center;
+    max-width: 860px; margin: 0 auto;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 5px 14px;
+    background: var(--accent-soft); border: 1px solid var(--accent-mid);
+    border-radius: 100px; font-size: 11px; color: var(--accent);
+    font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+
+  .hero-title {
+    font-size: clamp(48px, 6vw, 80px);
+    font-weight: 700; line-height: 1.02;
+    letter-spacing: -0.03em; color: var(--ink);
+    margin-bottom: 24px;
+  }
+  .hero-title em { font-style: normal; color: var(--accent); }
+
+  .hero-sub {
+    font-size: 19px; color: var(--ink-3); font-weight: 300;
+    line-height: 1.7; max-width: 580px; margin: 0 auto 40px;
+  }
+
+  .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn-ghost {
+    padding: 10px 24px; background: transparent;
+    border: 1px solid var(--border-mid); border-radius: 6px;
+    color: var(--ink-2); font-family: var(--font); font-size: 15px;
+    cursor: pointer; text-decoration: none; transition: all .2s;
+  }
+  .btn-ghost:hover { background: var(--bg-alt); border-color: var(--border-str); }
+  .btn-lg { padding: 12px 28px; font-size: 15px; }
+
+  /* ── HERO MOCKUP — full width ── */
+  .hero-mockup-wrap {
+    padding: 0 48px 80px;
+    max-width: 1200px; margin: 0 auto;
+  }
+
+  .browser-frame {
+    background: var(--bg-card);
+    border: 1px solid var(--border-str);
+    border-radius: 16px; overflow: hidden;
+    box-shadow: 0 32px 80px rgba(11,11,12,0.12), 0 4px 16px var(--accent-glow);
+  }
+
+  .browser-bar {
+    display: flex; align-items: center; gap: 8px;
+    padding: 14px 20px;
+    background: var(--bg-card-2); border-bottom: 1px solid var(--border);
+  }
+  .b-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .b-dot.r { background: #EF4444; }
+  .b-dot.y { background: #F59E0B; }
+  .b-dot.g { background: #22C55E; }
+  .b-url {
+    flex: 1; margin: 0 16px;
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 6px; padding: 5px 14px;
+    font-size: 12px; color: var(--ink-4); text-align: center;
+  }
+
+  /* Full dashboard inside browser */
+  .dashboard {
+    display: grid; grid-template-columns: 220px 1fr;
+    min-height: 480px;
+  }
+
+  .dash-sidebar {
+    background: var(--bg-card-2); border-right: 1px solid var(--border);
+    padding: 20px 16px;
+  }
+  .dash-sidebar-logo {
+    font-size: 14px; font-weight: 700; color: var(--ink);
+    margin-bottom: 24px; padding: 0 8px;
+  }
+  .dash-sidebar-logo span { color: var(--accent); }
+  .dash-nav-section {
+    font-size: 10px; text-transform: uppercase; letter-spacing: .08em;
+    color: var(--ink-4); font-weight: 600; padding: 0 8px; margin-bottom: 6px;
+  }
+  .dash-nav-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 8px; border-radius: 6px;
+    font-size: 13px; color: var(--ink-3); margin-bottom: 2px;
+    cursor: pointer; transition: all .2s;
+  }
+  .dash-nav-item.active {
+    background: var(--accent-soft); color: var(--accent);
+    border: 1px solid var(--accent-mid); font-weight: 500;
+  }
+  .dash-nav-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0;
+  }
+
+  .dash-main { padding: 24px 28px; }
+
+  .dash-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .dash-title { font-size: 18px; font-weight: 700; color: var(--ink); }
+  .dash-header-right { display: flex; gap: 8px; }
+  .dash-pill {
+    font-size: 11px; padding: 4px 12px; border-radius: 100px;
+    border: 1px solid var(--border-mid); color: var(--ink-3);
+    background: var(--bg-card); cursor: pointer;
+  }
+  .dash-pill.active {
+    background: var(--accent-soft); color: var(--accent);
+    border-color: var(--accent-mid); font-weight: 500;
+  }
+
+  .kanban { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+
+  .kan-col-head {
+    font-size: 11px; text-transform: uppercase; letter-spacing: .07em;
+    color: var(--ink-4); font-weight: 600;
+    padding-bottom: 10px; border-bottom: 1px solid var(--border);
+    margin-bottom: 10px;
+  }
+
+  .kan-card {
+    background: var(--bg-card); border: 1px solid var(--border-mid);
+    border-radius: 10px; padding: 12px 14px; margin-bottom: 10px;
+    transition: box-shadow .2s;
+  }
+  .kan-card:hover { box-shadow: 0 4px 16px rgba(11,11,12,.06); }
+  .kan-card.active-card { border-color: var(--accent-mid); box-shadow: 0 0 0 3px var(--accent-soft); }
+
+  .kan-tag {
+    font-size: 10px; padding: 2px 8px; border-radius: 100px;
+    font-weight: 600; display: inline-block; margin-bottom: 6px;
+  }
+  .kan-tag.editorial { background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent-mid); }
+  .kan-tag.commercial { background: rgba(22,163,74,.08); color: #16A34A; }
+
+  .kan-name { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
+  .kan-progress { height: 3px; background: var(--bg-alt); border-radius: 3px; overflow: hidden; margin-bottom: 8px; }
+  .kan-progress-fill { height: 100%; background: var(--accent); border-radius: 3px; }
+  .kan-meta { display: flex; justify-content: space-between; font-size: 10px; color: var(--ink-4); }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    display: flex; gap: 0;
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    background: var(--bg-card); margin: 0;
+  }
+  .stat-item {
+    flex: 1; padding: 32px 48px;
+    border-right: 1px solid var(--border);
+    text-align: center;
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-num {
+    font-size: 44px; font-weight: 800; color: var(--ink);
+    letter-spacing: -0.03em; line-height: 1; margin-bottom: 6px;
+  }
+  .stat-num span { color: var(--accent); }
+  .stat-label { font-size: 13px; color: var(--ink-3); font-weight: 400; }
+
+  /* ── STICKY STORY SECTION ── */
+  #story { padding: 120px 0; background: var(--bg-alt); }
+
+  .story-inner {
+    max-width: 1200px; margin: 0 auto; padding: 0 48px;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: start;
+  }
+
+  /* Left: scrolling story points */
+  .story-points { display: flex; flex-direction: column; gap: 0; }
+
+  .story-point {
+    padding: 40px 0;
+    border-bottom: 1px solid var(--border-mid);
+    opacity: 0.35; transition: opacity .4s;
+    cursor: pointer;
+  }
+  .story-point:first-child { border-top: 1px solid var(--border-mid); }
+  .story-point.active { opacity: 1; }
+
+  .sp-step {
+    font-size: 11px; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
+    opacity: 0; transition: opacity .3s;
+  }
+  .story-point.active .sp-step { opacity: 1; }
+
+  .sp-title {
+    font-size: 26px; font-weight: 700; color: var(--ink);
+    letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 12px;
+  }
+  .sp-desc { font-size: 15px; color: var(--ink-3); line-height: 1.7; }
+
+  .sp-bar {
+    height: 2px; background: var(--accent);
+    width: 0; margin-top: 24px; transition: width .5s ease;
+    border-radius: 2px;
+  }
+  .story-point.active .sp-bar { width: 100%; }
+
+  /* Right: sticky mockup panel */
+  .story-panel-wrap {
+    position: sticky; top: 100px;
+  }
+
+  .story-panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border-mid);
+    border-radius: 16px; overflow: hidden;
+    box-shadow: 0 12px 48px rgba(11,11,12,.09);
+    min-height: 400px; position: relative;
+  }
+
+  .story-panel-header {
+    padding: 14px 20px;
+    background: var(--bg-card-2); border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .sph-title { font-size: 12px; color: var(--ink-3); flex: 1; }
+  .sph-tag {
+    font-size: 10px; padding: 2px 8px; border-radius: 100px;
+    background: var(--accent-soft); color: var(--accent);
+    border: 1px solid var(--accent-mid); font-weight: 600;
+  }
+
+  .panel-slide {
+    position: absolute; inset: 0; top: 49px;
+    opacity: 0; transition: opacity .4s;
+    padding: 24px 24px;
+    pointer-events: none;
+  }
+  .panel-slide.active { opacity: 1; pointer-events: auto; }
+
+  /* Panel 1 — Timeline view */
+  .timeline-view { display: flex; flex-direction: column; gap: 8px; }
+  .tl-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 14px;
+    background: var(--bg-card-2); border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .tl-row.highlighted { border-color: var(--accent-mid); background: var(--accent-soft); }
+  .tl-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .tl-name { font-size: 13px; color: var(--ink); font-weight: 500; flex: 1; }
+  .tl-dates { font-size: 11px; color: var(--ink-4); }
+  .tl-bar-wrap { width: 120px; height: 6px; background: var(--bg-deep); border-radius: 3px; overflow: hidden; }
+  .tl-bar-fill { height: 100%; background: var(--accent); border-radius: 3px; }
+
+  /* Panel 2 — Calendar view */
+  .cal-view {}
+  .cal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .cal-month { font-size: 14px; font-weight: 600; color: var(--ink); }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .cal-day-head { font-size: 10px; color: var(--ink-4); text-align: center; padding: 4px 0; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+  .cal-day {
+    height: 36px; border-radius: 6px; display: flex;
+    align-items: center; justify-content: center;
+    font-size: 12px; color: var(--ink-3); position: relative;
+  }
+  .cal-day.has-event { font-weight: 600; color: var(--ink); }
+  .cal-event {
+    position: absolute; bottom: 3px; left: 4px; right: 4px;
+    height: 3px; border-radius: 2px;
+  }
+  .cal-day.today { background: var(--accent-soft); color: var(--accent); font-weight: 700; }
+
+  /* Panel 3 — Brief builder */
+  .brief-view { display: flex; flex-direction: column; gap: 10px; }
+  .brief-field {
+    background: var(--bg-card-2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 12px 16px;
+  }
+  .brief-field.focus { border-color: var(--accent-mid); background: var(--accent-soft); }
+  .bf-label { font-size: 10px; text-transform: uppercase; letter-spacing: .07em; color: var(--ink-4); font-weight: 600; margin-bottom: 4px; }
+  .bf-val { font-size: 13px; color: var(--ink); font-weight: 500; }
+  .bf-auto {
+    margin-left: auto; font-size: 10px; padding: 2px 7px;
+    border-radius: 100px; background: var(--accent-soft);
+    color: var(--accent); border: 1px solid var(--accent-mid); font-weight: 600;
+  }
+  .bf-row { display: flex; align-items: center; gap: 8px; }
+
+  /* Panel 4 — Team view */
+  .team-view { display: flex; flex-direction: column; gap: 8px; }
+  .team-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 14px;
+    background: var(--bg-card-2); border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .t-avatar {
+    width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: #fff;
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+  }
+  .t-avatar.ext { background: var(--bg-deep); color: var(--ink-3); font-size: 10px; border: 1px solid var(--border-mid); }
+  .t-info { flex: 1; }
+  .t-name { font-size: 12px; font-weight: 600; color: var(--ink); }
+  .t-role { font-size: 11px; color: var(--ink-4); }
+  .t-tasks { font-size: 11px; color: var(--ink-3); }
+  .t-status {
+    font-size: 10px; padding: 2px 8px; border-radius: 100px; font-weight: 600;
+  }
+  .t-status.ok  { background: var(--success-bg); color: var(--success); }
+  .t-status.wt  { background: var(--warning-bg); color: var(--warning); }
+
+  /* ── PROBLEM / SOLUTION ── */
+  #before-after { padding: 120px 0; background: var(--bg); }
+
+  .ba-inner { max-width: 1100px; margin: 0 auto; padding: 0 48px; }
+  .ba-header { text-align: center; margin-bottom: 64px; }
+
+  .section-lbl {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 11px; text-transform: uppercase; letter-spacing: .1em;
+    color: var(--accent); font-weight: 600; margin-bottom: 16px;
+  }
+  .section-lbl::before { content: ''; width: 14px; height: 2px; background: var(--accent); border-radius: 2px; }
+
+  .ba-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border-mid); border: 1px solid var(--border-mid); border-radius: 16px; overflow: hidden; }
+
+  .ba-col { padding: 40px 44px; background: var(--bg-card); }
+  .ba-col.after { background: var(--accent-soft); }
+
+  .ba-col-head {
+    display: flex; align-items: center; gap: 10px;
+    padding-bottom: 24px; border-bottom: 1px solid var(--border-mid); margin-bottom: 24px;
+  }
+  .ba-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .ba-dot.err { background: var(--danger); }
+  .ba-dot.ok  { background: var(--accent); }
+  .ba-col-ttl { font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+  .ba-col-ttl.err { color: var(--danger); }
+  .ba-col-ttl.ok  { color: var(--accent); }
+
+  .ba-items { display: flex; flex-direction: column; gap: 0; }
+  .ba-item {
+    padding: 18px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .ba-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .ba-item:first-child { padding-top: 0; }
+  .ba-item-title { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+  .ba-item-desc  { font-size: 13px; color: var(--ink-3); line-height: 1.5; }
+
+  /* ── CTA ── */
+  #cta {
+    padding: 120px 48px; text-align: center;
+    background: var(--bg-alt);
+    position: relative; overflow: hidden;
+  }
+  #cta::before {
+    content: ''; position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(ellipse, rgba(151,76,255,.12), transparent 70%);
+    pointer-events: none;
+  }
+  .cta-inner { max-width: 580px; margin: 0 auto; position: relative; z-index: 1; }
+  .cta-title { font-size: clamp(38px, 4vw, 54px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; color: var(--ink); margin-bottom: 16px; }
+  .cta-sub { font-size: 17px; color: var(--ink-3); margin-bottom: 36px; font-weight: 300; }
+  .cta-actions { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; }
+  .cta-note { margin-top: 14px; font-size: 12px; color: var(--ink-4); }
+
+  /* ── FOOTER ── */
+  footer { padding: 40px 48px; border-top: 1px solid var(--border); background: var(--bg); }
+  .foot-in { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px; }
+  .foot-logo { font-size: 16px; font-weight: 700; color: var(--ink); }
+  .foot-logo span { color: var(--accent); }
+  .foot-copy { font-size: 12px; color: var(--ink-4); }
+  .foot-back { font-size: 13px; color: var(--ink-3); text-decoration: none; transition: color .2s; }
+  .foot-back:hover { color: var(--ink); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+  .fu { opacity: 0; animation: fadeUp .6s ease forwards; }
+  .d1 { animation-delay: .1s; } .d2 { animation-delay: .2s; } .d3 { animation-delay: .3s; }
+</style>
+<body>
+<div id="home-nav"><nav>
   <a href="#" class="logo">threly<span>.</span></a>
   <ul class="nav-links">
     <li><a href="#features">Product</a></li>
@@ -1174,8 +1641,16 @@
     <a href="#" class="btn-ghost">Log in</a>
     <a href="#cta" class="btn-primary">Get early access →</a>
   </div>
+</nav></div>
+<nav id="sub-nav" style="display:none">
+  <div class="sub-nav-left">
+    <a href="#" class="logo" onclick="showPage('home'); return false;">threly<span>.</span></a>
+    <span class="sub-nav-back" onclick="showPage('home')">All features</span>
+    <span class="sub-nav-feature">→ <span id="sub-nav-label">Feature</span></span>
+  </div>
+  <a href="#" class="btn-primary" onclick="showPage('home'); return false;">Get early access →</a>
 </nav>
-
+<div id="page-home" class="page active">
 <!-- ═══════════ HERO — bg: #F5F5F5 ═══════════ -->
 <section id="hero">
   <div class="hero-grid"></div>
@@ -1418,7 +1893,7 @@
           <div class="bc-label">Campaign Management</div>
           <div class="bc-title">Plan every campaign.<br>End to end.</div>
           <div class="bc-desc">Kanban, calendar, and timeline views for editorial and commercial productions.</div>
-          <a href="threly-campaign-management.html" class="bc-link">Learn more →</a>
+          <a href="#" onclick="showPage('campaigns'); return false;" class="bc-link">Learn more →</a>
         </div>
       </div>
 
@@ -1449,7 +1924,7 @@
         <div class="bc-body">
           <div class="bc-label">Smart Tasks</div>
           <div class="bc-title">Scheduling that detects conflicts automatically.</div>
-          <a href="threly-smart-tasks.html" class="bc-link">Learn more →</a>
+          <a href="#" onclick="showPage('tasks'); return false;" class="bc-link">Learn more →</a>
         </div>
       </div>
 
@@ -1504,7 +1979,7 @@
         <div class="bc-body">
           <div class="bc-label">Suppliers</div>
           <div class="bc-title">Manage every vendor. Track every delivery.</div>
-          <a href="threly-suppliers.html" class="bc-link">Learn more →</a>
+          <a href="#" onclick="showPage('suppliers'); return false;" class="bc-link">Learn more →</a>
         </div>
       </div>
 
@@ -1581,7 +2056,7 @@
           <div class="bc-label">Budget Intelligence</div>
           <div class="bc-title">From static budgets to live decisions.</div>
           <div class="bc-desc">Auto-generate from briefs. Track deviations in real time. Know when to reallocate.</div>
-          <a href="threly-budget.html" class="bc-link">Learn more →</a>
+          <a href="#" onclick="showPage('budget'); return false;" class="bc-link">Learn more →</a>
         </div>
       </div>
 
@@ -1632,7 +2107,7 @@
           <div class="bc-label">Digital Asset Management</div>
           <div class="bc-title">Your assets have rights. Know them.</div>
           <div class="bc-desc">Track usage rights per channel, territory and supplier. Get alerts before anything expires.</div>
-          <a href="threly-dam.html" class="bc-link">Learn more →</a>
+          <a href="#" onclick="showPage('dam'); return false;" class="bc-link">Learn more →</a>
         </div>
       </div>
 
@@ -1682,7 +2157,7 @@
           <div class="bc-label">Resource Allocation</div>
           <div class="bc-title">See who's<br>overloaded.</div>
           <div class="bc-desc">Visual heatmaps that surface bottlenecks before they break your sprint.</div>
-          <a href="threly-resources.html" class="bc-link">Learn more →</a>
+          <a href="#" onclick="showPage('resources'); return false;" class="bc-link">Learn more →</a>
         </div>
       </div>
 
@@ -1916,8 +2391,1057 @@
     </div>
   </div>
 </footer>
+</div>
+
+<div id="page-campaigns" class="page">
+<!-- HERO -->
+<div id="hero" class="fu">
+  <div class="hero-eyebrow">Campaign Management</div>
+  <h1 class="hero-title">Every campaign.<br><em>One place.</em></h1>
+  <p class="hero-sub">Stop managing productions across spreadsheets, chats and emails. threly gives your team a single source of truth from brief to go-live.</p>
+  <div class="hero-actions">
+    <a href="#cta" class="btn-primary btn-lg">Get early access →</a>
+    <a href="#story" class="btn-ghost btn-lg">See how it works</a>
+  </div>
+</div>
+
+<!-- HERO MOCKUP — full width browser frame -->
+<div class="hero-mockup-wrap fu d2">
+  <div class="browser-frame">
+    <div class="browser-bar">
+      <div class="b-dot r"></div>
+      <div class="b-dot y"></div>
+      <div class="b-dot g"></div>
+      <div class="b-url">app.threly.io / campaigns</div>
+    </div>
+    <div class="dashboard">
+      <!-- Sidebar -->
+      <div class="dash-sidebar">
+        <div class="dash-sidebar-logo">threly<span>.</span></div>
+        <div class="dash-nav-section" style="margin-top:8px;">Campaigns</div>
+        <div class="dash-nav-item active"><div class="dash-nav-dot"></div>All campaigns</div>
+        <div class="dash-nav-item"><div class="dash-nav-dot"></div>Editorial</div>
+        <div class="dash-nav-item"><div class="dash-nav-dot"></div>Commercial</div>
+        <div class="dash-nav-item"><div class="dash-nav-dot"></div>Archive</div>
+        <div class="dash-nav-section" style="margin-top:20px;">Workspace</div>
+        <div class="dash-nav-item"><div class="dash-nav-dot"></div>Tasks</div>
+        <div class="dash-nav-item"><div class="dash-nav-dot"></div>Suppliers</div>
+        <div class="dash-nav-item"><div class="dash-nav-dot"></div>Assets</div>
+        <div class="dash-nav-item"><div class="dash-nav-dot"></div>Budget</div>
+      </div>
+      <!-- Main -->
+      <div class="dash-main">
+        <div class="dash-header">
+          <div class="dash-title">Q2 Campaigns</div>
+          <div class="dash-header-right">
+            <span class="dash-pill active">Kanban</span>
+            <span class="dash-pill">Calendar</span>
+            <span class="dash-pill">Timeline</span>
+          </div>
+        </div>
+        <div class="kanban">
+          <!-- Planning -->
+          <div>
+            <div class="kan-col-head">Planning</div>
+            <div class="kan-card">
+              <div class="kan-tag editorial">Editorial</div>
+              <div class="kan-name">FW25 Lookbook</div>
+              <div class="kan-progress"><div class="kan-progress-fill" style="width:15%"></div></div>
+              <div class="kan-meta"><span>Jun 12</span><span>4 tasks</span></div>
+            </div>
+            <div class="kan-card">
+              <div class="kan-tag commercial">Commercial</div>
+              <div class="kan-name">Holiday Campaign</div>
+              <div class="kan-progress"><div class="kan-progress-fill" style="width:8%"></div></div>
+              <div class="kan-meta"><span>Nov 01</span><span>2 tasks</span></div>
+            </div>
+          </div>
+          <!-- In Production -->
+          <div>
+            <div class="kan-col-head">In Production</div>
+            <div class="kan-card active-card">
+              <div class="kan-tag editorial">Editorial</div>
+              <div class="kan-name">SS25 Lookbook</div>
+              <div class="kan-progress"><div class="kan-progress-fill" style="width:68%"></div></div>
+              <div class="kan-meta"><span>May 12</span><span>24 tasks</span></div>
+            </div>
+            <div class="kan-card">
+              <div class="kan-tag commercial">Commercial</div>
+              <div class="kan-name">Summer E-commerce</div>
+              <div class="kan-progress"><div class="kan-progress-fill" style="width:84%"></div></div>
+              <div class="kan-meta"><span>Apr 28</span><span>11 tasks</span></div>
+            </div>
+          </div>
+          <!-- Live -->
+          <div>
+            <div class="kan-col-head">Live</div>
+            <div class="kan-card">
+              <div class="kan-tag commercial">Commercial</div>
+              <div class="kan-name">SS24 Lookbook</div>
+              <div class="kan-progress"><div class="kan-progress-fill" style="width:100%"></div></div>
+              <div class="kan-meta"><span>Mar 01</span><span>Done</span></div>
+            </div>
+            <div class="kan-card">
+              <div class="kan-tag editorial">Editorial</div>
+              <div class="kan-name">Brand Film FW24</div>
+              <div class="kan-progress"><div class="kan-progress-fill" style="width:100%"></div></div>
+              <div class="kan-meta"><span>Feb 14</span><span>Done</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-num">6<span>x</span></div>
+    <div class="stat-label">Tools replaced by one system</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">40<span>%</span></div>
+    <div class="stat-label">Reduction in coordination time</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">0</div>
+    <div class="stat-label">Campaigns lost to miscommunication</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">∞</div>
+    <div class="stat-label">Campaigns. One place.</div>
+  </div>
+</div>
+
+<!-- STICKY STORY SECTION -->
+<section id="story">
+  <div class="story-inner">
+
+    <!-- Left: story points -->
+    <div class="story-points" id="storyPoints">
+
+      <div class="story-point active" data-panel="0">
+        <div class="sp-step">01 — Brief to structure</div>
+        <h3 class="sp-title">Define once.<br>Everything follows.</h3>
+        <p class="sp-desc">Write your campaign brief in threly and the production structure generates automatically — timeline, tasks, dependencies and team assignments, ready in seconds.</p>
+        <div class="sp-bar"></div>
+      </div>
+
+      <div class="story-point" data-panel="1">
+        <div class="sp-step">02 — Timeline & calendar</div>
+        <h3 class="sp-title">See the entire<br>quarter at once.</h3>
+        <p class="sp-desc">Switch between Kanban, Calendar and Timeline in one click. Production dates, go-live dates, and supplier deadlines all in one view — no more spreadsheet gymnastics.</p>
+        <div class="sp-bar"></div>
+      </div>
+
+      <div class="story-point" data-panel="2">
+        <div class="sp-step">03 — Campaign types</div>
+        <h3 class="sp-title">Editorial or commercial.<br>Built for both.</h3>
+        <p class="sp-desc">Campaign types come pre-configured with the right task templates, approval flows and asset structures for editorial lookbooks, commercial e-commerce or brand films.</p>
+        <div class="sp-bar"></div>
+      </div>
+
+      <div class="story-point" data-panel="3">
+        <div class="sp-step">04 — Team & suppliers</div>
+        <h3 class="sp-title">Everyone aligned.<br>Internal and external.</h3>
+        <p class="sp-desc">Assign tasks to internal team or external suppliers from the same place. Everyone sees what they need to see. Nothing gets lost in a WhatsApp thread.</p>
+        <div class="sp-bar"></div>
+      </div>
+
+    </div>
+
+    <!-- Right: sticky panel -->
+    <div class="story-panel-wrap">
+      <div class="story-panel">
+        <div class="story-panel-header">
+          <div class="b-dot r" style="width:8px;height:8px;border-radius:50%"></div>
+          <div class="b-dot y" style="width:8px;height:8px;border-radius:50%"></div>
+          <div class="b-dot g" style="width:8px;height:8px;border-radius:50%"></div>
+          <span class="sph-title">threly — Campaign view</span>
+          <span class="sph-tag" id="panelTag">Brief builder</span>
+        </div>
+
+        <!-- Panel 0: Brief builder -->
+        <div class="panel-slide active" data-panel="0">
+          <div class="brief-view">
+            <div class="brief-field focus">
+              <div class="bf-label">Campaign name</div>
+              <div class="bf-val">SS25 Lookbook — Editorial</div>
+            </div>
+            <div class="brief-field">
+              <div class="bf-row">
+                <div>
+                  <div class="bf-label">Go-live date</div>
+                  <div class="bf-val">May 12, 2025</div>
+                </div>
+              </div>
+            </div>
+            <div class="brief-field">
+              <div class="bf-row">
+                <div>
+                  <div class="bf-label">Campaign type</div>
+                  <div class="bf-val">Editorial</div>
+                </div>
+                <div class="bf-auto" style="margin-left:auto">Auto</div>
+              </div>
+            </div>
+            <div class="brief-field" style="background:var(--accent-soft);border-color:var(--accent-mid)">
+              <div class="bf-label">threly generated</div>
+              <div class="bf-val" style="color:var(--accent)">24 tasks · 3 milestones · 2 supplier slots</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 1: Timeline -->
+        <div class="panel-slide" data-panel="1">
+          <div class="timeline-view">
+            <div class="tl-row highlighted">
+              <div class="tl-dot" style="background:var(--accent)"></div>
+              <span class="tl-name">SS25 Lookbook</span>
+              <div class="tl-bar-wrap"><div class="tl-bar-fill" style="width:68%"></div></div>
+              <span class="tl-dates">Apr 1 → May 12</span>
+            </div>
+            <div class="tl-row">
+              <div class="tl-dot" style="background:var(--success)"></div>
+              <span class="tl-name">Summer E-commerce</span>
+              <div class="tl-bar-wrap"><div class="tl-bar-fill" style="width:90%"></div></div>
+              <span class="tl-dates">Mar 15 → Apr 28</span>
+            </div>
+            <div class="tl-row">
+              <div class="tl-dot" style="background:var(--warning)"></div>
+              <span class="tl-name">Brand Film FW25</span>
+              <div class="tl-bar-wrap"><div class="tl-bar-fill" style="width:30%"></div></div>
+              <span class="tl-dates">May 1 → Jun 30</span>
+            </div>
+            <div class="tl-row">
+              <div class="tl-dot" style="background:var(--accent-light)"></div>
+              <span class="tl-name">FW25 Lookbook</span>
+              <div class="tl-bar-wrap"><div class="tl-bar-fill" style="width:10%"></div></div>
+              <span class="tl-dates">Jun 1 → Aug 15</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 2: Campaign types -->
+        <div class="panel-slide" data-panel="2">
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div style="padding:16px;background:var(--accent-soft);border:1px solid var(--accent-mid);border-radius:10px;cursor:pointer">
+                <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--accent);font-weight:700;margin-bottom:6px">Editorial</div>
+                <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px">Lookbook</div>
+                <div style="font-size:11px;color:var(--ink-3)">18 task templates</div>
+              </div>
+              <div style="padding:16px;background:var(--bg-card-2);border:1px solid var(--border-mid);border-radius:10px;cursor:pointer">
+                <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--success);font-weight:700;margin-bottom:6px">Commercial</div>
+                <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px">E-commerce</div>
+                <div style="font-size:11px;color:var(--ink-3)">22 task templates</div>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+              <div style="padding:16px;background:var(--bg-card-2);border:1px solid var(--border-mid);border-radius:10px;cursor:pointer">
+                <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-4);font-weight:700;margin-bottom:6px">Brand</div>
+                <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px">Brand Film</div>
+                <div style="font-size:11px;color:var(--ink-3)">14 task templates</div>
+              </div>
+              <div style="padding:16px;background:var(--bg-card-2);border:1px solid var(--border-mid);border-radius:10px;cursor:pointer">
+                <div style="font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-4);font-weight:700;margin-bottom:6px">Social</div>
+                <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:4px">Influencer Kit</div>
+                <div style="font-size:11px;color:var(--ink-3)">9 task templates</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 3: Team -->
+        <div class="panel-slide" data-panel="3">
+          <div class="team-view">
+            <div class="team-row">
+              <div class="t-avatar">LR</div>
+              <div class="t-info">
+                <div class="t-name">Laura Ruiz</div>
+                <div class="t-role">Creative Director</div>
+              </div>
+              <div class="t-tasks">3 tasks</div>
+              <span class="t-status ok">Active</span>
+            </div>
+            <div class="team-row">
+              <div class="t-avatar">MC</div>
+              <div class="t-info">
+                <div class="t-name">Marcos Cano</div>
+                <div class="t-role">Production Coordinator</div>
+              </div>
+              <div class="t-tasks">7 tasks</div>
+              <span class="t-status ok">Active</span>
+            </div>
+            <div class="team-row">
+              <div class="t-avatar ext">SB</div>
+              <div class="t-info">
+                <div class="t-name">Studio Blanc</div>
+                <div class="t-role">Photography · External</div>
+              </div>
+              <div class="t-tasks">2 tasks</div>
+              <span class="t-status wt">Pending</span>
+            </div>
+            <div class="team-row">
+              <div class="t-avatar ext">RC</div>
+              <div class="t-info">
+                <div class="t-name">Retouch Co.</div>
+                <div class="t-role">Post-production · External</div>
+              </div>
+              <div class="t-tasks">4 tasks</div>
+              <span class="t-status wt">Pending</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- BEFORE / AFTER -->
+<section id="before-after">
+  <div class="ba-inner">
+    <div class="ba-header">
+      <div class="section-lbl">Before & after</div>
+      <h2 style="font-size:clamp(36px,3.8vw,52px);font-weight:700;letter-spacing:-0.03em;color:var(--ink);line-height:1.06">This is what changes<br>when you use threly.</h2>
+    </div>
+    <div class="ba-grid">
+      <div class="ba-col">
+        <div class="ba-col-head">
+          <div class="ba-dot err"></div>
+          <span class="ba-col-ttl err">Without threly</span>
+        </div>
+        <div class="ba-items">
+          <div class="ba-item">
+            <div class="ba-item-title">Campaign plan lives in a spreadsheet</div>
+            <div class="ba-item-desc">Updated by one person, shared via email, always one version behind.</div>
+          </div>
+          <div class="ba-item">
+            <div class="ba-item-title">Status updates on WhatsApp</div>
+            <div class="ba-item-desc">No record, no accountability. Decisions made in chats that nobody can find later.</div>
+          </div>
+          <div class="ba-item">
+            <div class="ba-item-title">No visibility into the full quarter</div>
+            <div class="ba-item-desc">You only know what's happening in your campaign. The rest is guesswork.</div>
+          </div>
+          <div class="ba-item">
+            <div class="ba-item-title">Suppliers coordinated via email threads</div>
+            <div class="ba-item-desc">Briefs sent over email. Versions lost. Delivery dates missed.</div>
+          </div>
+        </div>
+      </div>
+      <div class="ba-col after">
+        <div class="ba-col-head">
+          <div class="ba-dot ok"></div>
+          <span class="ba-col-ttl ok">With threly</span>
+        </div>
+        <div class="ba-items">
+          <div class="ba-item">
+            <div class="ba-item-title">One live campaign hub</div>
+            <div class="ba-item-desc">Every campaign, task and deadline in one place. Always current, always shared.</div>
+          </div>
+          <div class="ba-item">
+            <div class="ba-item-title">All communication in context</div>
+            <div class="ba-item-desc">Decisions attached to tasks. Full history, traceable, searchable.</div>
+          </div>
+          <div class="ba-item">
+            <div class="ba-item-title">Full quarter visible in one view</div>
+            <div class="ba-item-desc">Calendar, timeline or Kanban — switch in one click. See everything at once.</div>
+          </div>
+          <div class="ba-item">
+            <div class="ba-item-title">Suppliers work inside the system</div>
+            <div class="ba-item-desc">Brief once, assign directly. Suppliers see only what they need. Deadlines tracked.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-inner">
+    <div class="section-lbl" style="justify-content:center">Get started</div>
+    <h2 class="cta-title">Ready to run every<br>campaign from one place?</h2>
+    <p class="cta-sub">Join production teams replacing 6 tools with one system.</p>
+    <div class="cta-actions">
+      <a href="#" class="btn-primary btn-lg">Request early access →</a>
+      <a href="#" class="btn-ghost btn-lg">Talk to the team</a>
+    </div>
+    <p class="cta-note">Currently onboarding fashion & e-commerce brands. Limited spots.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-in">
+    <div class="foot-logo">threly<span>.</span></div>
+    <a href="#" onclick="showPage('home'); return false;" class="foot-back">← Back to homepage</a>
+    <span class="foot-copy">© 2025 threly. All rights reserved.</span>
+  </div>
+</footer>
+</div>
+
+<div id="page-tasks" class="page">
+<div id="hero">
+  <div class="hero-eyebrow">Smart Task Management</div>
+  <h1 class="hero-title">Zero conflicts.<br><em>Zero overload.</em></h1>
+  <p class="hero-sub">Tasks that know who owns them, how long they take, and when they clash. threly schedules your team automatically so nothing falls through.</p>
+  <div class="hero-actions">
+    <a href="#cta" class="btn-primary btn-lg">Get early access →</a>
+    <a href="#story" class="btn-ghost btn-lg">See how it works</a>
+  </div>
+</div>
+
+<div class="hero-mockup-wrap">
+  <div class="browser-frame">
+    <div class="browser-bar">
+      <div class="b-dot r"></div><div class="b-dot y"></div><div class="b-dot g"></div>
+      <div class="b-url">app.threly.io / tasks</div>
+    </div>
+    <div style="padding:28px 32px;display:flex;flex-direction:column;gap:10px;min-height:380px;background:var(--bg-card)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:17px;font-weight:700;color:var(--ink)">Today's schedule — SS25 Lookbook</span>
+        <span style="font-size:12px;color:var(--ink-4)">May 8, 2025</span>
+      </div>
+      <div class="sch-row ok-row">
+        <div class="sch-dot" style="background:var(--success)"></div>
+        <span class="sch-name">Photoshoot — Studio Blanc (Day 1)</span>
+        <span class="sch-time">08:00–14:00</span>
+        <span class="sch-badge ok">Confirmed</span>
+      </div>
+      <div class="sch-row">
+        <div class="sch-dot" style="background:var(--accent)"></div>
+        <span class="sch-name">Art direction review with Laura</span>
+        <span class="sch-time">14:30–15:30</span>
+        <span class="sch-badge pr">In progress</span>
+      </div>
+      <div class="sch-row conflict">
+        <div class="sch-dot" style="background:var(--danger)"></div>
+        <span class="sch-name">Retouching handoff — Retouch Co.</span>
+        <span class="sch-time">15:00–16:00</span>
+        <span class="sch-badge cf">Conflict detected</span>
+      </div>
+      <div style="padding:12px 16px;background:rgba(224,123,57,.06);border:1px solid rgba(224,123,57,.2);border-radius:8px;display:flex;align-items:center;gap:10px;margin:4px 0">
+        <div style="width:6px;height:6px;border-radius:50%;background:var(--danger);flex-shrink:0"></div>
+        <span style="font-size:12px;color:var(--ink-2);flex:1">Retouching handoff overlaps with art direction review. Marcos is double-booked.</span>
+        <span style="font-size:11px;color:var(--accent);font-weight:600;cursor:pointer">Fix →</span>
+      </div>
+      <div class="sch-row">
+        <div class="sch-dot" style="background:var(--accent-light)"></div>
+        <span class="sch-name">Campaign debrief — full team</span>
+        <span class="sch-time">17:00–17:30</span>
+        <span class="sch-badge pr">Upcoming</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat-item"><div class="stat-num">0</div><div class="stat-label">Double bookings with smart scheduling</div></div>
+  <div class="stat-item"><div class="stat-num">3<span>x</span></div><div class="stat-label">Faster task assignment vs manual</div></div>
+  <div class="stat-item"><div class="stat-num">40<span>%</span></div><div class="stat-label">Reduction in coordination overhead</div></div>
+  <div class="stat-item"><div class="stat-num">∞</div><div class="stat-label">Tasks. All tracked.</div></div>
+</div>
+
+<section id="story">
+  <div class="story-inner">
+    <div class="story-points" id="storyPoints">
+      <div class="story-point active" data-panel="0">
+        <div class="sp-step">01 — Task creation</div>
+        <h3 class="sp-title">Create once.<br>Assign instantly.</h3>
+        <p class="sp-desc">Every task has an owner, a duration and a deadline. threly blocks time on their calendar automatically — no manual coordination needed.</p>
+        <div class="sp-bar"></div>
+      </div>
+      <div class="story-point" data-panel="1">
+        <div class="sp-step">02 — Conflict detection</div>
+        <h3 class="sp-title">Spot the problem<br>before it happens.</h3>
+        <p class="sp-desc">threly detects double bookings, overloads and timeline conflicts in real time. You see the issue and fix it before it derails the production.</p>
+        <div class="sp-bar"></div>
+      </div>
+      <div class="story-point" data-panel="2">
+        <div class="sp-step">03 — Workload view</div>
+        <h3 class="sp-title">See who's overloaded<br>before they are.</h3>
+        <p class="sp-desc">Heatmaps show capacity across your team by day and week. Redistribute tasks with one click when someone's about to hit their limit.</p>
+        <div class="sp-bar"></div>
+      </div>
+      <div class="story-point" data-panel="3">
+        <div class="sp-step">04 — Smart suggestions</div>
+        <h3 class="sp-title">threly thinks<br>two steps ahead.</h3>
+        <p class="sp-desc">When a task is at risk, threly suggests who can take it, when to reschedule it and how to protect the go-live date — automatically.</p>
+        <div class="sp-bar"></div>
+      </div>
+    </div>
+    <div class="story-panel-wrap">
+      <div class="story-panel">
+        <div class="story-panel-header">
+          <div class="b-dot r" style="width:8px;height:8px;border-radius:50%"></div>
+          <div class="b-dot y" style="width:8px;height:8px;border-radius:50%"></div>
+          <div class="b-dot g" style="width:8px;height:8px;border-radius:50%"></div>
+          <span class="sph-title">threly — Task view</span>
+          <span class="sph-tag" id="panelTag">Task cards</span>
+        </div>
+        <div class="panel-slide active" data-panel="0">
+          <div class="task-card-view">
+            <div class="tc active-tc">
+              <div class="tc-row"><span class="tc-name">Photoshoot preparation</span><span class="tc-owner">Laura R.</span></div>
+              <div class="tc-dur">Duration: 3h · May 8, 08:00 → Auto-blocked in calendar</div>
+            </div>
+            <div class="tc">
+              <div class="tc-row"><span class="tc-name">Art direction moodboard</span><span class="tc-owner">Laura R.</span></div>
+              <div class="tc-dur">Duration: 2h · May 7 · Completed ✓</div>
+            </div>
+            <div class="tc">
+              <div class="tc-row"><span class="tc-name">Post-production brief</span><span class="tc-owner">Marcos C.</span></div>
+              <div class="tc-dur">Duration: 1h · May 8, 16:00 · Upcoming</div>
+            </div>
+            <div class="tc">
+              <div class="tc-row"><span class="tc-name">Final asset delivery</span><span class="tc-owner">Retouch Co.</span></div>
+              <div class="tc-dur">Duration: 4h · May 10 · External</div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-slide" data-panel="1">
+          <div class="schedule-view">
+            <div class="sch-row ok-row"><div class="sch-dot" style="background:var(--success)"></div><span class="sch-name">Photoshoot Day 1</span><span class="sch-time">08:00–14:00</span><span class="sch-badge ok">OK</span></div>
+            <div class="sch-row conflict"><div class="sch-dot" style="background:var(--danger)"></div><span class="sch-name">Retouching handoff</span><span class="sch-time">15:00–16:00</span><span class="sch-badge cf">Conflict</span></div>
+            <div class="sch-row"><div class="sch-dot" style="background:var(--accent)"></div><span class="sch-name">Art direction review</span><span class="sch-time">14:30–15:30</span><span class="sch-badge pr">Overlaps</span></div>
+            <div style="padding:10px 14px;background:rgba(224,123,57,.06);border:1px solid rgba(224,123,57,.2);border-radius:8px;font-size:12px;color:var(--ink-2)">Marcos double-booked 14:30–15:30. <span style="color:var(--accent);font-weight:600;cursor:pointer">Resolve →</span></div>
+          </div>
+        </div>
+        <div class="panel-slide" data-panel="2">
+          <div class="heat-view">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px"><span style="font-size:10px;color:var(--ink-4);flex:1;text-align:right;width:60px"></span><div style="display:flex;gap:4px;flex:1">
+              <span style="flex:1;font-size:9px;color:var(--ink-4);text-align:center">Mon</span><span style="flex:1;font-size:9px;color:var(--ink-4);text-align:center">Tue</span><span style="flex:1;font-size:9px;color:var(--ink-4);text-align:center">Wed</span><span style="flex:1;font-size:9px;color:var(--ink-4);text-align:center">Thu</span><span style="flex:1;font-size:9px;color:var(--ink-4);text-align:center">Fri</span><span style="flex:1;font-size:9px;color:var(--ink-4);text-align:center">Mon</span><span style="flex:1;font-size:9px;color:var(--ink-4);text-align:center">Tue</span>
+            </div></div>
+            <div class="heat-row"><div class="heat-name">Laura</div><div class="heat-cells"><div class="heat-cell h3"></div><div class="heat-cell h4"></div><div class="heat-cell h5"></div><div class="heat-cell h4"></div><div class="heat-cell h2"></div><div class="heat-cell h1"></div><div class="heat-cell h0"></div></div></div>
+            <div class="heat-row"><div class="heat-name">Marcos</div><div class="heat-cells"><div class="heat-cell h1"></div><div class="heat-cell h2"></div><div class="heat-cell h3"></div><div class="heat-cell h5"></div><div class="heat-cell h4"></div><div class="heat-cell h3"></div><div class="heat-cell h1"></div></div></div>
+            <div class="heat-row"><div class="heat-name">Inés</div><div class="heat-cells"><div class="heat-cell h0"></div><div class="heat-cell h1"></div><div class="heat-cell h2"></div><div class="heat-cell h3"></div><div class="heat-cell h2"></div><div class="heat-cell h1"></div><div class="heat-cell h0"></div></div></div>
+            <div class="heat-row"><div class="heat-name">Daniela</div><div class="heat-cells"><div class="heat-cell h2"></div><div class="heat-cell h2"></div><div class="heat-cell h1"></div><div class="heat-cell h2"></div><div class="heat-cell h3"></div><div class="heat-cell h2"></div><div class="heat-cell h1"></div></div></div>
+            <div style="display:flex;gap:12px;margin-top:8px;font-size:10px;color:var(--ink-4)">
+              <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:var(--border);display:inline-block"></span>Free</span>
+              <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:var(--accent);display:inline-block"></span>Busy</span>
+              <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:var(--danger);display:inline-block"></span>Overloaded</span>
+            </div>
+          </div>
+        </div>
+        <div class="panel-slide" data-panel="3">
+          <div class="suggest-view">
+            <div class="sug accent-sug"><div class="sug-dot" style="background:var(--accent)"></div><span class="sug-txt">Move retouching handoff to May 9, 10:00 — Marcos is free</span><span class="sug-action">Apply</span></div>
+            <div class="sug accent-sug"><div class="sug-dot" style="background:var(--accent)"></div><span class="sug-txt">Reassign final delivery review to Inés — she has capacity today</span><span class="sug-action">Apply</span></div>
+            <div class="sug"><div class="sug-dot" style="background:var(--warning)"></div><span class="sug-txt">Go-live date at risk if retouching isn't resolved by end of day</span><span class="sug-action">View</span></div>
+            <div class="sug"><div class="sug-dot" style="background:var(--ink-4)"></div><span class="sug-txt">3 tasks unassigned in FW25 Lookbook — assign now to stay on track</span><span class="sug-action">Assign</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="before-after">
+  <div class="ba-inner">
+    <div class="ba-header">
+      <div class="section-lbl">Before & after</div>
+      <h2 style="font-size:clamp(36px,3.8vw,52px);font-weight:700;letter-spacing:-0.03em;color:var(--ink);line-height:1.06">This is what changes<br>when you use threly.</h2>
+    </div>
+    <div class="ba-grid">
+      <div class="ba-col"><div class="ba-col-head"><div class="ba-dot err"></div><span class="ba-col-ttl err">Without threly</span></div><div class="ba-items">
+        <div class="ba-item"><div class="ba-item-title">Tasks assigned over WhatsApp</div><div class="ba-item-desc">No record of who owns what. Nothing tracked, nothing accountable.</div></div>
+        <div class="ba-item"><div class="ba-item-title">Conflicts discovered too late</div><div class="ba-item-desc">You find out someone is double-booked the day it matters.</div></div>
+        <div class="ba-item"><div class="ba-item-title">No visibility into team capacity</div><div class="ba-item-desc">Some people are overwhelmed. Others have nothing to do. Nobody knows.</div></div>
+        <div class="ba-item"><div class="ba-item-title">Manual calendar updates</div><div class="ba-item-desc">Every task change means manually updating 3 different tools.</div></div>
+      </div></div>
+      <div class="ba-col after"><div class="ba-col-head"><div class="ba-dot ok"></div><span class="ba-col-ttl ok">With threly</span></div><div class="ba-items">
+        <div class="ba-item"><div class="ba-item-title">Tasks with owners, deadlines and durations</div><div class="ba-item-desc">Every task is assigned, timed and tracked. Calendar blocks automatically.</div></div>
+        <div class="ba-item"><div class="ba-item-title">Conflicts caught instantly</div><div class="ba-item-desc">threly flags double bookings and overlaps in real time, before they cause damage.</div></div>
+        <div class="ba-item"><div class="ba-item-title">Full capacity heatmap</div><div class="ba-item-desc">See who's overloaded, who has space, and redistribute with one click.</div></div>
+        <div class="ba-item"><div class="ba-item-title">Automatic calendar sync</div><div class="ba-item-desc">Tasks sync to calendars automatically. One source of truth, always current.</div></div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<section id="cta"><div class="cta-inner">
+  <div class="section-lbl" style="justify-content:center">Get started</div>
+  <h2 class="cta-title">Stop coordinating.<br>Start producing.</h2>
+  <p class="cta-sub">Join production teams replacing 6 tools with one system.</p>
+  <div class="cta-actions"><a href="#" class="btn-primary btn-lg">Request early access →</a><a href="#" class="btn-ghost btn-lg">Talk to the team</a></div>
+  <p class="cta-note">Currently onboarding fashion & e-commerce brands. Limited spots.</p>
+</div></section>
+
+<footer><div class="foot-in">
+  <div class="foot-logo">threly<span>.</span></div>
+  <a href="#" onclick="showPage('home'); return false;" class="foot-back">← Back to homepage</a>
+  <span class="foot-copy">© 2025 threly. All rights reserved.</span>
+</div></footer>
+</div>
+
+<div id="page-suppliers" class="page">
+<div id="hero">
+  <div class="hero-eyebrow">Supplier Collaboration</div>
+  <h1 class="hero-title">Your vendors.<br><em>Inside the system.</em></h1>
+  <p class="hero-sub">Stop coordinating suppliers over email. Brief once, track deliverables, score performance and build the operational intelligence to choose better every time.</p>
+  <div class="hero-actions">
+    <a href="#cta" class="btn-primary btn-lg">Get early access →</a>
+    <a href="#story" class="btn-ghost btn-lg">See how it works</a>
+  </div>
+</div>
+
+<div class="hero-mockup-wrap">
+  <div class="browser-frame">
+    <div class="browser-bar">
+      <div class="b-dot r"></div><div class="b-dot y"></div><div class="b-dot g"></div>
+      <div class="b-url">app.threly.io / suppliers</div>
+    </div>
+    <div style="padding:28px 32px;min-height:380px;background:var(--bg-card)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <span style="font-size:17px;font-weight:700;color:var(--ink)">Supplier Index</span>
+        <span style="font-size:12px;color:var(--ink-4)">12 suppliers · 3 campaigns active</span>
+      </div>
+      <div class="sup-table">
+        <div class="sup-head"><span>Supplier</span><span>Score</span><span>On-time</span><span>Status</span><span>Actions</span></div>
+        <div class="sup-row"><div class="sup-info"><div class="sup-name">Studio Blanc</div><div class="sup-type">Photography</div></div><div class="sup-score hi">9.4</div><div class="sup-pct">94%</div><div class="sup-badge pref">Preferred</div><div class="sup-acts">Brief →</div></div>
+        <div class="sup-row"><div class="sup-info"><div class="sup-name">Lumière Films</div><div class="sup-type">Video</div></div><div class="sup-score hi">8.9</div><div class="sup-pct">91%</div><div class="sup-badge pref">Preferred</div><div class="sup-acts">Brief →</div></div>
+        <div class="sup-row"><div class="sup-info"><div class="sup-name">Retouch Co.</div><div class="sup-type">Post-production</div></div><div class="sup-score mid">7.1</div><div class="sup-pct">78%</div><div class="sup-badge rev">Review</div><div class="sup-acts">View →</div></div>
+        <div class="sup-row"><div class="sup-info"><div class="sup-name">FastPrint</div><div class="sup-type">Production</div></div><div class="sup-score lo">5.8</div><div class="sup-pct">61%</div><div class="sup-badge risk">At risk</div><div class="sup-acts">Alert →</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat-item"><div class="stat-num">0</div><div class="stat-label">Supplier briefs lost in email</div></div>
+  <div class="stat-item"><div class="stat-num">94<span>%</span></div><div class="stat-label">On-time delivery with top suppliers</div></div>
+  <div class="stat-item"><div class="stat-num">3<span>x</span></div><div class="stat-label">Faster supplier onboarding</div></div>
+  <div class="stat-item"><div class="stat-num">∞</div><div class="stat-label">Operational intelligence. Built over time.</div></div>
+</div>
+
+<section id="story">
+  <div class="story-inner">
+    <div class="story-points" id="storyPoints">
+      <div class="story-point active" data-panel="0">
+        <div class="sp-step">01 — Supplier CRM</div>
+        <h3 class="sp-title">One profile<br>per vendor.</h3>
+        <p class="sp-desc">Every supplier has a profile in threly — history, past campaigns, contacts, scores and notes. You build operational intelligence with every production.</p>
+        <div class="sp-bar"></div>
+      </div>
+      <div class="story-point" data-panel="1">
+        <div class="sp-step">02 — Brief & assign</div>
+        <h3 class="sp-title">Brief once.<br>Everything tracked.</h3>
+        <p class="sp-desc">Send briefs directly from threly. Suppliers confirm, submit deliverables and communicate inside the platform. No more email chains.</p>
+        <div class="sp-bar"></div>
+      </div>
+      <div class="story-point" data-panel="2">
+        <div class="sp-step">03 — Performance index</div>
+        <h3 class="sp-title">Know who<br>to trust.</h3>
+        <p class="sp-desc">threly scores suppliers on on-time delivery, quality and responsiveness. Over time you build the data to make better decisions on every campaign.</p>
+        <div class="sp-bar"></div>
+      </div>
+      <div class="story-point" data-panel="3">
+        <div class="sp-step">04 — Alerts & renewals</div>
+        <h3 class="sp-title">Never miss a<br>deadline or renewal.</h3>
+        <p class="sp-desc">Automatic alerts for late deliverables, contract renewals and performance dips. threly flags the issue before it becomes a problem.</p>
+        <div class="sp-bar"></div>
+      </div>
+    </div>
+    <div class="story-panel-wrap">
+      <div class="story-panel">
+        <div class="story-panel-header">
+          <div class="b-dot r" style="width:8px;height:8px;border-radius:50%"></div><div class="b-dot y" style="width:8px;height:8px;border-radius:50%"></div><div class="b-dot g" style="width:8px;height:8px;border-radius:50%"></div>
+          <span class="sph-title">threly — Supplier view</span>
+          <span class="sph-tag" id="panelTag">Supplier profile</span>
+        </div>
+        <div class="panel-slide active" data-panel="0">
+          <div style="padding:4px 0">
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
+              <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-light));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0">SB</div>
+              <div><div style="font-size:15px;font-weight:700;color:var(--ink)">Studio Blanc</div><div style="font-size:12px;color:var(--ink-4)">Photography · Paris</div></div>
+              <div style="margin-left:auto;font-size:22px;font-weight:800;color:var(--success)">9.4</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px">
+              <div style="padding:10px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:8px;text-align:center"><div style="font-size:16px;font-weight:700;color:var(--ink)">18</div><div style="font-size:10px;color:var(--ink-4)">Campaigns</div></div>
+              <div style="padding:10px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:8px;text-align:center"><div style="font-size:16px;font-weight:700;color:var(--success)">94%</div><div style="font-size:10px;color:var(--ink-4)">On-time</div></div>
+              <div style="padding:10px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:8px;text-align:center"><div style="font-size:16px;font-weight:700;color:var(--accent)">4.8</div><div style="font-size:10px;color:var(--ink-4)">Quality</div></div>
+            </div>
+            <div style="font-size:11px;color:var(--ink-4);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em;font-weight:600">Recent campaigns</div>
+            <div style="font-size:12px;color:var(--ink-2);padding:8px 12px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:6px;margin-bottom:4px">SS25 Lookbook — In progress</div>
+            <div style="font-size:12px;color:var(--ink-3);padding:8px 12px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:6px">FW24 Editorial — Completed ✓</div>
+          </div>
+        </div>
+        <div class="panel-slide" data-panel="1">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div class="brief-card active"><div class="bc-header"><span class="bc-name">SS25 Lookbook — Photography brief</span><span class="bc-status sent">Sent</span></div><div class="bc-detail">Shoot date: May 8–9 · Location: Studio A · 24 looks · Delivery: May 12</div></div>
+            <div class="brief-card"><div class="bc-header"><span class="bc-name">Retouching brief — Post SS25</span><span class="bc-status ack">Acknowledged</span></div><div class="bc-detail">120 selects · RAW + JPEG · Delivery: May 14 · Contact: Marc D.</div></div>
+            <div class="brief-card"><div class="bc-header"><span class="bc-name">FW25 Lookbook — Photography brief</span><span class="bc-status pen">Draft</span></div><div class="bc-detail">Shoot date: Aug 20–22 · TBC · 32 looks estimated</div></div>
+          </div>
+        </div>
+        <div class="panel-slide" data-panel="2">
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="font-size:11px;color:var(--ink-4);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:8px">Performance index</div>
+            <div class="perf-row"><span class="perf-name">Studio Blanc</span><div class="perf-bar-wrap"><div class="perf-bar" style="width:94%"></div></div><span class="perf-val" style="color:var(--success)">9.4</span></div>
+            <div class="perf-row"><span class="perf-name">Lumière Films</span><div class="perf-bar-wrap"><div class="perf-bar" style="width:89%"></div></div><span class="perf-val" style="color:var(--success)">8.9</span></div>
+            <div class="perf-row"><span class="perf-name">Retouch Co.</span><div class="perf-bar-wrap"><div class="perf-bar" style="width:71%;background:var(--warning)"></div></div><span class="perf-val" style="color:var(--warning)">7.1</span></div>
+            <div class="perf-row"><span class="perf-name">FastPrint</span><div class="perf-bar-wrap"><div class="perf-bar" style="width:58%;background:var(--danger)"></div></div><span class="perf-val" style="color:var(--danger)">5.8</span></div>
+          </div>
+        </div>
+        <div class="panel-slide" data-panel="3">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="padding:12px 14px;background:var(--danger-bg);border:1px solid rgba(224,123,57,.25);border-radius:8px"><div style="font-size:11px;font-weight:700;color:var(--danger);margin-bottom:4px">Delivery overdue</div><div style="font-size:12px;color:var(--ink-2)">Retouch Co. — SS25 selects 2 days late. Go-live at risk.</div></div>
+            <div style="padding:12px 14px;background:var(--warning-bg);border:1px solid rgba(180,83,9,.2);border-radius:8px"><div style="font-size:11px;font-weight:700;color:var(--warning);margin-bottom:4px">Contract renewal</div><div style="font-size:12px;color:var(--ink-2)">Studio Blanc — frame agreement expires in 14 days.</div></div>
+            <div style="padding:12px 14px;background:var(--accent-soft);border:1px solid var(--accent-mid);border-radius:8px"><div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:4px">Performance drop</div><div style="font-size:12px;color:var(--ink-2)">FastPrint score fell from 7.2 to 5.8 over last 3 campaigns.</div></div>
+            <div style="padding:12px 14px;background:var(--success-bg);border:1px solid rgba(22,163,74,.2);border-radius:8px"><div style="font-size:11px;font-weight:700;color:var(--success);margin-bottom:4px">Recommended supplier</div><div style="font-size:12px;color:var(--ink-2)">Lumière Films available for FW25 Brand Film slot.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="before-after"><div class="ba-inner">
+  <div class="ba-header"><div class="section-lbl">Before & after</div><h2 style="font-size:clamp(36px,3.8vw,52px);font-weight:700;letter-spacing:-0.03em;color:var(--ink);line-height:1.06">This is what changes<br>when you use threly.</h2></div>
+  <div class="ba-grid">
+    <div class="ba-col"><div class="ba-col-head"><div class="ba-dot err"></div><span class="ba-col-ttl err">Without threly</span></div><div style="display:flex;flex-direction:column;gap:0">
+      <div class="ba-item"><div class="ba-item-title">Briefs sent over email</div><div class="ba-item-desc">Attachments, reply-all threads, version confusion. Nothing is trackable.</div></div>
+      <div class="ba-item"><div class="ba-item-title">No supplier performance data</div><div class="ba-item-desc">You choose suppliers based on gut feel. No record of past performance.</div></div>
+      <div class="ba-item"><div class="ba-item-title">Late deliveries surprise you</div><div class="ba-item-desc">You find out when the deadline has already passed.</div></div>
+      <div class="ba-item"><div class="ba-item-title">Contacts scattered across tools</div><div class="ba-item-desc">Supplier info lives in spreadsheets, emails and people's heads.</div></div>
+    </div></div>
+    <div class="ba-col after"><div class="ba-col-head"><div class="ba-dot ok"></div><span class="ba-col-ttl ok">With threly</span></div><div style="display:flex;flex-direction:column;gap:0">
+      <div class="ba-item"><div class="ba-item-title">Briefs sent and tracked in threly</div><div class="ba-item-desc">One brief, one thread, one status. Suppliers work inside the system.</div></div>
+      <div class="ba-item"><div class="ba-item-title">Performance index built automatically</div><div class="ba-item-desc">Every campaign adds data. You always know who to trust with what.</div></div>
+      <div class="ba-item"><div class="ba-item-title">Alerts before deadlines are missed</div><div class="ba-item-desc">threly flags delivery risks before they hit your go-live date.</div></div>
+      <div class="ba-item"><div class="ba-item-title">Supplier CRM built into production</div><div class="ba-item-desc">Every vendor has a profile. History, scores and contacts in one place.</div></div>
+    </div></div>
+  </div>
+</div></section>
+
+<section id="cta"><div class="cta-inner">
+  <div class="section-lbl" style="justify-content:center">Get started</div>
+  <h2 class="cta-title">Build the supplier network<br>your production deserves.</h2>
+  <p class="cta-sub">Join production teams replacing 6 tools with one system.</p>
+  <div class="cta-actions"><a href="#" class="btn-primary btn-lg">Request early access →</a><a href="#" class="btn-ghost btn-lg">Talk to the team</a></div>
+  <p class="cta-note">Currently onboarding fashion & e-commerce brands. Limited spots.</p>
+</div></section>
+
+<footer><div class="foot-in">
+  <div class="foot-logo">threly<span>.</span></div>
+  <a href="#" onclick="showPage('home'); return false;" class="foot-back">← Back to homepage</a>
+  <span class="foot-copy">© 2025 threly. All rights reserved.</span>
+</div></footer>
+</div>
+
+<div id="page-budget" class="page">
+<div id="hero">
+  <div class="hero-eyebrow">Budget Intelligence</div>
+  <h1 class="hero-title">No more budgets<br><em>wrong by Monday.</em></h1>
+  <p class="hero-sub">Auto-generate budgets from briefs, track deviations in real time and get actionable suggestions before overruns become problems.</p>
+  <div class="hero-actions"><a href="#cta" class="btn-primary btn-lg">Get early access →</a><a href="#story" class="btn-ghost btn-lg">See how it works</a></div>
+</div>
+<div class="hero-mockup-wrap">
+  <div class="browser-frame">
+    <div class="browser-bar"><div class="b-dot r"></div><div class="b-dot y"></div><div class="b-dot g"></div><div class="b-url">app.threly.io / budget</div></div>
+    <div style="padding:28px 32px;min-height:380px;background:var(--bg-card);display:flex;gap:32px">
+      <div style="flex:1">
+        <div style="font-size:17px;font-weight:700;color:var(--ink);margin-bottom:20px">SS25 Lookbook — Budget</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:8px;padding:8px 14px;background:var(--bg-card-2);border-radius:6px;font-size:10px;color:var(--ink-4);text-transform:uppercase;letter-spacing:.07em;font-weight:600"><span>Line item</span><span>Budget</span><span>Actual</span><span>Variance</span></div>
+          <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:8px;align-items:center;padding:12px 14px;background:var(--bg-card-2);border:1px solid var(--border-mid);border-radius:8px"><span style="font-size:13px;font-weight:500;color:var(--ink)">Photography</span><span style="font-size:13px;color:var(--ink-3)">€18,000</span><span style="font-size:13px;font-weight:600;color:var(--danger)">€21,400</span><span style="font-size:12px;font-weight:700;color:var(--danger)">+€3,400</span></div>
+          <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:8px;align-items:center;padding:12px 14px;background:var(--bg-card-2);border:1px solid var(--border-mid);border-radius:8px"><span style="font-size:13px;font-weight:500;color:var(--ink)">Studio</span><span style="font-size:13px;color:var(--ink-3)">€8,000</span><span style="font-size:13px;font-weight:600;color:var(--success)">€7,200</span><span style="font-size:12px;font-weight:700;color:var(--success)">-€800</span></div>
+          <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:8px;align-items:center;padding:12px 14px;background:var(--bg-card-2);border:1px solid var(--border-mid);border-radius:8px"><span style="font-size:13px;font-weight:500;color:var(--ink)">Post-production</span><span style="font-size:13px;color:var(--ink-3)">€12,000</span><span style="font-size:13px;font-weight:600;color:var(--ink)">€9,200</span><span style="font-size:12px;font-weight:700;color:var(--success)">-€2,800</span></div>
+          <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:8px;align-items:center;padding:12px 14px;background:var(--bg-card-2);border:1px solid var(--border-mid);border-radius:8px"><span style="font-size:13px;font-weight:500;color:var(--ink)">Travel & logistics</span><span style="font-size:13px;color:var(--ink-3)">€6,000</span><span style="font-size:13px;font-weight:600;color:var(--ink)">€5,800</span><span style="font-size:12px;font-weight:700;color:var(--success)">-€200</span></div>
+        </div>
+      </div>
+      <div style="width:200px;flex-shrink:0;display:flex;flex-direction:column;gap:10px">
+        <div style="padding:16px;background:var(--bg-card-2);border:1px solid var(--border-mid);border-radius:10px;text-align:center"><div style="font-size:11px;color:var(--ink-4);margin-bottom:4px">Total budget</div><div style="font-size:22px;font-weight:800;color:var(--ink)">€48,000</div></div>
+        <div style="padding:16px;background:var(--success-bg);border:1px solid rgba(22,163,74,.2);border-radius:10px;text-align:center"><div style="font-size:11px;color:var(--success);margin-bottom:4px">Committed</div><div style="font-size:22px;font-weight:800;color:var(--success)">€43,600</div></div>
+        <div style="padding:16px;background:var(--danger-bg);border:1px solid rgba(224,123,57,.2);border-radius:10px;text-align:center"><div style="font-size:11px;color:var(--danger);margin-bottom:4px">Overage</div><div style="font-size:22px;font-weight:800;color:var(--danger)">+€3,400</div></div>
+        <div style="padding:12px 14px;background:var(--accent-soft);border:1px solid var(--accent-mid);border-radius:8px"><div style="font-size:10px;font-weight:700;color:var(--accent);margin-bottom:4px">threly suggests</div><div style="font-size:11px;color:var(--ink-2)">Reallocate from post-production surplus → save €2,800</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="stats-bar">
+  <div class="stat-item"><div class="stat-num">0</div><div class="stat-label">Budget surprises at end of production</div></div>
+  <div class="stat-item"><div class="stat-num">30<span>%</span></div><div class="stat-label">Average budget savings with suggestions</div></div>
+  <div class="stat-item"><div class="stat-num">∞</div><div class="stat-label">Historical benchmarks for smarter planning</div></div>
+  <div class="stat-item"><div class="stat-num">1</div><div class="stat-label">Source of truth for every campaign</div></div>
+</div>
+<section id="story"><div class="story-inner">
+  <div class="story-points" id="storyPoints">
+    <div class="story-point active" data-panel="0"><div class="sp-step">01 — Auto-generate</div><h3 class="sp-title">Brief in.<br>Budget out.</h3><p class="sp-desc">Write your campaign brief and threly generates a detailed budget automatically — based on historical data from past campaigns and your configured rates.</p><div class="sp-bar"></div></div>
+    <div class="story-point" data-panel="1"><div class="sp-step">02 — Live tracking</div><h3 class="sp-title">Real-time deviations.<br>No more surprises.</h3><p class="sp-desc">Every invoice, PO and supplier confirmation updates the budget in real time. You always know exactly where you stand — not where you stood last week.</p><div class="sp-bar"></div></div>
+    <div class="story-point" data-panel="2"><div class="sp-step">03 — Smart suggestions</div><h3 class="sp-title">threly tells you<br>where to move money.</h3><p class="sp-desc">When one line goes over, threly identifies surplus in other lines and suggests reallocations. You make the call — with full visibility.</p><div class="sp-bar"></div></div>
+    <div class="story-point" data-panel="3"><div class="sp-step">04 — Historical intelligence</div><h3 class="sp-title">Every campaign<br>makes the next one smarter.</h3><p class="sp-desc">threly learns from your production history. Benchmarks by campaign type, supplier and season so your planning gets more accurate over time.</p><div class="sp-bar"></div></div>
+  </div>
+  <div class="story-panel-wrap"><div class="story-panel">
+    <div class="story-panel-header"><div class="b-dot r" style="width:8px;height:8px;border-radius:50%"></div><div class="b-dot y" style="width:8px;height:8px;border-radius:50%"></div><div class="b-dot g" style="width:8px;height:8px;border-radius:50%"></div><span class="sph-title">threly — Budget view</span><span class="sph-tag" id="panelTag">Auto-generate</span></div>
+    <div class="panel-slide active" data-panel="0">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="padding:12px 16px;background:var(--accent-soft);border:1px solid var(--accent-mid);border-radius:8px"><div style="font-size:10px;font-weight:700;color:var(--accent);margin-bottom:4px">Brief received</div><div style="font-size:13px;color:var(--ink)">SS25 Lookbook — Editorial · 24 looks · 2 shoot days</div></div>
+        <div style="padding:12px 16px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:8px"><div style="font-size:10px;font-weight:700;color:var(--ink-4);margin-bottom:4px">Generated from brief</div><div style="font-size:13px;font-weight:600;color:var(--ink)">€48,000 — 6 line items</div></div>
+        <div style="font-size:11px;color:var(--ink-4);padding:0 4px">Based on FW24 Lookbook (€44,000) + 2 extra shoot days</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+          <div style="padding:10px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:8px"><div style="font-size:10px;color:var(--ink-4)">Photography</div><div style="font-size:14px;font-weight:700;color:var(--ink)">€18,000</div></div>
+          <div style="padding:10px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:8px"><div style="font-size:10px;color:var(--ink-4)">Post-production</div><div style="font-size:14px;font-weight:700;color:var(--ink)">€12,000</div></div>
+          <div style="padding:10px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:8px"><div style="font-size:10px;color:var(--ink-4)">Studio</div><div style="font-size:14px;font-weight:700;color:var(--ink)">€8,000</div></div>
+          <div style="padding:10px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:8px"><div style="font-size:10px;color:var(--ink-4)">Travel</div><div style="font-size:14px;font-weight:700;color:var(--ink)">€6,000</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-slide" data-panel="1">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--danger-bg);border:1px solid rgba(224,123,57,.25);border-radius:8px"><span style="font-size:12px;font-weight:500;color:var(--ink)">Photography</span><span style="font-size:13px;font-weight:700;color:var(--danger)">+€3,400 over</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--success-bg);border:1px solid rgba(22,163,74,.2);border-radius:8px"><span style="font-size:12px;font-weight:500;color:var(--ink)">Post-production</span><span style="font-size:13px;font-weight:700;color:var(--success)">-€2,800 under</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--success-bg);border:1px solid rgba(22,163,74,.2);border-radius:8px"><span style="font-size:12px;font-weight:500;color:var(--ink)">Studio</span><span style="font-size:13px;font-weight:700;color:var(--success)">-€800 under</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:8px"><span style="font-size:12px;font-weight:500;color:var(--ink)">Travel</span><span style="font-size:13px;color:var(--ink-3)">On track</span></div>
+      </div>
+    </div>
+    <div class="panel-slide" data-panel="2">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="padding:12px 14px;background:var(--accent-soft);border:1px solid var(--accent-mid);border-radius:8px"><div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:6px">threly suggestion</div><div style="font-size:12px;color:var(--ink-2)">Move €2,800 from post-production surplus to cover photography overage.</div><div style="margin-top:8px;font-size:11px;font-weight:600;color:var(--accent);cursor:pointer">Apply suggestion →</div></div>
+        <div style="padding:12px 14px;background:var(--accent-soft);border:1px solid var(--accent-mid);border-radius:8px"><div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:6px">threly suggestion</div><div style="font-size:12px;color:var(--ink-2)">Negotiate a fixed rate with Studio Blanc for the next 3 campaigns. Based on volume, estimated saving: €4,200.</div></div>
+      </div>
+    </div>
+    <div class="panel-slide" data-panel="3">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:11px;color:var(--ink-4);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:4px">Photography — historical benchmarks</div>
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:8px"><span style="font-size:12px;color:var(--ink-3);width:80px">FW24</span><div style="flex:1;height:6px;background:var(--bg-deep);border-radius:3px;overflow:hidden"><div style="height:100%;width:78%;background:var(--accent);border-radius:3px"></div></div><span style="font-size:12px;font-weight:600;color:var(--ink)">€14,100</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:8px"><span style="font-size:12px;color:var(--ink-3);width:80px">SS24</span><div style="flex:1;height:6px;background:var(--bg-deep);border-radius:3px;overflow:hidden"><div style="height:100%;width:82%;background:var(--accent);border-radius:3px"></div></div><span style="font-size:12px;font-weight:600;color:var(--ink)">€15,300</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--danger-bg);border:1px solid rgba(224,123,57,.2);border-radius:8px"><span style="font-size:12px;color:var(--ink-3);width:80px">SS25</span><div style="flex:1;height:6px;background:var(--bg-deep);border-radius:3px;overflow:hidden"><div style="height:100%;width:100%;background:var(--danger);border-radius:3px"></div></div><span style="font-size:12px;font-weight:700;color:var(--danger)">€21,400</span></div>
+        <div style="font-size:11px;color:var(--danger);padding:0 4px">SS25 photography is 39% above your 2-year average. Review scope.</div>
+      </div>
+    </div>
+  </div></div>
+</div></section>
+<section id="before-after"><div class="ba-inner">
+  <div class="ba-header"><div class="section-lbl">Before & after</div><h2 style="font-size:clamp(36px,3.8vw,52px);font-weight:700;letter-spacing:-0.03em;color:var(--ink);line-height:1.06">This is what changes<br>when you use threly.</h2></div>
+  <div class="ba-grid">
+    <div class="ba-col"><div class="ba-col-head"><div class="ba-dot err"></div><span class="ba-col-ttl err">Without threly</span></div><div style="display:flex;flex-direction:column;gap:0">
+      <div class="ba-item"><div class="ba-item-title">Budgets built in spreadsheets</div><div class="ba-item-desc">One file, one person, always outdated. Shared via email every time someone asks.</div></div>
+      <div class="ba-item"><div class="ba-item-title">Overruns discovered at the end</div><div class="ba-item-desc">You find out a campaign went over budget after the invoices arrive.</div></div>
+      <div class="ba-item"><div class="ba-item-title">No historical benchmarks</div><div class="ba-item-desc">Every campaign starts from scratch. No data to plan better next time.</div></div>
+      <div class="ba-item"><div class="ba-item-title">Reallocation done manually</div><div class="ba-item-desc">Spotting surplus in one line and moving it to another takes hours of work.</div></div>
+    </div></div>
+    <div class="ba-col after"><div class="ba-col-head"><div class="ba-dot ok"></div><span class="ba-col-ttl ok">With threly</span></div><div style="display:flex;flex-direction:column;gap:0">
+      <div class="ba-item"><div class="ba-item-title">Budget generated from brief</div><div class="ba-item-desc">Write the brief, get the budget. Based on your history, not a blank template.</div></div>
+      <div class="ba-item"><div class="ba-item-title">Deviations visible in real time</div><div class="ba-item-desc">Every confirmed spend updates the budget instantly. No surprises, ever.</div></div>
+      <div class="ba-item"><div class="ba-item-title">Historical intelligence built in</div><div class="ba-item-desc">Every campaign adds data. Benchmarks improve with every production.</div></div>
+      <div class="ba-item"><div class="ba-item-title">Reallocation suggested automatically</div><div class="ba-item-desc">threly spots the opportunity and tells you exactly what to move and where.</div></div>
+    </div></div>
+  </div>
+</div></section>
+<section id="cta"><div class="cta-inner"><div class="section-lbl" style="justify-content:center">Get started</div><h2 class="cta-title">Every euro.<br>Under control.</h2><p class="cta-sub">Join production teams replacing 6 tools with one system.</p><div class="cta-actions"><a href="#" class="btn-primary btn-lg">Request early access →</a><a href="#" class="btn-ghost btn-lg">Talk to the team</a></div><p class="cta-note">Currently onboarding fashion & e-commerce brands. Limited spots.</p></div></section>
+<footer><div class="foot-in"><div class="foot-logo">threly<span>.</span></div><a href="#" onclick="showPage('home'); return false;" class="foot-back">← Back to homepage</a><span class="foot-copy">© 2025 threly. All rights reserved.</span></div></footer>
+</div>
+
+<div id="page-dam" class="page">
+<div id="hero">
+  <div class="hero-eyebrow">Digital Asset Management</div>
+  <h1 class="hero-title">Your assets have rights.<br><em>Know them.</em></h1>
+  <p class="hero-sub">Most teams don't know if their assets are licensed for social, web or marketplace — or until when. threly makes rights management automatic and visible.</p>
+  <div class="hero-actions"><a href="#cta" class="btn-primary btn-lg">Get early access →</a><a href="#story" class="btn-ghost btn-lg">See how it works</a></div>
+</div>
+<div class="hero-mockup-wrap">
+  <div class="browser-frame">
+    <div class="browser-bar"><div class="b-dot r"></div><div class="b-dot y"></div><div class="b-dot g"></div><div class="b-url">app.threly.io / assets</div></div>
+    <div style="padding:28px 32px;min-height:380px;background:var(--bg-card)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <span style="font-size:17px;font-weight:700;color:var(--ink)">Asset Rights Dashboard</span>
+        <div style="display:flex;gap:6px">
+          <span style="font-size:11px;padding:4px 12px;border-radius:100px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent-mid);font-weight:500;cursor:pointer">All assets</span>
+          <span style="font-size:11px;padding:4px 12px;border-radius:100px;background:var(--bg);border:1px solid var(--border-mid);color:var(--ink-3);cursor:pointer">Expiring soon</span>
+          <span style="font-size:11px;padding:4px 12px;border-radius:100px;background:var(--danger-bg);border:1px solid rgba(224,123,57,.2);color:var(--danger);font-weight:500;cursor:pointer">Expired</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:8px;padding:8px 14px;background:var(--bg-card-2);border-radius:6px;font-size:10px;color:var(--ink-4);text-transform:uppercase;letter-spacing:.07em;font-weight:600;margin-bottom:8px"><span>Asset</span><span>Channel</span><span>Status</span><span>Expires</span><span>Territory</span></div>
+      <div class="asset-row"><span class="asset-name">SS25_Look01_RGB.jpg</span><span class="asset-date">Social</span><span class="asset-badge ab-ok">Active ✓</span><span class="asset-date">Dec 2025</span><span class="asset-terr">EU</span></div>
+      <div class="asset-row"><span class="asset-name">Campaign_Hero_Web.png</span><span class="asset-date">Web</span><span class="asset-badge ab-wn">Expiring ⚠</span><span class="asset-date wn">Jun 2025</span><span class="asset-terr">Global</span></div>
+      <div class="asset-row" style="border-color:rgba(224,123,57,.2);background:rgba(224,123,57,.03)"><span class="asset-name">Model_Elena_GW24.jpg</span><span class="asset-date">Marketplace</span><span class="asset-badge ab-ex">Expired ✗</span><span class="asset-date ex">Apr 2025</span><span class="asset-terr">US</span></div>
+      <div class="asset-row"><span class="asset-name">FW25_Studio_BTS.mp4</span><span class="asset-date">All channels</span><span class="asset-badge ab-ok">Active ✓</span><span class="asset-date">Mar 2026</span><span class="asset-terr">EU + US</span></div>
+    </div>
+  </div>
+</div>
+<div class="stats-bar">
+  <div class="stat-item"><div class="stat-num">0</div><div class="stat-label">Assets used without valid rights</div></div>
+  <div class="stat-item"><div class="stat-num">100<span>%</span></div><div class="stat-label">Rights visibility across all channels</div></div>
+  <div class="stat-item"><div class="stat-num">30<span>d</span></div><div class="stat-label">Advance alerts before expiration</div></div>
+  <div class="stat-item"><div class="stat-num">∞</div><div class="stat-label">Suppliers, territories, channels. All tracked.</div></div>
+</div>
+<section id="story"><div class="story-inner">
+  <div class="story-points" id="storyPoints">
+    <div class="story-point active" data-panel="0"><div class="sp-step">01 — Rights by channel</div><h3 class="sp-title">Know exactly<br>what you can use.</h3><p class="sp-desc">Every asset has rights defined per channel — social, web, marketplace, print. At a glance you know what's licensed and what isn't, before you publish.</p><div class="sp-bar"></div></div>
+    <div class="story-point" data-panel="1"><div class="sp-step">02 — Territory management</div><h3 class="sp-title">Where in the world<br>can you use it?</h3><p class="sp-desc">Rights vary by territory. threly tracks EU, US and global permissions per asset so you never publish something in a market where you don't have clearance.</p><div class="sp-bar"></div></div>
+    <div class="story-point" data-panel="2"><div class="sp-step">03 — Expiration alerts</div><h3 class="sp-title">You'll know<br>before it expires.</h3><p class="sp-desc">30-day alerts before any right expires. Time to renew, replace or restrict the asset — before legal exposure becomes a problem.</p><div class="sp-bar"></div></div>
+    <div class="story-point" data-panel="3"><div class="sp-step">04 — Multi-supplier rights</div><h3 class="sp-title">Multiple suppliers.<br>One clear view.</h3><p class="sp-desc">Assets often have rights from multiple suppliers — photographer, model, stylist. threly tracks each independently so you always know the most restrictive term that applies.</p><div class="sp-bar"></div></div>
+  </div>
+  <div class="story-panel-wrap"><div class="story-panel">
+    <div class="story-panel-header"><div class="b-dot r" style="width:8px;height:8px;border-radius:50%"></div><div class="b-dot y" style="width:8px;height:8px;border-radius:50%"></div><div class="b-dot g" style="width:8px;height:8px;border-radius:50%"></div><span class="sph-title">threly — Asset rights</span><span class="sph-tag" id="panelTag">Channel rights</span></div>
+    <div class="panel-slide active" data-panel="0">
+      <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:12px">SS25_Look01_RGB.jpg</div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--success-bg);border:1px solid rgba(22,163,74,.2);border-radius:8px"><span style="font-size:12px;color:var(--ink)">Social media</span><span style="font-size:11px;font-weight:600;color:var(--success)">Licensed ✓ until Dec 2025</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--success-bg);border:1px solid rgba(22,163,74,.2);border-radius:8px"><span style="font-size:12px;color:var(--ink)">Website</span><span style="font-size:11px;font-weight:600;color:var(--success)">Licensed ✓ until Dec 2025</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--warning-bg);border:1px solid rgba(180,83,9,.2);border-radius:8px"><span style="font-size:12px;color:var(--ink)">Marketplace</span><span style="font-size:11px;font-weight:600;color:var(--warning)">Expires Jun 2025 ⚠</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:8px"><span style="font-size:12px;color:var(--ink)">Print</span><span style="font-size:11px;color:var(--ink-4)">Not licensed</span></div>
+      </div>
+    </div>
+    <div class="panel-slide" data-panel="1">
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--success-bg);border:1px solid rgba(22,163,74,.2);border-radius:8px"><span style="font-size:12px;font-weight:500;color:var(--ink)">European Union</span><span style="font-size:11px;font-weight:600;color:var(--success)">All channels ✓</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--warning-bg);border:1px solid rgba(180,83,9,.2);border-radius:8px"><span style="font-size:12px;font-weight:500;color:var(--ink)">United States</span><span style="font-size:11px;font-weight:600;color:var(--warning)">Social only ⚠</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:8px"><span style="font-size:12px;font-weight:500;color:var(--ink)">Asia Pacific</span><span style="font-size:11px;color:var(--ink-4)">Not licensed</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:8px"><span style="font-size:12px;font-weight:500;color:var(--ink)">Latin America</span><span style="font-size:11px;color:var(--ink-4)">Not licensed</span></div>
+      </div>
+    </div>
+    <div class="panel-slide" data-panel="2">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="padding:12px 14px;background:var(--danger-bg);border:1px solid rgba(224,123,57,.25);border-radius:8px"><div style="font-size:11px;font-weight:700;color:var(--danger);margin-bottom:4px">Expired — Action required</div><div style="font-size:12px;color:var(--ink-2)">Model_Elena_GW24.jpg — Marketplace rights expired Apr 2025. Remove from all marketplace listings.</div></div>
+        <div style="padding:12px 14px;background:var(--warning-bg);border:1px solid rgba(180,83,9,.2);border-radius:8px"><div style="font-size:11px;font-weight:700;color:var(--warning);margin-bottom:4px">Expiring in 18 days</div><div style="font-size:12px;color:var(--ink-2)">Campaign_Hero_Web.png — Web rights expire Jun 14. Renew or replace.</div></div>
+        <div style="padding:12px 14px;background:var(--accent-soft);border:1px solid var(--accent-mid);border-radius:8px"><div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:4px">Renewal recommended</div><div style="font-size:12px;color:var(--ink-2)">Brand_Film_Master.mp4 — Used in 4 campaigns. High value asset. Renew for 12 months.</div></div>
+      </div>
+    </div>
+    <div class="panel-slide" data-panel="3">
+      <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:12px">SS25_Look03_Hero.jpg — Rights breakdown</div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="padding:10px 14px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:8px"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:11px;font-weight:600;color:var(--ink)">Studio Blanc (Photographer)</span><span style="font-size:10px;padding:1px 7px;background:var(--success-bg);color:var(--success);border-radius:100px;font-weight:600">All channels · Dec 2026</span></div><div style="font-size:11px;color:var(--ink-4)">EU + US · Exclusive print rights included</div></div>
+        <div style="padding:10px 14px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:8px"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:11px;font-weight:600;color:var(--ink)">Elena M. (Model)</span><span style="font-size:10px;padding:1px 7px;background:var(--warning-bg);color:var(--warning);border-radius:100px;font-weight:600">Social + Web · Jun 2025</span></div><div style="font-size:11px;color:var(--ink-4)">EU only · No marketplace</div></div>
+        <div style="padding:10px 14px;background:var(--accent-soft);border:1px solid var(--accent-mid);border-radius:8px"><div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:3px">Effective rights</div><div style="font-size:11px;color:var(--ink-2)">Social + Web · EU only · Until Jun 2025 (most restrictive term applies)</div></div>
+      </div>
+    </div>
+  </div></div>
+</div></section>
+<section id="before-after"><div class="ba-inner">
+  <div class="ba-header"><div class="section-lbl">Before & after</div><h2 style="font-size:clamp(36px,3.8vw,52px);font-weight:700;letter-spacing:-0.03em;color:var(--ink);line-height:1.06">This is what changes<br>when you use threly.</h2></div>
+  <div class="ba-grid">
+    <div class="ba-col"><div class="ba-col-head"><div class="ba-dot err"></div><span class="ba-col-ttl err">Without threly</span></div><div style="display:flex;flex-direction:column;gap:0">
+      <div class="ba-item"><div class="ba-item-title">Assets stored in Drive folders</div><div class="ba-item-desc">No rights info attached. You publish and hope for the best.</div></div>
+      <div class="ba-item"><div class="ba-item-title">Expiration dates in spreadsheets</div><div class="ba-item-desc">If someone remembers to update them. Usually they don't.</div></div>
+      <div class="ba-item"><div class="ba-item-title">Territory rights unclear</div><div class="ba-item-desc">US and EU rights are different. Nobody knows which assets cover which.</div></div>
+      <div class="ba-item"><div class="ba-item-title">Legal exposure discovered too late</div><div class="ba-item-desc">You find out an asset was used without rights when the invoice arrives.</div></div>
+    </div></div>
+    <div class="ba-col after"><div class="ba-col-head"><div class="ba-dot ok"></div><span class="ba-col-ttl ok">With threly</span></div><div style="display:flex;flex-direction:column;gap:0">
+      <div class="ba-item"><div class="ba-item-title">Rights attached to every asset</div><div class="ba-item-desc">Channel, territory and expiry defined per asset. Always visible, always current.</div></div>
+      <div class="ba-item"><div class="ba-item-title">30-day expiration alerts</div><div class="ba-item-desc">Automatic notifications before anything expires. Time to act, not react.</div></div>
+      <div class="ba-item"><div class="ba-item-title">Territory view per asset</div><div class="ba-item-desc">See exactly where each asset can be used. EU, US, global — at a glance.</div></div>
+      <div class="ba-item"><div class="ba-item-title">Full audit trail</div><div class="ba-item-desc">Every rights decision logged and traceable. Compliance built into the workflow.</div></div>
+    </div></div>
+  </div>
+</div></section>
+<section id="cta"><div class="cta-inner"><div class="section-lbl" style="justify-content:center">Get started</div><h2 class="cta-title">Every asset.<br>Every right. Tracked.</h2><p class="cta-sub">Join production teams replacing 6 tools with one system.</p><div class="cta-actions"><a href="#" class="btn-primary btn-lg">Request early access →</a><a href="#" class="btn-ghost btn-lg">Talk to the team</a></div><p class="cta-note">Currently onboarding fashion & e-commerce brands. Limited spots.</p></div></section>
+<footer><div class="foot-in"><div class="foot-logo">threly<span>.</span></div><a href="#" onclick="showPage('home'); return false;" class="foot-back">← Back to homepage</a><span class="foot-copy">© 2025 threly. All rights reserved.</span></div></footer>
+</div>
+
+<div id="page-resources" class="page">
+<div id="hero">
+  <div class="hero-eyebrow">Resource Allocation</div>
+  <h1 class="hero-title">See who's overloaded<br><em>before they are.</em></h1>
+  <p class="hero-sub">Visual heatmaps of your entire team's capacity. Spot bottlenecks, redistribute work and protect your go-live dates — before the problem becomes a crisis.</p>
+  <div class="hero-actions"><a href="#cta" class="btn-primary btn-lg">Get early access →</a><a href="#story" class="btn-ghost btn-lg">See how it works</a></div>
+</div>
+<div class="hero-mockup-wrap">
+  <div class="browser-frame">
+    <div class="browser-bar"><div class="b-dot r"></div><div class="b-dot y"></div><div class="b-dot g"></div><div class="b-url">app.threly.io / resources</div></div>
+    <div style="padding:28px 32px;min-height:380px;background:var(--bg-card)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <span style="font-size:17px;font-weight:700;color:var(--ink)">Team capacity — May 2025</span>
+        <div style="display:flex;gap:12px;font-size:11px;color:var(--ink-4)">
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;border-radius:3px;background:var(--border);display:inline-block"></span>Free</span>
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;border-radius:3px;background:var(--accent);display:inline-block"></span>Busy</span>
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:12px;height:12px;border-radius:3px;background:var(--danger);display:inline-block"></span>Overloaded</span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><div style="width:64px"></div><div style="display:flex;gap:4px;flex:1">
+        <span style="flex:1;font-size:9px;color:var(--ink-4);text-align:center">5</span><span style="flex:1;font-size:9px;color:var(--ink-4);text-align:center">6</span><span style="flex:1;font-size:9px;color:var(--ink-4);text-align:center">7</span><span style="flex:1;font-size:9px;color:var(--ink-4);text-align:center">8</span><span style="flex:1;font-size:9px;color:var(--ink-4);text-align:center">9</span><span style="flex:1;font-size:9px;color:var(--ink-4);text-align:center">12</span><span style="flex:1;font-size:9px;color:var(--ink-4);text-align:center">13</span><span style="flex:1;font-size:9px;color:var(--ink-4);text-align:center">14</span><span style="flex:1;font-size:9px;color:var(--ink-4);text-align:center">15</span><span style="flex:1;font-size:9px;color:var(--ink-4);text-align:center">16</span>
+      </div></div>
+      <div class="hm-row"><div class="hm-name">Laura R.</div><div class="hm-cells"><div class="hm-cell h3"></div><div class="hm-cell h4"></div><div class="hm-cell h5"></div><div class="hm-cell h5"></div><div class="hm-cell h4"></div><div class="hm-cell h3"></div><div class="hm-cell h2"></div><div class="hm-cell h1"></div><div class="hm-cell h0"></div><div class="hm-cell h0"></div></div></div>
+      <div class="hm-row"><div class="hm-name">Marcos C.</div><div class="hm-cells"><div class="hm-cell h1"></div><div class="hm-cell h2"></div><div class="hm-cell h3"></div><div class="hm-cell h5"></div><div class="hm-cell h4"></div><div class="hm-cell h4"></div><div class="hm-cell h3"></div><div class="hm-cell h2"></div><div class="hm-cell h1"></div><div class="hm-cell h0"></div></div></div>
+      <div class="hm-row"><div class="hm-name">Inés M.</div><div class="hm-cells"><div class="hm-cell h0"></div><div class="hm-cell h1"></div><div class="hm-cell h2"></div><div class="hm-cell h2"></div><div class="hm-cell h3"></div><div class="hm-cell h3"></div><div class="hm-cell h2"></div><div class="hm-cell h1"></div><div class="hm-cell h0"></div><div class="hm-cell h0"></div></div></div>
+      <div class="hm-row"><div class="hm-name">Daniela F.</div><div class="hm-cells"><div class="hm-cell h2"></div><div class="hm-cell h2"></div><div class="hm-cell h1"></div><div class="hm-cell h2"></div><div class="hm-cell h3"></div><div class="hm-cell h2"></div><div class="hm-cell h2"></div><div class="hm-cell h1"></div><div class="hm-cell h1"></div><div class="hm-cell h0"></div></div></div>
+      <div style="margin-top:16px;padding:12px 14px;background:var(--danger-bg);border:1px solid rgba(224,123,57,.2);border-radius:8px;font-size:12px;color:var(--ink-2);display:flex;align-items:center;gap:10px">
+        <div style="width:6px;height:6px;border-radius:50%;background:var(--danger);flex-shrink:0"></div>
+        Laura R. is overloaded May 7–8. 3 tasks at risk. <span style="color:var(--accent);font-weight:600;cursor:pointer;margin-left:4px">Redistribute →</span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="stats-bar">
+  <div class="stat-item"><div class="stat-num">0</div><div class="stat-label">Burnout surprises with full visibility</div></div>
+  <div class="stat-item"><div class="stat-num">1<span>click</span></div><div class="stat-label">To redistribute overloaded tasks</div></div>
+  <div class="stat-item"><div class="stat-num">2<span>wk</span></div><div class="stat-label">Advance visibility into capacity</div></div>
+  <div class="stat-item"><div class="stat-num">∞</div><div class="stat-label">Team members. All tracked.</div></div>
+</div>
+<section id="story"><div class="story-inner">
+  <div class="story-points" id="storyPoints">
+    <div class="story-point active" data-panel="0"><div class="sp-step">01 — Capacity heatmap</div><h3 class="sp-title">See the whole team.<br>In one view.</h3><p class="sp-desc">A visual heatmap shows every team member's workload by day. Free, busy, overloaded — at a glance. No more guessing who has capacity.</p><div class="sp-bar"></div></div>
+    <div class="story-point" data-panel="1"><div class="sp-step">02 — Bottleneck detection</div><h3 class="sp-title">Spot the bottleneck<br>two weeks early.</h3><p class="sp-desc">threly identifies which tasks and team members are on a collision course with your go-live date — before the production week arrives.</p><div class="sp-bar"></div></div>
+    <div class="story-point" data-panel="2"><div class="sp-step">03 — Redistribute</div><h3 class="sp-title">Fix it in<br>one click.</h3><p class="sp-desc">When someone is overloaded, threly shows who has space and suggests which tasks to move. You approve, it's done. No manual calendar juggling.</p><div class="sp-bar"></div></div>
+    <div class="story-point" data-panel="3"><div class="sp-step">04 — Capacity planning</div><h3 class="sp-title">Plan the next<br>quarter without gaps.</h3><p class="sp-desc">Use historical capacity data to plan upcoming campaigns. Know before you commit whether your team can handle the workload — or if you need external support.</p><div class="sp-bar"></div></div>
+  </div>
+  <div class="story-panel-wrap"><div class="story-panel">
+    <div class="story-panel-header"><div class="b-dot r" style="width:8px;height:8px;border-radius:50%"></div><div class="b-dot y" style="width:8px;height:8px;border-radius:50%"></div><div class="b-dot g" style="width:8px;height:8px;border-radius:50%"></div><span class="sph-title">threly — Capacity view</span><span class="sph-tag" id="panelTag">Heatmap</span></div>
+    <div class="panel-slide active" data-panel="0">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="hm-row" style="margin-bottom:0"><div class="hm-name">Laura</div><div class="hm-cells"><div class="hm-cell h3"></div><div class="hm-cell h4"></div><div class="hm-cell h5"></div><div class="hm-cell h4"></div><div class="hm-cell h2"></div><div class="hm-cell h1"></div><div class="hm-cell h0"></div></div></div>
+        <div class="hm-row" style="margin-bottom:0"><div class="hm-name">Marcos</div><div class="hm-cells"><div class="hm-cell h1"></div><div class="hm-cell h2"></div><div class="hm-cell h3"></div><div class="hm-cell h5"></div><div class="hm-cell h4"></div><div class="hm-cell h2"></div><div class="hm-cell h1"></div></div></div>
+        <div class="hm-row" style="margin-bottom:0"><div class="hm-name">Inés</div><div class="hm-cells"><div class="hm-cell h0"></div><div class="hm-cell h1"></div><div class="hm-cell h2"></div><div class="hm-cell h2"></div><div class="hm-cell h3"></div><div class="hm-cell h2"></div><div class="hm-cell h1"></div></div></div>
+        <div class="hm-row" style="margin-bottom:0"><div class="hm-name">Daniela</div><div class="hm-cells"><div class="hm-cell h2"></div><div class="hm-cell h2"></div><div class="hm-cell h1"></div><div class="hm-cell h2"></div><div class="hm-cell h1"></div><div class="hm-cell h1"></div><div class="hm-cell h0"></div></div></div>
+        <div style="display:flex;gap:10px;font-size:10px;color:var(--ink-4);padding-top:4px">
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:var(--border);display:inline-block"></span>Free</span>
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:var(--accent);display:inline-block"></span>Busy</span>
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:var(--danger);display:inline-block"></span>Overloaded</span>
+        </div>
+      </div>
+    </div>
+    <div class="panel-slide" data-panel="1">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="padding:12px 14px;background:var(--danger-bg);border:1px solid rgba(224,123,57,.2);border-radius:8px"><div style="font-size:11px;font-weight:700;color:var(--danger);margin-bottom:4px">Bottleneck — May 7–8</div><div style="font-size:12px;color:var(--ink-2)">Laura R. has 8h scheduled on a 6h day. 3 tasks affected. Go-live May 12 at risk.</div></div>
+        <div style="padding:12px 14px;background:var(--warning-bg);border:1px solid rgba(180,83,9,.2);border-radius:8px"><div style="font-size:11px;font-weight:700;color:var(--warning);margin-bottom:4px">Upcoming pressure — May 8</div><div style="font-size:12px;color:var(--ink-2)">Marcos C. will be at 100% capacity. Any new task will create an overload.</div></div>
+        <div style="padding:12px 14px;background:var(--success-bg);border:1px solid rgba(22,163,74,.2);border-radius:8px"><div style="font-size:11px;font-weight:700;color:var(--success);margin-bottom:4px">Available capacity</div><div style="font-size:12px;color:var(--ink-2)">Inés M. has 3h free May 7–8. Can absorb overflow tasks.</div></div>
+      </div>
+    </div>
+    <div class="panel-slide" data-panel="2">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:11px;color:var(--ink-4);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:4px">Suggested redistributions</div>
+        <div style="padding:12px 14px;background:var(--accent-soft);border:1px solid var(--accent-mid);border-radius:8px"><div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:4px">Move to Inés M.</div><div style="font-size:12px;color:var(--ink-2)">Post-production brief (1h) — Inés has capacity May 7, 14:00</div><div style="margin-top:6px;font-size:11px;font-weight:600;color:var(--accent);cursor:pointer">Apply →</div></div>
+        <div style="padding:12px 14px;background:var(--accent-soft);border:1px solid var(--accent-mid);border-radius:8px"><div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:4px">Reschedule to May 9</div><div style="font-size:12px;color:var(--ink-2)">Final asset review (2h) — Laura free May 9, 10:00. No impact on go-live.</div><div style="margin-top:6px;font-size:11px;font-weight:600;color:var(--accent);cursor:pointer">Apply →</div></div>
+      </div>
+    </div>
+    <div class="panel-slide" data-panel="3">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:11px;color:var(--ink-4);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:4px">Q3 capacity forecast</div>
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:8px"><span style="font-size:12px;color:var(--ink);flex:1">July (FW25 Lookbook)</span><div style="width:80px;height:6px;background:var(--bg-deep);border-radius:3px;overflow:hidden"><div style="height:100%;width:85%;background:var(--warning);border-radius:3px"></div></div><span style="font-size:11px;color:var(--warning);font-weight:600;width:32px">85%</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--danger-bg);border:1px solid rgba(224,123,57,.2);border-radius:8px"><span style="font-size:12px;color:var(--ink);flex:1">Aug (FW25 + E-comm)</span><div style="width:80px;height:6px;background:var(--bg-deep);border-radius:3px;overflow:hidden"><div style="height:100%;width:100%;background:var(--danger);border-radius:3px"></div></div><span style="font-size:11px;color:var(--danger);font-weight:600;width:32px">110%</span></div>
+        <div style="padding:10px 14px;background:var(--accent-soft);border:1px solid var(--accent-mid);border-radius:8px;font-size:12px;color:var(--ink-2)">August is over capacity. Consider hiring a freelance coordinator or delaying FW25 E-commerce briefing.</div>
+      </div>
+    </div>
+  </div></div>
+</div></section>
+<section id="before-after"><div class="ba-inner">
+  <div class="ba-header"><div class="section-lbl">Before & after</div><h2 style="font-size:clamp(36px,3.8vw,52px);font-weight:700;letter-spacing:-0.03em;color:var(--ink);line-height:1.06">This is what changes<br>when you use threly.</h2></div>
+  <div class="ba-grid">
+    <div class="ba-col"><div class="ba-col-head"><div class="ba-dot err"></div><span class="ba-col-ttl err">Without threly</span></div><div style="display:flex;flex-direction:column;gap:0">
+      <div class="ba-item"><div class="ba-item-title">You find out someone's overwhelmed when they say so</div><div class="ba-item-desc">Or when they miss a deadline. No visibility until it's already a problem.</div></div>
+      <div class="ba-item"><div class="ba-item-title">Capacity managed in conversations</div><div class="ba-item-desc">"Are you free this week?" is not a capacity planning system.</div></div>
+      <div class="ba-item"><div class="ba-item-title">No quarterly view</div><div class="ba-item-desc">Planning the next campaign without knowing if the team can handle it.</div></div>
+      <div class="ba-item"><div class="ba-item-title">Redistribution is manual and slow</div><div class="ba-item-desc">Moving tasks means updating spreadsheets, calendars and telling everyone individually.</div></div>
+    </div></div>
+    <div class="ba-col after"><div class="ba-col-head"><div class="ba-dot ok"></div><span class="ba-col-ttl ok">With threly</span></div><div style="display:flex;flex-direction:column;gap:0">
+      <div class="ba-item"><div class="ba-item-title">Overloads visible 2 weeks ahead</div><div class="ba-item-desc">Heatmaps show you where pressure is building — before it becomes a crisis.</div></div>
+      <div class="ba-item"><div class="ba-item-title">Capacity as a data point</div><div class="ba-item-desc">Full visibility into who has space and who doesn't, every day of the quarter.</div></div>
+      <div class="ba-item"><div class="ba-item-title">Quarterly capacity forecast</div><div class="ba-item-desc">Plan campaigns knowing your team's actual bandwidth. No more hoping for the best.</div></div>
+      <div class="ba-item"><div class="ba-item-title">One-click redistribution</div><div class="ba-item-desc">threly suggests who to reassign to. You approve. Everything updates automatically.</div></div>
+    </div></div>
+  </div>
+</div></section>
+<section id="cta"><div class="cta-inner"><div class="section-lbl" style="justify-content:center">Get started</div><h2 class="cta-title">Know your team's limits<br>before they hit them.</h2><p class="cta-sub">Join production teams replacing 6 tools with one system.</p><div class="cta-actions"><a href="#" class="btn-primary btn-lg">Request early access →</a><a href="#" class="btn-ghost btn-lg">Talk to the team</a></div><p class="cta-note">Currently onboarding fashion & e-commerce brands. Limited spots.</p></div></section>
+<footer><div class="foot-in"><div class="foot-logo">threly<span>.</span></div><a href="#" onclick="showPage('home'); return false;" class="foot-back">← Back to homepage</a><span class="foot-copy">© 2025 threly. All rights reserved.</span></div></footer>
+</div>
 
 <script>
+
   // ── Scroll reveal ──
   const obs = new IntersectionObserver(entries => {
     entries.forEach(e => {
@@ -2011,8 +3535,99 @@
   resizeCanvas();
   spawnDots();
   drawDots();
+
+
+
+  const featureLabels = {
+    home: '',
+    campaigns: 'Campaign Management',
+    tasks: 'Smart Task Management',
+    suppliers: 'Supplier Collaboration',
+    budget: 'Budget Intelligence',
+    dam: 'Digital Asset Management',
+    resources: 'Resource Allocation',
+  };
+
+  function showPage(pageId) {
+    // Hide all pages
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    
+    // Show/hide navs
+    const homeNav = document.getElementById('home-nav');
+    const subNav = document.getElementById('sub-nav');
+    
+    if (pageId === 'home') {
+      homeNav.style.display = 'flex';
+      subNav.style.display = 'none';
+    } else {
+      homeNav.style.display = 'none';
+      subNav.style.display = 'flex';
+      document.getElementById('sub-nav-label').textContent = featureLabels[pageId] || pageId;
+    }
+    
+    // Show target page
+    const target = document.getElementById('page-' + pageId);
+    if (target) {
+      target.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    
+    // Re-init story for subpages
+    initStory(pageId);
+  }
+
+  function initStory(pageId) {
+    const page = document.getElementById('page-' + pageId);
+    if (!page) return;
+    const points = page.querySelectorAll('.story-point');
+    const slides = page.querySelectorAll('.panel-slide');
+    const tagEl = page.querySelector('#panelTag');
+    
+    if (!points.length) return;
+    
+    const tagMap = {
+      campaigns: ['Brief builder','Timeline view','Campaign types','Team & suppliers'],
+      tasks: ['Task cards','Conflict detection','Workload heatmap','Smart suggestions'],
+      suppliers: ['Supplier profile','Brief & assign','Performance index','Alerts & renewals'],
+      budget: ['Auto-generate','Live tracking','Smart suggestions','Historical intel'],
+      dam: ['Channel rights','Territory view','Expiration alerts','Multi-supplier rights'],
+      resources: ['Heatmap','Bottleneck detection','Redistribute','Capacity planning'],
+    };
+    const tags = tagMap[pageId] || [];
+    
+    function activate(idx) {
+      points.forEach((p, i) => p.classList.toggle('active', i === idx));
+      slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+      if (tagEl && tags[idx]) tagEl.textContent = tags[idx];
+    }
+    
+    // Remove old listeners by cloning
+    points.forEach((p, i) => {
+      const clone = p.cloneNode(true);
+      p.parentNode.replaceChild(clone, p);
+    });
+    
+    // Re-query after clone
+    const freshPoints = page.querySelectorAll('.story-point');
+    freshPoints.forEach((p, i) => {
+      p.addEventListener('click', () => activate(i));
+    });
+    
+    activate(0);
+    
+    // Scroll-driven activation
+    const story = page.querySelector('#story');
+    if (story) {
+      window.addEventListener('scroll', function handler() {
+        if (!story.closest('.page.active')) { window.removeEventListener('scroll', handler); return; }
+        const r = story.getBoundingClientRect();
+        const progress = Math.max(0, Math.min(1, -r.top / (story.offsetHeight - window.innerHeight)));
+        const idx = Math.min(freshPoints.length - 1, Math.floor(progress * freshPoints.length));
+        activate(idx);
+      });
+    }
+  }
+
 </script>
 </body>
 </html>
-
-Subelo a github, comitt y push
