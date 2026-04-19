@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Asset Management — threly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F5F5F5;--bg-alt:#EBEBEB;--bg-deep:#E2E2E2;--bg-card:#FFFFFF;--bg-card-2:#F9F9F9;--ink:#0B0B0C;--ink-2:#2E2E2E;--ink-3:#6B6B6B;--ink-4:#9A9A9A;--border:rgba(11,11,12,0.07);--border-mid:rgba(11,11,12,0.13);--border-str:rgba(11,11,12,0.18);--accent:#974CFF;--accent-hover:#8240e8;--accent-glow:rgba(151,76,255,0.15);--accent-soft:rgba(151,76,255,0.07);--accent-mid:rgba(151,76,255,0.16);--accent-light:#c084fc;--success:#16A34A;--success-bg:rgba(22,163,74,0.08);--warning:#B45309;--warning-bg:rgba(180,83,9,0.08);--danger:#E07B39;--danger-bg:rgba(224,123,57,0.10);--font:'Plus Jakarta Sans',sans-serif;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--border-mid);border-radius:4px;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:64px;padding:0 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(245,245,245,0.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nav-left{display:flex;align-items:center;gap:32px;}.logo{font-size:18px;font-weight:700;color:var(--ink);text-decoration:none;letter-spacing:-0.3px;}.logo span{color:var(--accent);}
+.nav-back{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-3);text-decoration:none;transition:color .2s;}.nav-back:hover{color:var(--ink);}.nav-back::before{content:'←';font-size:14px;}
+.nav-feature{font-size:13px;color:var(--ink-4);padding-left:32px;border-left:1px solid var(--border-mid);}.nav-feature span{color:var(--ink-2);font-weight:500;}
+.btn-primary{padding:8px 20px;background:var(--accent);border:none;border-radius:6px;color:#fff;font-family:var(--font);font-size:14px;font-weight:500;cursor:pointer;text-decoration:none;transition:all .2s;display:inline-flex;align-items:center;}.btn-primary:hover{background:var(--accent-hover);transform:translateY(-1px);box-shadow:0 6px 20px var(--accent-glow);}
+.btn-ghost{padding:10px 24px;background:transparent;border:1px solid var(--border-mid);border-radius:6px;color:var(--ink-2);font-family:var(--font);font-size:15px;cursor:pointer;text-decoration:none;transition:all .2s;}.btn-ghost:hover{background:var(--bg-alt);}
+.btn-lg{padding:12px 28px;font-size:15px;}
+#hero{padding:160px 48px 80px;text-align:center;max-width:860px;margin:0 auto;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;background:var(--accent-soft);border:1px solid var(--accent-mid);border-radius:100px;font-size:11px;color:var(--accent);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:32px;}
+.hero-title{font-size:clamp(48px,6vw,80px);font-weight:700;line-height:1.02;letter-spacing:-0.03em;color:var(--ink);margin-bottom:24px;}.hero-title em{font-style:normal;color:var(--accent);}
+.hero-sub{font-size:19px;color:var(--ink-3);font-weight:300;line-height:1.7;max-width:580px;margin:0 auto 40px;}
+.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.hero-mockup-wrap{padding:0 48px 80px;max-width:1200px;margin:0 auto;}
+.browser-frame{background:var(--bg-card);border:1px solid var(--border-str);border-radius:16px;overflow:hidden;box-shadow:0 32px 80px rgba(11,11,12,0.12),0 4px 16px var(--accent-glow);}
+.browser-bar{display:flex;align-items:center;gap:8px;padding:14px 20px;background:var(--bg-card-2);border-bottom:1px solid var(--border);}
+.b-dot{width:10px;height:10px;border-radius:50%;}.b-dot.r{background:#EF4444;}.b-dot.y{background:#F59E0B;}.b-dot.g{background:#22C55E;}
+.b-url{flex:1;margin:0 16px;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:5px 14px;font-size:12px;color:var(--ink-4);text-align:center;}
+.stats-bar{display:flex;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg-card);}
+.stat-item{flex:1;padding:32px 48px;border-right:1px solid var(--border);text-align:center;}.stat-item:last-child{border-right:none;}
+.stat-num{font-size:44px;font-weight:800;color:var(--ink);letter-spacing:-0.03em;line-height:1;margin-bottom:6px;}.stat-num span{color:var(--accent);}
+.stat-label{font-size:13px;color:var(--ink-3);}
+#story{padding:120px 0;background:var(--bg-alt);}
+.story-inner{max-width:1200px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+.story-points{display:flex;flex-direction:column;gap:0;}
+.story-point{padding:40px 0;border-bottom:1px solid var(--border-mid);opacity:0.35;transition:opacity .4s;cursor:pointer;}.story-point:first-child{border-top:1px solid var(--border-mid);}.story-point.active{opacity:1;}
+.sp-step{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;opacity:0;transition:opacity .3s;}.story-point.active .sp-step{opacity:1;}
+.sp-title{font-size:26px;font-weight:700;color:var(--ink);letter-spacing:-0.02em;line-height:1.2;margin-bottom:12px;}
+.sp-desc{font-size:15px;color:var(--ink-3);line-height:1.7;}
+.sp-bar{height:2px;background:var(--accent);width:0;margin-top:24px;transition:width .5s ease;border-radius:2px;}.story-point.active .sp-bar{width:100%;}
+.story-panel-wrap{position:sticky;top:100px;}
+.story-panel{background:var(--bg-card);border:1px solid var(--border-mid);border-radius:16px;overflow:hidden;box-shadow:0 12px 48px rgba(11,11,12,.09);min-height:400px;position:relative;}
+.story-panel-header{padding:14px 20px;background:var(--bg-card-2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+.sph-title{font-size:12px;color:var(--ink-3);flex:1;}.sph-tag{font-size:10px;padding:2px 8px;border-radius:100px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent-mid);font-weight:600;}
+.panel-slide{position:absolute;inset:0;top:49px;opacity:0;transition:opacity .4s;padding:24px;pointer-events:none;}.panel-slide.active{opacity:1;pointer-events:auto;}
+#before-after{padding:120px 0;background:var(--bg);}
+.ba-inner{max-width:1100px;margin:0 auto;padding:0 48px;}.ba-header{text-align:center;margin-bottom:64px;}
+.section-lbl{display:inline-flex;align-items:center;gap:8px;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);font-weight:600;margin-bottom:16px;}.section-lbl::before{content:'';width:14px;height:2px;background:var(--accent);border-radius:2px;}
+.ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border-mid);border:1px solid var(--border-mid);border-radius:16px;overflow:hidden;}
+.ba-col{padding:40px 44px;background:var(--bg-card);}.ba-col.after{background:var(--accent-soft);}
+.ba-col-head{display:flex;align-items:center;gap:10px;padding-bottom:24px;border-bottom:1px solid var(--border-mid);margin-bottom:24px;}
+.ba-dot{width:8px;height:8px;border-radius:50%;}.ba-dot.err{background:var(--danger);}.ba-dot.ok{background:var(--accent);}
+.ba-col-ttl{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;}.ba-col-ttl.err{color:var(--danger);}.ba-col-ttl.ok{color:var(--accent);}
+.ba-item{padding:18px 0;border-bottom:1px solid var(--border);}.ba-item:last-child{border-bottom:none;padding-bottom:0;}.ba-item:first-child{padding-top:0;}
+.ba-item-title{font-size:15px;font-weight:600;color:var(--ink);margin-bottom:4px;}.ba-item-desc{font-size:13px;color:var(--ink-3);line-height:1.5;}
+#cta{padding:120px 48px;text-align:center;background:var(--bg-alt);position:relative;overflow:hidden;}
+#cta::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(151,76,255,.12),transparent 70%);pointer-events:none;}
+.cta-inner{max-width:580px;margin:0 auto;position:relative;z-index:1;}
+.cta-title{font-size:clamp(38px,4vw,54px);font-weight:700;letter-spacing:-0.03em;line-height:1.05;color:var(--ink);margin-bottom:16px;}
+.cta-sub{font-size:17px;color:var(--ink-3);margin-bottom:36px;font-weight:300;}
+.cta-actions{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;}
+.cta-note{margin-top:14px;font-size:12px;color:var(--ink-4);}
+footer{padding:40px 48px;border-top:1px solid var(--border);background:var(--bg);}
+.foot-in{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;}
+.foot-logo{font-size:16px;font-weight:700;color:var(--ink);}.foot-logo span{color:var(--accent);}
+.foot-copy{font-size:12px;color:var(--ink-4);}.foot-back{font-size:13px;color:var(--ink-3);text-decoration:none;transition:color .2s;}.foot-back:hover{color:var(--ink);}
+.asset-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:8px;align-items:center;padding:11px 14px;background:var(--bg-card-2);border:1px solid var(--border-mid);border-radius:8px;margin-bottom:6px;}
+.asset-name{font-size:12px;font-weight:500;color:var(--ink);}
+.asset-badge{font-size:10px;padding:2px 8px;border-radius:100px;font-weight:600;}
+.ab-ok{background:var(--success-bg);color:var(--success);}.ab-wn{background:var(--warning-bg);color:var(--warning);}.ab-ex{background:var(--danger-bg);color:var(--danger);}
+.asset-date{font-size:11px;color:var(--ink-3);}.asset-date.wn{color:var(--warning);}.asset-date.ex{color:var(--danger);}
+.asset-terr{font-size:11px;color:var(--ink-4);}
+</style>
+</head>
+<body>
+<nav><div class="nav-left"><a href="threly.html" class="logo">threly<span>.</span></a><a href="threly.html" class="nav-back">All features</a><span class="nav-feature">→ <span>Digital Asset Management</span></span></div><a href="#cta" class="btn-primary">Get early access →</a></nav>
+<div id="hero">
+  <div class="hero-eyebrow">Digital Asset Management</div>
+  <h1 class="hero-title">Your assets have rights.<br><em>Know them.</em></h1>
+  <p class="hero-sub">Most teams don't know if their assets are licensed for social, web or marketplace — or until when. threly makes rights management automatic and visible.</p>
+  <div class="hero-actions"><a href="#cta" class="btn-primary btn-lg">Get early access →</a><a href="#story" class="btn-ghost btn-lg">See how it works</a></div>
+</div>
+<div class="hero-mockup-wrap">
+  <div class="browser-frame">
+    <div class="browser-bar"><div class="b-dot r"></div><div class="b-dot y"></div><div class="b-dot g"></div><div class="b-url">app.threly.io / assets</div></div>
+    <div style="padding:28px 32px;min-height:380px;background:var(--bg-card)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <span style="font-size:17px;font-weight:700;color:var(--ink)">Asset Rights Dashboard</span>
+        <div style="display:flex;gap:6px">
+          <span style="font-size:11px;padding:4px 12px;border-radius:100px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent-mid);font-weight:500;cursor:pointer">All assets</span>
+          <span style="font-size:11px;padding:4px 12px;border-radius:100px;background:var(--bg);border:1px solid var(--border-mid);color:var(--ink-3);cursor:pointer">Expiring soon</span>
+          <span style="font-size:11px;padding:4px 12px;border-radius:100px;background:var(--danger-bg);border:1px solid rgba(224,123,57,.2);color:var(--danger);font-weight:500;cursor:pointer">Expired</span>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;gap:8px;padding:8px 14px;background:var(--bg-card-2);border-radius:6px;font-size:10px;color:var(--ink-4);text-transform:uppercase;letter-spacing:.07em;font-weight:600;margin-bottom:8px"><span>Asset</span><span>Channel</span><span>Status</span><span>Expires</span><span>Territory</span></div>
+      <div class="asset-row"><span class="asset-name">SS25_Look01_RGB.jpg</span><span class="asset-date">Social</span><span class="asset-badge ab-ok">Active ✓</span><span class="asset-date">Dec 2025</span><span class="asset-terr">EU</span></div>
+      <div class="asset-row"><span class="asset-name">Campaign_Hero_Web.png</span><span class="asset-date">Web</span><span class="asset-badge ab-wn">Expiring ⚠</span><span class="asset-date wn">Jun 2025</span><span class="asset-terr">Global</span></div>
+      <div class="asset-row" style="border-color:rgba(224,123,57,.2);background:rgba(224,123,57,.03)"><span class="asset-name">Model_Elena_GW24.jpg</span><span class="asset-date">Marketplace</span><span class="asset-badge ab-ex">Expired ✗</span><span class="asset-date ex">Apr 2025</span><span class="asset-terr">US</span></div>
+      <div class="asset-row"><span class="asset-name">FW25_Studio_BTS.mp4</span><span class="asset-date">All channels</span><span class="asset-badge ab-ok">Active ✓</span><span class="asset-date">Mar 2026</span><span class="asset-terr">EU + US</span></div>
+    </div>
+  </div>
+</div>
+<div class="stats-bar">
+  <div class="stat-item"><div class="stat-num">0</div><div class="stat-label">Assets used without valid rights</div></div>
+  <div class="stat-item"><div class="stat-num">100<span>%</span></div><div class="stat-label">Rights visibility across all channels</div></div>
+  <div class="stat-item"><div class="stat-num">30<span>d</span></div><div class="stat-label">Advance alerts before expiration</div></div>
+  <div class="stat-item"><div class="stat-num">∞</div><div class="stat-label">Suppliers, territories, channels. All tracked.</div></div>
+</div>
+<section id="story"><div class="story-inner">
+  <div class="story-points" id="storyPoints">
+    <div class="story-point active" data-panel="0"><div class="sp-step">01 — Rights by channel</div><h3 class="sp-title">Know exactly<br>what you can use.</h3><p class="sp-desc">Every asset has rights defined per channel — social, web, marketplace, print. At a glance you know what's licensed and what isn't, before you publish.</p><div class="sp-bar"></div></div>
+    <div class="story-point" data-panel="1"><div class="sp-step">02 — Territory management</div><h3 class="sp-title">Where in the world<br>can you use it?</h3><p class="sp-desc">Rights vary by territory. threly tracks EU, US and global permissions per asset so you never publish something in a market where you don't have clearance.</p><div class="sp-bar"></div></div>
+    <div class="story-point" data-panel="2"><div class="sp-step">03 — Expiration alerts</div><h3 class="sp-title">You'll know<br>before it expires.</h3><p class="sp-desc">30-day alerts before any right expires. Time to renew, replace or restrict the asset — before legal exposure becomes a problem.</p><div class="sp-bar"></div></div>
+    <div class="story-point" data-panel="3"><div class="sp-step">04 — Multi-supplier rights</div><h3 class="sp-title">Multiple suppliers.<br>One clear view.</h3><p class="sp-desc">Assets often have rights from multiple suppliers — photographer, model, stylist. threly tracks each independently so you always know the most restrictive term that applies.</p><div class="sp-bar"></div></div>
+  </div>
+  <div class="story-panel-wrap"><div class="story-panel">
+    <div class="story-panel-header"><div class="b-dot r" style="width:8px;height:8px;border-radius:50%"></div><div class="b-dot y" style="width:8px;height:8px;border-radius:50%"></div><div class="b-dot g" style="width:8px;height:8px;border-radius:50%"></div><span class="sph-title">threly — Asset rights</span><span class="sph-tag" id="panelTag">Channel rights</span></div>
+    <div class="panel-slide active" data-panel="0">
+      <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:12px">SS25_Look01_RGB.jpg</div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--success-bg);border:1px solid rgba(22,163,74,.2);border-radius:8px"><span style="font-size:12px;color:var(--ink)">Social media</span><span style="font-size:11px;font-weight:600;color:var(--success)">Licensed ✓ until Dec 2025</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--success-bg);border:1px solid rgba(22,163,74,.2);border-radius:8px"><span style="font-size:12px;color:var(--ink)">Website</span><span style="font-size:11px;font-weight:600;color:var(--success)">Licensed ✓ until Dec 2025</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--warning-bg);border:1px solid rgba(180,83,9,.2);border-radius:8px"><span style="font-size:12px;color:var(--ink)">Marketplace</span><span style="font-size:11px;font-weight:600;color:var(--warning)">Expires Jun 2025 ⚠</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:8px"><span style="font-size:12px;color:var(--ink)">Print</span><span style="font-size:11px;color:var(--ink-4)">Not licensed</span></div>
+      </div>
+    </div>
+    <div class="panel-slide" data-panel="1">
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--success-bg);border:1px solid rgba(22,163,74,.2);border-radius:8px"><span style="font-size:12px;font-weight:500;color:var(--ink)">European Union</span><span style="font-size:11px;font-weight:600;color:var(--success)">All channels ✓</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--warning-bg);border:1px solid rgba(180,83,9,.2);border-radius:8px"><span style="font-size:12px;font-weight:500;color:var(--ink)">United States</span><span style="font-size:11px;font-weight:600;color:var(--warning)">Social only ⚠</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:8px"><span style="font-size:12px;font-weight:500;color:var(--ink)">Asia Pacific</span><span style="font-size:11px;color:var(--ink-4)">Not licensed</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:8px"><span style="font-size:12px;font-weight:500;color:var(--ink)">Latin America</span><span style="font-size:11px;color:var(--ink-4)">Not licensed</span></div>
+      </div>
+    </div>
+    <div class="panel-slide" data-panel="2">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="padding:12px 14px;background:var(--danger-bg);border:1px solid rgba(224,123,57,.25);border-radius:8px"><div style="font-size:11px;font-weight:700;color:var(--danger);margin-bottom:4px">Expired — Action required</div><div style="font-size:12px;color:var(--ink-2)">Model_Elena_GW24.jpg — Marketplace rights expired Apr 2025. Remove from all marketplace listings.</div></div>
+        <div style="padding:12px 14px;background:var(--warning-bg);border:1px solid rgba(180,83,9,.2);border-radius:8px"><div style="font-size:11px;font-weight:700;color:var(--warning);margin-bottom:4px">Expiring in 18 days</div><div style="font-size:12px;color:var(--ink-2)">Campaign_Hero_Web.png — Web rights expire Jun 14. Renew or replace.</div></div>
+        <div style="padding:12px 14px;background:var(--accent-soft);border:1px solid var(--accent-mid);border-radius:8px"><div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:4px">Renewal recommended</div><div style="font-size:12px;color:var(--ink-2)">Brand_Film_Master.mp4 — Used in 4 campaigns. High value asset. Renew for 12 months.</div></div>
+      </div>
+    </div>
+    <div class="panel-slide" data-panel="3">
+      <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:12px">SS25_Look03_Hero.jpg — Rights breakdown</div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="padding:10px 14px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:8px"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:11px;font-weight:600;color:var(--ink)">Studio Blanc (Photographer)</span><span style="font-size:10px;padding:1px 7px;background:var(--success-bg);color:var(--success);border-radius:100px;font-weight:600">All channels · Dec 2026</span></div><div style="font-size:11px;color:var(--ink-4)">EU + US · Exclusive print rights included</div></div>
+        <div style="padding:10px 14px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:8px"><div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:11px;font-weight:600;color:var(--ink)">Elena M. (Model)</span><span style="font-size:10px;padding:1px 7px;background:var(--warning-bg);color:var(--warning);border-radius:100px;font-weight:600">Social + Web · Jun 2025</span></div><div style="font-size:11px;color:var(--ink-4)">EU only · No marketplace</div></div>
+        <div style="padding:10px 14px;background:var(--accent-soft);border:1px solid var(--accent-mid);border-radius:8px"><div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:3px">Effective rights</div><div style="font-size:11px;color:var(--ink-2)">Social + Web · EU only · Until Jun 2025 (most restrictive term applies)</div></div>
+      </div>
+    </div>
+  </div></div>
+</div></section>
+<section id="before-after"><div class="ba-inner">
+  <div class="ba-header"><div class="section-lbl">Before & after</div><h2 style="font-size:clamp(36px,3.8vw,52px);font-weight:700;letter-spacing:-0.03em;color:var(--ink);line-height:1.06">This is what changes<br>when you use threly.</h2></div>
+  <div class="ba-grid">
+    <div class="ba-col"><div class="ba-col-head"><div class="ba-dot err"></div><span class="ba-col-ttl err">Without threly</span></div><div style="display:flex;flex-direction:column;gap:0">
+      <div class="ba-item"><div class="ba-item-title">Assets stored in Drive folders</div><div class="ba-item-desc">No rights info attached. You publish and hope for the best.</div></div>
+      <div class="ba-item"><div class="ba-item-title">Expiration dates in spreadsheets</div><div class="ba-item-desc">If someone remembers to update them. Usually they don't.</div></div>
+      <div class="ba-item"><div class="ba-item-title">Territory rights unclear</div><div class="ba-item-desc">US and EU rights are different. Nobody knows which assets cover which.</div></div>
+      <div class="ba-item"><div class="ba-item-title">Legal exposure discovered too late</div><div class="ba-item-desc">You find out an asset was used without rights when the invoice arrives.</div></div>
+    </div></div>
+    <div class="ba-col after"><div class="ba-col-head"><div class="ba-dot ok"></div><span class="ba-col-ttl ok">With threly</span></div><div style="display:flex;flex-direction:column;gap:0">
+      <div class="ba-item"><div class="ba-item-title">Rights attached to every asset</div><div class="ba-item-desc">Channel, territory and expiry defined per asset. Always visible, always current.</div></div>
+      <div class="ba-item"><div class="ba-item-title">30-day expiration alerts</div><div class="ba-item-desc">Automatic notifications before anything expires. Time to act, not react.</div></div>
+      <div class="ba-item"><div class="ba-item-title">Territory view per asset</div><div class="ba-item-desc">See exactly where each asset can be used. EU, US, global — at a glance.</div></div>
+      <div class="ba-item"><div class="ba-item-title">Full audit trail</div><div class="ba-item-desc">Every rights decision logged and traceable. Compliance built into the workflow.</div></div>
+    </div></div>
+  </div>
+</div></section>
+<section id="cta"><div class="cta-inner"><div class="section-lbl" style="justify-content:center">Get started</div><h2 class="cta-title">Every asset.<br>Every right. Tracked.</h2><p class="cta-sub">Join production teams replacing 6 tools with one system.</p><div class="cta-actions"><a href="#" class="btn-primary btn-lg">Request early access →</a><a href="#" class="btn-ghost btn-lg">Talk to the team</a></div><p class="cta-note">Currently onboarding fashion & e-commerce brands. Limited spots.</p></div></section>
+<footer><div class="foot-in"><div class="foot-logo">threly<span>.</span></div><a href="threly.html" class="foot-back">← Back to homepage</a><span class="foot-copy">© 2025 threly. All rights reserved.</span></div></footer>
+<script>
+const points=document.querySelectorAll('.story-point'),slides=document.querySelectorAll('.panel-slide'),tags=['Channel rights','Territory view','Expiration alerts','Multi-supplier rights'];
+function activate(idx){points.forEach((p,i)=>p.classList.toggle('active',i===idx));slides.forEach((s,i)=>s.classList.toggle('active',i===idx));document.getElementById('panelTag').textContent=tags[idx];}
+points.forEach((p,i)=>p.addEventListener('click',()=>activate(i)));
+const story=document.getElementById('story');
+window.addEventListener('scroll',()=>{if(!story)return;const r=story.getBoundingClientRect();const progress=Math.max(0,Math.min(1,-r.top/(story.offsetHeight-window.innerHeight)));activate(Math.min(3,Math.floor(progress*4)));});
+</script>
+</body></html>
