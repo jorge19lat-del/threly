@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Task Management — threly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#F5F5F5;--bg-alt:#EBEBEB;--bg-deep:#E2E2E2;--bg-card:#FFFFFF;--bg-card-2:#F9F9F9;--ink:#0B0B0C;--ink-2:#2E2E2E;--ink-3:#6B6B6B;--ink-4:#9A9A9A;--border:rgba(11,11,12,0.07);--border-mid:rgba(11,11,12,0.13);--border-str:rgba(11,11,12,0.18);--accent:#974CFF;--accent-hover:#8240e8;--accent-glow:rgba(151,76,255,0.15);--accent-soft:rgba(151,76,255,0.07);--accent-mid:rgba(151,76,255,0.16);--accent-light:#c084fc;--success:#16A34A;--success-bg:rgba(22,163,74,0.08);--warning:#B45309;--warning-bg:rgba(180,83,9,0.08);--danger:#E07B39;--danger-bg:rgba(224,123,57,0.10);--font:'Plus Jakarta Sans',sans-serif;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+  ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--border-mid);border-radius:4px;}
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;height:64px;padding:0 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(245,245,245,0.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+  .nav-left{display:flex;align-items:center;gap:32px;}
+  .logo{font-size:18px;font-weight:700;color:var(--ink);text-decoration:none;letter-spacing:-0.3px;}
+  .logo span{color:var(--accent);}
+  .nav-back{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-3);text-decoration:none;transition:color .2s;}
+  .nav-back:hover{color:var(--ink);}
+  .nav-back::before{content:'←';font-size:14px;}
+  .nav-feature{font-size:13px;color:var(--ink-4);padding-left:32px;border-left:1px solid var(--border-mid);}
+  .nav-feature span{color:var(--ink-2);font-weight:500;}
+  .btn-primary{padding:8px 20px;background:var(--accent);border:none;border-radius:6px;color:#fff;font-family:var(--font);font-size:14px;font-weight:500;cursor:pointer;text-decoration:none;transition:all .2s;display:inline-flex;align-items:center;}
+  .btn-primary:hover{background:var(--accent-hover);transform:translateY(-1px);box-shadow:0 6px 20px var(--accent-glow);}
+  .btn-ghost{padding:10px 24px;background:transparent;border:1px solid var(--border-mid);border-radius:6px;color:var(--ink-2);font-family:var(--font);font-size:15px;cursor:pointer;text-decoration:none;transition:all .2s;}
+  .btn-ghost:hover{background:var(--bg-alt);border-color:var(--border-str);}
+  .btn-lg{padding:12px 28px;font-size:15px;}
+  #hero{padding:160px 48px 80px;text-align:center;max-width:860px;margin:0 auto;}
+  .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;background:var(--accent-soft);border:1px solid var(--accent-mid);border-radius:100px;font-size:11px;color:var(--accent);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:32px;}
+  .hero-title{font-size:clamp(48px,6vw,80px);font-weight:700;line-height:1.02;letter-spacing:-0.03em;color:var(--ink);margin-bottom:24px;}
+  .hero-title em{font-style:normal;color:var(--accent);}
+  .hero-sub{font-size:19px;color:var(--ink-3);font-weight:300;line-height:1.7;max-width:580px;margin:0 auto 40px;}
+  .hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+  .hero-mockup-wrap{padding:0 48px 80px;max-width:1200px;margin:0 auto;}
+  .browser-frame{background:var(--bg-card);border:1px solid var(--border-str);border-radius:16px;overflow:hidden;box-shadow:0 32px 80px rgba(11,11,12,0.12),0 4px 16px var(--accent-glow);}
+  .browser-bar{display:flex;align-items:center;gap:8px;padding:14px 20px;background:var(--bg-card-2);border-bottom:1px solid var(--border);}
+  .b-dot{width:10px;height:10px;border-radius:50%;}
+  .b-dot.r{background:#EF4444;}.b-dot.y{background:#F59E0B;}.b-dot.g{background:#22C55E;}
+  .b-url{flex:1;margin:0 16px;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:5px 14px;font-size:12px;color:var(--ink-4);text-align:center;}
+  .stats-bar{display:flex;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg-card);}
+  .stat-item{flex:1;padding:32px 48px;border-right:1px solid var(--border);text-align:center;}
+  .stat-item:last-child{border-right:none;}
+  .stat-num{font-size:44px;font-weight:800;color:var(--ink);letter-spacing:-0.03em;line-height:1;margin-bottom:6px;}
+  .stat-num span{color:var(--accent);}
+  .stat-label{font-size:13px;color:var(--ink-3);}
+  #story{padding:120px 0;background:var(--bg-alt);}
+  .story-inner{max-width:1200px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+  .story-points{display:flex;flex-direction:column;gap:0;}
+  .story-point{padding:40px 0;border-bottom:1px solid var(--border-mid);opacity:0.35;transition:opacity .4s;cursor:pointer;}
+  .story-point:first-child{border-top:1px solid var(--border-mid);}
+  .story-point.active{opacity:1;}
+  .sp-step{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;opacity:0;transition:opacity .3s;}
+  .story-point.active .sp-step{opacity:1;}
+  .sp-title{font-size:26px;font-weight:700;color:var(--ink);letter-spacing:-0.02em;line-height:1.2;margin-bottom:12px;}
+  .sp-desc{font-size:15px;color:var(--ink-3);line-height:1.7;}
+  .sp-bar{height:2px;background:var(--accent);width:0;margin-top:24px;transition:width .5s ease;border-radius:2px;}
+  .story-point.active .sp-bar{width:100%;}
+  .story-panel-wrap{position:sticky;top:100px;}
+  .story-panel{background:var(--bg-card);border:1px solid var(--border-mid);border-radius:16px;overflow:hidden;box-shadow:0 12px 48px rgba(11,11,12,.09);min-height:400px;position:relative;}
+  .story-panel-header{padding:14px 20px;background:var(--bg-card-2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+  .sph-title{font-size:12px;color:var(--ink-3);flex:1;}
+  .sph-tag{font-size:10px;padding:2px 8px;border-radius:100px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent-mid);font-weight:600;}
+  .panel-slide{position:absolute;inset:0;top:49px;opacity:0;transition:opacity .4s;padding:24px;pointer-events:none;}
+  .panel-slide.active{opacity:1;pointer-events:auto;}
+  #before-after{padding:120px 0;background:var(--bg);}
+  .ba-inner{max-width:1100px;margin:0 auto;padding:0 48px;}
+  .ba-header{text-align:center;margin-bottom:64px;}
+  .section-lbl{display:inline-flex;align-items:center;gap:8px;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);font-weight:600;margin-bottom:16px;}
+  .section-lbl::before{content:'';width:14px;height:2px;background:var(--accent);border-radius:2px;}
+  .ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border-mid);border:1px solid var(--border-mid);border-radius:16px;overflow:hidden;}
+  .ba-col{padding:40px 44px;background:var(--bg-card);}
+  .ba-col.after{background:var(--accent-soft);}
+  .ba-col-head{display:flex;align-items:center;gap:10px;padding-bottom:24px;border-bottom:1px solid var(--border-mid);margin-bottom:24px;}
+  .ba-dot{width:8px;height:8px;border-radius:50%;}
+  .ba-dot.err{background:var(--danger);}.ba-dot.ok{background:var(--accent);}
+  .ba-col-ttl{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;}
+  .ba-col-ttl.err{color:var(--danger);}.ba-col-ttl.ok{color:var(--accent);}
+  .ba-item{padding:18px 0;border-bottom:1px solid var(--border);}
+  .ba-item:last-child{border-bottom:none;padding-bottom:0;}
+  .ba-item:first-child{padding-top:0;}
+  .ba-item-title{font-size:15px;font-weight:600;color:var(--ink);margin-bottom:4px;}
+  .ba-item-desc{font-size:13px;color:var(--ink-3);line-height:1.5;}
+  #cta{padding:120px 48px;text-align:center;background:var(--bg-alt);position:relative;overflow:hidden;}
+  #cta::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(151,76,255,.12),transparent 70%);pointer-events:none;}
+  .cta-inner{max-width:580px;margin:0 auto;position:relative;z-index:1;}
+  .cta-title{font-size:clamp(38px,4vw,54px);font-weight:700;letter-spacing:-0.03em;line-height:1.05;color:var(--ink);margin-bottom:16px;}
+  .cta-sub{font-size:17px;color:var(--ink-3);margin-bottom:36px;font-weight:300;}
+  .cta-actions{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;}
+  .cta-note{margin-top:14px;font-size:12px;color:var(--ink-4);}
+  footer{padding:40px 48px;border-top:1px solid var(--border);background:var(--bg);}
+  .foot-in{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;}
+  .foot-logo{font-size:16px;font-weight:700;color:var(--ink);}
+  .foot-logo span{color:var(--accent);}
+  .foot-copy{font-size:12px;color:var(--ink-4);}
+  .foot-back{font-size:13px;color:var(--ink-3);text-decoration:none;transition:color .2s;}
+  .foot-back:hover{color:var(--ink);}
+  /* task-specific */
+  .schedule-view{display:flex;flex-direction:column;gap:8px;padding:4px 0;}
+  .sch-row{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:8px;}
+  .sch-row.conflict{border-color:rgba(224,123,57,.3);background:rgba(224,123,57,.04);}
+  .sch-row.ok-row{border-color:rgba(22,163,74,.2);background:rgba(22,163,74,.03);}
+  .sch-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+  .sch-name{font-size:12px;color:var(--ink);flex:1;font-weight:500;}
+  .sch-time{font-size:11px;color:var(--ink-4);white-space:nowrap;}
+  .sch-badge{font-size:10px;padding:2px 8px;border-radius:100px;font-weight:600;}
+  .sch-badge.ok{background:var(--success-bg);color:var(--success);}
+  .sch-badge.cf{background:var(--danger-bg);color:var(--danger);}
+  .sch-badge.pr{background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent-mid);}
+  .heat-view{display:flex;flex-direction:column;gap:10px;padding:8px 4px;}
+  .heat-row{display:flex;align-items:center;gap:10px;}
+  .heat-name{font-size:11px;color:var(--ink-3);width:60px;text-align:right;flex-shrink:0;}
+  .heat-cells{display:flex;gap:4px;flex:1;}
+  .heat-cell{flex:1;height:20px;border-radius:4px;}
+  .h0{background:var(--border);}.h1{background:rgba(151,76,255,.12);}.h2{background:rgba(151,76,255,.28);}
+  .h3{background:rgba(151,76,255,.50);}.h4{background:var(--accent);}.h5{background:var(--danger);}
+  .task-card-view{display:flex;flex-direction:column;gap:8px;}
+  .tc{padding:12px 16px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:8px;}
+  .tc.active-tc{border-color:var(--accent-mid);background:var(--accent-soft);}
+  .tc-row{display:flex;align-items:center;gap:10px;}
+  .tc-name{font-size:13px;font-weight:600;color:var(--ink);flex:1;}
+  .tc-owner{font-size:11px;color:var(--ink-4);}
+  .tc-dur{font-size:11px;color:var(--ink-3);margin-top:4px;}
+  .suggest-view{display:flex;flex-direction:column;gap:8px;}
+  .sug{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:8px;}
+  .sug.accent-sug{background:var(--accent-soft);border-color:var(--accent-mid);}
+  .sug-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+  .sug-txt{font-size:12px;color:var(--ink-2);flex:1;}
+  .sug-action{font-size:11px;color:var(--accent);font-weight:600;cursor:pointer;}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-left">
+    <a href="threly.html" class="logo">threly<span>.</span></a>
+    <a href="threly.html" class="nav-back">All features</a>
+    <span class="nav-feature">→ <span>Smart Task Management</span></span>
+  </div>
+  <a href="#cta" class="btn-primary">Get early access →</a>
+</nav>
+
+<div id="hero">
+  <div class="hero-eyebrow">Smart Task Management</div>
+  <h1 class="hero-title">Zero conflicts.<br><em>Zero overload.</em></h1>
+  <p class="hero-sub">Tasks that know who owns them, how long they take, and when they clash. threly schedules your team automatically so nothing falls through.</p>
+  <div class="hero-actions">
+    <a href="#cta" class="btn-primary btn-lg">Get early access →</a>
+    <a href="#story" class="btn-ghost btn-lg">See how it works</a>
+  </div>
+</div>
+
+<div class="hero-mockup-wrap">
+  <div class="browser-frame">
+    <div class="browser-bar">
+      <div class="b-dot r"></div><div class="b-dot y"></div><div class="b-dot g"></div>
+      <div class="b-url">app.threly.io / tasks</div>
+    </div>
+    <div style="padding:28px 32px;display:flex;flex-direction:column;gap:10px;min-height:380px;background:var(--bg-card)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:17px;font-weight:700;color:var(--ink)">Today's schedule — SS25 Lookbook</span>
+        <span style="font-size:12px;color:var(--ink-4)">May 8, 2025</span>
+      </div>
+      <div class="sch-row ok-row">
+        <div class="sch-dot" style="background:var(--success)"></div>
+        <span class="sch-name">Photoshoot — Studio Blanc (Day 1)</span>
+        <span class="sch-time">08:00–14:00</span>
+        <span class="sch-badge ok">Confirmed</span>
+      </div>
+      <div class="sch-row">
+        <div class="sch-dot" style="background:var(--accent)"></div>
+        <span class="sch-name">Art direction review with Laura</span>
+        <span class="sch-time">14:30–15:30</span>
+        <span class="sch-badge pr">In progress</span>
+      </div>
+      <div class="sch-row conflict">
+        <div class="sch-dot" style="background:var(--danger)"></div>
+        <span class="sch-name">Retouching handoff — Retouch Co.</span>
+        <span class="sch-time">15:00–16:00</span>
+        <span class="sch-badge cf">Conflict detected</span>
+      </div>
+      <div style="padding:12px 16px;background:rgba(224,123,57,.06);border:1px solid rgba(224,123,57,.2);border-radius:8px;display:flex;align-items:center;gap:10px;margin:4px 0">
+        <div style="width:6px;height:6px;border-radius:50%;background:var(--danger);flex-shrink:0"></div>
+        <span style="font-size:12px;color:var(--ink-2);flex:1">Retouching handoff overlaps with art direction review. Marcos is double-booked.</span>
+        <span style="font-size:11px;color:var(--accent);font-weight:600;cursor:pointer">Fix →</span>
+      </div>
+      <div class="sch-row">
+        <div class="sch-dot" style="background:var(--accent-light)"></div>
+        <span class="sch-name">Campaign debrief — full team</span>
+        <span class="sch-time">17:00–17:30</span>
+        <span class="sch-badge pr">Upcoming</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat-item"><div class="stat-num">0</div><div class="stat-label">Double bookings with smart scheduling</div></div>
+  <div class="stat-item"><div class="stat-num">3<span>x</span></div><div class="stat-label">Faster task assignment vs manual</div></div>
+  <div class="stat-item"><div class="stat-num">40<span>%</span></div><div class="stat-label">Reduction in coordination overhead</div></div>
+  <div class="stat-item"><div class="stat-num">∞</div><div class="stat-label">Tasks. All tracked.</div></div>
+</div>
+
+<section id="story">
+  <div class="story-inner">
+    <div class="story-points" id="storyPoints">
+      <div class="story-point active" data-panel="0">
+        <div class="sp-step">01 — Task creation</div>
+        <h3 class="sp-title">Create once.<br>Assign instantly.</h3>
+        <p class="sp-desc">Every task has an owner, a duration and a deadline. threly blocks time on their calendar automatically — no manual coordination needed.</p>
+        <div class="sp-bar"></div>
+      </div>
+      <div class="story-point" data-panel="1">
+        <div class="sp-step">02 — Conflict detection</div>
+        <h3 class="sp-title">Spot the problem<br>before it happens.</h3>
+        <p class="sp-desc">threly detects double bookings, overloads and timeline conflicts in real time. You see the issue and fix it before it derails the production.</p>
+        <div class="sp-bar"></div>
+      </div>
+      <div class="story-point" data-panel="2">
+        <div class="sp-step">03 — Workload view</div>
+        <h3 class="sp-title">See who's overloaded<br>before they are.</h3>
+        <p class="sp-desc">Heatmaps show capacity across your team by day and week. Redistribute tasks with one click when someone's about to hit their limit.</p>
+        <div class="sp-bar"></div>
+      </div>
+      <div class="story-point" data-panel="3">
+        <div class="sp-step">04 — Smart suggestions</div>
+        <h3 class="sp-title">threly thinks<br>two steps ahead.</h3>
+        <p class="sp-desc">When a task is at risk, threly suggests who can take it, when to reschedule it and how to protect the go-live date — automatically.</p>
+        <div class="sp-bar"></div>
+      </div>
+    </div>
+    <div class="story-panel-wrap">
+      <div class="story-panel">
+        <div class="story-panel-header">
+          <div class="b-dot r" style="width:8px;height:8px;border-radius:50%"></div>
+          <div class="b-dot y" style="width:8px;height:8px;border-radius:50%"></div>
+          <div class="b-dot g" style="width:8px;height:8px;border-radius:50%"></div>
+          <span class="sph-title">threly — Task view</span>
+          <span class="sph-tag" id="panelTag">Task cards</span>
+        </div>
+        <div class="panel-slide active" data-panel="0">
+          <div class="task-card-view">
+            <div class="tc active-tc">
+              <div class="tc-row"><span class="tc-name">Photoshoot preparation</span><span class="tc-owner">Laura R.</span></div>
+              <div class="tc-dur">Duration: 3h · May 8, 08:00 → Auto-blocked in calendar</div>
+            </div>
+            <div class="tc">
+              <div class="tc-row"><span class="tc-name">Art direction moodboard</span><span class="tc-owner">Laura R.</span></div>
+              <div class="tc-dur">Duration: 2h · May 7 · Completed ✓</div>
+            </div>
+            <div class="tc">
+              <div class="tc-row"><span class="tc-name">Post-production brief</span><span class="tc-owner">Marcos C.</span></div>
+              <div class="tc-dur">Duration: 1h · May 8, 16:00 · Upcoming</div>
+            </div>
+            <div class="tc">
+              <div class="tc-row"><span class="tc-name">Final asset delivery</span><span class="tc-owner">Retouch Co.</span></div>
+              <div class="tc-dur">Duration: 4h · May 10 · External</div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-slide" data-panel="1">
+          <div class="schedule-view">
+            <div class="sch-row ok-row"><div class="sch-dot" style="background:var(--success)"></div><span class="sch-name">Photoshoot Day 1</span><span class="sch-time">08:00–14:00</span><span class="sch-badge ok">OK</span></div>
+            <div class="sch-row conflict"><div class="sch-dot" style="background:var(--danger)"></div><span class="sch-name">Retouching handoff</span><span class="sch-time">15:00–16:00</span><span class="sch-badge cf">Conflict</span></div>
+            <div class="sch-row"><div class="sch-dot" style="background:var(--accent)"></div><span class="sch-name">Art direction review</span><span class="sch-time">14:30–15:30</span><span class="sch-badge pr">Overlaps</span></div>
+            <div style="padding:10px 14px;background:rgba(224,123,57,.06);border:1px solid rgba(224,123,57,.2);border-radius:8px;font-size:12px;color:var(--ink-2)">Marcos double-booked 14:30–15:30. <span style="color:var(--accent);font-weight:600;cursor:pointer">Resolve →</span></div>
+          </div>
+        </div>
+        <div class="panel-slide" data-panel="2">
+          <div class="heat-view">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px"><span style="font-size:10px;color:var(--ink-4);flex:1;text-align:right;width:60px"></span><div style="display:flex;gap:4px;flex:1">
+              <span style="flex:1;font-size:9px;color:var(--ink-4);text-align:center">Mon</span><span style="flex:1;font-size:9px;color:var(--ink-4);text-align:center">Tue</span><span style="flex:1;font-size:9px;color:var(--ink-4);text-align:center">Wed</span><span style="flex:1;font-size:9px;color:var(--ink-4);text-align:center">Thu</span><span style="flex:1;font-size:9px;color:var(--ink-4);text-align:center">Fri</span><span style="flex:1;font-size:9px;color:var(--ink-4);text-align:center">Mon</span><span style="flex:1;font-size:9px;color:var(--ink-4);text-align:center">Tue</span>
+            </div></div>
+            <div class="heat-row"><div class="heat-name">Laura</div><div class="heat-cells"><div class="heat-cell h3"></div><div class="heat-cell h4"></div><div class="heat-cell h5"></div><div class="heat-cell h4"></div><div class="heat-cell h2"></div><div class="heat-cell h1"></div><div class="heat-cell h0"></div></div></div>
+            <div class="heat-row"><div class="heat-name">Marcos</div><div class="heat-cells"><div class="heat-cell h1"></div><div class="heat-cell h2"></div><div class="heat-cell h3"></div><div class="heat-cell h5"></div><div class="heat-cell h4"></div><div class="heat-cell h3"></div><div class="heat-cell h1"></div></div></div>
+            <div class="heat-row"><div class="heat-name">Inés</div><div class="heat-cells"><div class="heat-cell h0"></div><div class="heat-cell h1"></div><div class="heat-cell h2"></div><div class="heat-cell h3"></div><div class="heat-cell h2"></div><div class="heat-cell h1"></div><div class="heat-cell h0"></div></div></div>
+            <div class="heat-row"><div class="heat-name">Daniela</div><div class="heat-cells"><div class="heat-cell h2"></div><div class="heat-cell h2"></div><div class="heat-cell h1"></div><div class="heat-cell h2"></div><div class="heat-cell h3"></div><div class="heat-cell h2"></div><div class="heat-cell h1"></div></div></div>
+            <div style="display:flex;gap:12px;margin-top:8px;font-size:10px;color:var(--ink-4)">
+              <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:var(--border);display:inline-block"></span>Free</span>
+              <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:var(--accent);display:inline-block"></span>Busy</span>
+              <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:var(--danger);display:inline-block"></span>Overloaded</span>
+            </div>
+          </div>
+        </div>
+        <div class="panel-slide" data-panel="3">
+          <div class="suggest-view">
+            <div class="sug accent-sug"><div class="sug-dot" style="background:var(--accent)"></div><span class="sug-txt">Move retouching handoff to May 9, 10:00 — Marcos is free</span><span class="sug-action">Apply</span></div>
+            <div class="sug accent-sug"><div class="sug-dot" style="background:var(--accent)"></div><span class="sug-txt">Reassign final delivery review to Inés — she has capacity today</span><span class="sug-action">Apply</span></div>
+            <div class="sug"><div class="sug-dot" style="background:var(--warning)"></div><span class="sug-txt">Go-live date at risk if retouching isn't resolved by end of day</span><span class="sug-action">View</span></div>
+            <div class="sug"><div class="sug-dot" style="background:var(--ink-4)"></div><span class="sug-txt">3 tasks unassigned in FW25 Lookbook — assign now to stay on track</span><span class="sug-action">Assign</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="before-after">
+  <div class="ba-inner">
+    <div class="ba-header">
+      <div class="section-lbl">Before & after</div>
+      <h2 style="font-size:clamp(36px,3.8vw,52px);font-weight:700;letter-spacing:-0.03em;color:var(--ink);line-height:1.06">This is what changes<br>when you use threly.</h2>
+    </div>
+    <div class="ba-grid">
+      <div class="ba-col"><div class="ba-col-head"><div class="ba-dot err"></div><span class="ba-col-ttl err">Without threly</span></div><div class="ba-items">
+        <div class="ba-item"><div class="ba-item-title">Tasks assigned over WhatsApp</div><div class="ba-item-desc">No record of who owns what. Nothing tracked, nothing accountable.</div></div>
+        <div class="ba-item"><div class="ba-item-title">Conflicts discovered too late</div><div class="ba-item-desc">You find out someone is double-booked the day it matters.</div></div>
+        <div class="ba-item"><div class="ba-item-title">No visibility into team capacity</div><div class="ba-item-desc">Some people are overwhelmed. Others have nothing to do. Nobody knows.</div></div>
+        <div class="ba-item"><div class="ba-item-title">Manual calendar updates</div><div class="ba-item-desc">Every task change means manually updating 3 different tools.</div></div>
+      </div></div>
+      <div class="ba-col after"><div class="ba-col-head"><div class="ba-dot ok"></div><span class="ba-col-ttl ok">With threly</span></div><div class="ba-items">
+        <div class="ba-item"><div class="ba-item-title">Tasks with owners, deadlines and durations</div><div class="ba-item-desc">Every task is assigned, timed and tracked. Calendar blocks automatically.</div></div>
+        <div class="ba-item"><div class="ba-item-title">Conflicts caught instantly</div><div class="ba-item-desc">threly flags double bookings and overlaps in real time, before they cause damage.</div></div>
+        <div class="ba-item"><div class="ba-item-title">Full capacity heatmap</div><div class="ba-item-desc">See who's overloaded, who has space, and redistribute with one click.</div></div>
+        <div class="ba-item"><div class="ba-item-title">Automatic calendar sync</div><div class="ba-item-desc">Tasks sync to calendars automatically. One source of truth, always current.</div></div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<section id="cta"><div class="cta-inner">
+  <div class="section-lbl" style="justify-content:center">Get started</div>
+  <h2 class="cta-title">Stop coordinating.<br>Start producing.</h2>
+  <p class="cta-sub">Join production teams replacing 6 tools with one system.</p>
+  <div class="cta-actions"><a href="#" class="btn-primary btn-lg">Request early access →</a><a href="#" class="btn-ghost btn-lg">Talk to the team</a></div>
+  <p class="cta-note">Currently onboarding fashion & e-commerce brands. Limited spots.</p>
+</div></section>
+
+<footer><div class="foot-in">
+  <div class="foot-logo">threly<span>.</span></div>
+  <a href="threly.html" class="foot-back">← Back to homepage</a>
+  <span class="foot-copy">© 2025 threly. All rights reserved.</span>
+</div></footer>
+
+<script>
+  const points=document.querySelectorAll('.story-point');
+  const slides=document.querySelectorAll('.panel-slide');
+  const tags=['Task cards','Conflict detection','Workload heatmap','Smart suggestions'];
+  function activate(idx){points.forEach((p,i)=>p.classList.toggle('active',i===idx));slides.forEach((s,i)=>s.classList.toggle('active',i===idx));document.getElementById('panelTag').textContent=tags[idx];}
+  points.forEach((p,i)=>p.addEventListener('click',()=>activate(i)));
+  const story=document.getElementById('story');
+  window.addEventListener('scroll',()=>{if(!story)return;const r=story.getBoundingClientRect();const progress=Math.max(0,Math.min(1,-r.top/(story.offsetHeight-window.innerHeight)));activate(Math.min(3,Math.floor(progress*4)));});
+</script>
+</body>
+</html>
