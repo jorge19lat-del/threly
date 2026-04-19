@@ -1,0 +1,2018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>threly — Operating System for Creative Production</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* ── Backgrounds ── */
+    --bg:         #F5F5F5;   /* base */
+    --bg-alt:     #EBEBEB;   /* subtle alternation */
+    --bg-deep:    #E2E2E2;   /* deeper grey for contrast blocks */
+    --bg-card:    #FFFFFF;   /* cards / surfaces */
+    --bg-card-2:  #F9F9F9;   /* inner card secondary surface */
+
+    /* ── Text ── */
+    --ink:        #0B0B0C;
+    --ink-2:      #2E2E2E;
+    --ink-3:      #6B6B6B;
+    --ink-4:      #9A9A9A;
+
+    /* ── Borders ── */
+    --border:     rgba(11,11,12,0.07);
+    --border-mid: rgba(11,11,12,0.13);
+    --border-str: rgba(11,11,12,0.18);
+
+    /* ── Accent ── */
+    --accent:       #974CFF;
+    --accent-hover: #8240e8;
+    --accent-glow:  rgba(151,76,255,0.16);
+    --accent-soft:  rgba(151,76,255,0.07);
+    --accent-mid:   rgba(151,76,255,0.16);
+    --accent-light: #c084fc;
+
+    /* ── Functional ── */
+    --success:    #16A34A;
+    --success-bg: rgba(22,163,74,0.08);
+    --warning:    #B45309;
+    --warning-bg: rgba(180,83,9,0.08);
+    --error:      #DC2626;
+    --error-bg:   rgba(220,38,38,0.08);
+    --danger:     #E07B39;
+    --danger-bg:  rgba(224,123,57,0.10);
+
+    --font-d: 'Plus Jakarta Sans', sans-serif;
+    --font-b: 'Plus Jakarta Sans', sans-serif;
+    --r:  10px;
+    --rs: 6px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-b);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 4px; }
+
+  /* ════════════════ NAV ════════════════ */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    height: 64px; padding: 0 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(245,245,245,0.9);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: var(--font-b); font-size: 20px; font-weight: 600;
+    color: var(--ink); letter-spacing: -0.5px; text-decoration: none;
+  }
+  .logo span { color: var(--accent); }
+
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    color: var(--ink-3); text-decoration: none; font-size: 14px; transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+
+  .nav-cta { display: flex; gap: 10px; align-items: center; }
+
+  .btn-ghost {
+    padding: 8px 20px; background: transparent;
+    border: 1px solid var(--border-mid); border-radius: var(--rs);
+    color: var(--ink-2); font-family: var(--font-b); font-size: 14px;
+    cursor: pointer; transition: all .2s; text-decoration: none;
+    display: inline-flex; align-items: center;
+  }
+  .btn-ghost:hover { background: var(--bg-alt); color: var(--ink); border-color: var(--border-str); }
+
+  .btn-primary {
+    padding: 8px 20px; background: var(--accent); border: none;
+    border-radius: var(--rs); color: #fff;
+    font-family: var(--font-b); font-size: 14px; font-weight: 500;
+    cursor: pointer; transition: all .2s; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn-primary:hover {
+    background: var(--accent-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 28px var(--accent-glow);
+  }
+  .btn-lg { padding: 13px 30px; font-size: 15px; }
+
+  /* ════════════════ LAYOUT ════════════════ */
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 48px; }
+
+  .lbl {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 11px; text-transform: uppercase; letter-spacing: .1em;
+    color: var(--accent); font-weight: 600; margin-bottom: 16px;
+  }
+  .lbl::before {
+    content: ''; width: 16px; height: 2px;
+    background: var(--accent); border-radius: 2px;
+  }
+
+  h2.st {
+    font-family: var(--font-d);
+    font-size: clamp(36px, 3.8vw, 52px);
+    font-weight: 700; line-height: 1.06;
+    letter-spacing: -0.03em; color: var(--ink); margin-bottom: 16px;
+  }
+  p.ss {
+    font-size: 17px; color: var(--ink-3);
+    font-weight: 300; line-height: 1.7; max-width: 520px;
+  }
+
+  /* ════════════════ HERO ════════════════ */
+  #hero {
+    min-height: 100vh; display: flex; align-items: center;
+    padding-top: 64px; position: relative; overflow: hidden;
+    background: var(--bg);
+  }
+
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent);
+    pointer-events: none;
+  }
+  .hero-glow {
+    position: absolute; top: -80px; right: -80px;
+    width: 560px; height: 560px;
+    background: radial-gradient(ellipse, var(--accent-glow), transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    position: relative; z-index: 2;
+    max-width: 1200px; margin: 0 auto; padding: 80px 48px;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 72px; align-items: center;
+  }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 14px;
+    background: var(--accent-soft); border: 1px solid var(--accent-mid);
+    border-radius: 100px; font-size: 12px; color: var(--accent);
+    font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+  .badge::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--accent); border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity:1; transform:scale(1); }
+    50%      { opacity:.4; transform:scale(.75); }
+  }
+
+  h1.ht {
+    font-family: var(--font-d);
+    font-size: clamp(48px, 5.5vw, 72px);
+    font-weight: 700; line-height: 1.02; letter-spacing: -0.03em;
+    color: var(--ink); margin-bottom: 24px;
+  }
+  h1.ht .acc { color: var(--accent); }
+
+  p.hs {
+    font-size: 18px; color: var(--ink-3); font-weight: 300;
+    line-height: 1.7; margin-bottom: 40px; max-width: 460px;
+  }
+
+  .h-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+
+  .h-stats {
+    display: flex; gap: 36px;
+    margin-top: 52px; padding-top: 40px;
+    border-top: 1px solid var(--border-mid);
+  }
+  .stat-n {
+    font-family: var(--font-b); font-size: 28px; font-weight: 700;
+    color: var(--ink); letter-spacing: -.02em;
+  }
+  .stat-n span { color: var(--accent); }
+  .stat-l {
+    font-size: 12px; color: var(--ink-4);
+    margin-top: 2px; text-transform: uppercase; letter-spacing: .06em;
+  }
+
+  /* ════════════════ UI MOCKUP (light) ════════════════ */
+  .ui-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-str);
+    border-radius: 14px; overflow: hidden;
+    box-shadow:
+      0 2px 0 rgba(11,11,12,.04),
+      0 20px 60px rgba(11,11,12,.10),
+      0 4px 20px var(--accent-glow);
+  }
+
+  .ui-bar {
+    display: flex; align-items: center; gap: 6px;
+    padding: 12px 16px;
+    background: var(--bg-card-2); border-bottom: 1px solid var(--border);
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .dot.r { background: #EF4444; }
+  .dot.y { background: #F59E0B; }
+  .dot.g { background: #22C55E; }
+  .ui-bar-t { margin-left: 8px; font-size: 12px; color: var(--ink-3); }
+
+  .ui-body { padding: 20px; }
+
+  .ui-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .ui-head-t {
+    font-family: var(--font-d); font-size: 14px; font-weight: 700; color: var(--ink);
+  }
+  .ui-tag {
+    font-size: 11px; padding: 3px 10px;
+    background: var(--accent-soft); color: var(--accent);
+    border-radius: 100px; border: 1px solid var(--accent-mid); font-weight: 600;
+  }
+
+  .ui-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 14px;
+    background: var(--bg-card-2); border: 1px solid var(--border);
+    border-radius: var(--rs); margin-bottom: 8px;
+    transition: border-color .2s;
+  }
+  .ui-row:hover { border-color: var(--border-mid); }
+  .ui-row.act {
+    border-color: var(--accent-mid);
+    background: var(--accent-soft);
+  }
+  .ui-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .ui-name { font-size: 13px; color: var(--ink); flex: 1; font-weight: 500; }
+  .ui-date { font-size: 11px; color: var(--ink-4); white-space: nowrap; }
+
+  .ui-s {
+    font-size: 11px; padding: 2px 8px; border-radius: 100px; font-weight: 600;
+    white-space: nowrap;
+  }
+  .ui-s.live { background: var(--success-bg); color: var(--success); }
+  .ui-s.prod { background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent-mid); }
+  .ui-s.rev  { background: var(--warning-bg); color: var(--warning); }
+
+  .ui-prog {
+    margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border);
+  }
+  .ui-prog-l {
+    display: flex; justify-content: space-between;
+    font-size: 11px; color: var(--ink-3); margin-bottom: 6px;
+  }
+  .ui-prog-l span:last-child { color: var(--accent); font-weight: 600; }
+  .ui-bar2 { height: 4px; background: var(--bg-alt); border-radius: 100px; overflow: hidden; }
+  .ui-bar2-f {
+    height: 100%; border-radius: 100px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-light));
+  }
+
+  .ui-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+  .ui-mini-c {
+    padding: 10px 12px;
+    background: var(--bg-card-2); border: 1px solid var(--border);
+    border-radius: var(--rs);
+  }
+  .ui-mini-l {
+    font-size: 10px; color: var(--ink-4);
+    text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px;
+  }
+  .ui-mini-v {
+    font-family: var(--font-d); font-size: 18px; font-weight: 700; color: var(--ink);
+  }
+  .ui-mini-v.p { color: var(--accent); }
+  .ui-mini-v.g { color: var(--success); }
+  .ui-mini-v.w { color: var(--warning); }
+
+  /* ════════════════ TRUSTED ════════════════ */
+  .trusted {
+    padding: 44px 0; text-align: center;
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    background: var(--bg-alt);
+  }
+  .trusted-lbl {
+    font-size: 11px; text-transform: uppercase; letter-spacing: .1em;
+    color: var(--ink-4); margin-bottom: 24px;
+  }
+  .trusted-row {
+    display: flex; justify-content: center; align-items: center;
+    gap: 48px; flex-wrap: wrap;
+  }
+  .t-logo {
+    font-family: var(--font-d); font-size: 14px; font-weight: 700;
+    color: var(--ink-4); letter-spacing: -.02em; transition: color .2s;
+  }
+  .t-logo:hover { color: var(--ink-2); }
+
+  /* ════════════════ PROBLEM ════════════════ */
+  #problem { padding: 120px 0; background: var(--bg); }
+
+  .prob-header { margin-bottom: 64px; }
+
+  .prob-cols {
+    display: grid; grid-template-columns: 1fr 1fr;
+    border: 1px solid var(--border-mid); border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(11,11,12,.05);
+  }
+
+  .prob-col {
+    padding: 40px 44px;
+    display: flex; flex-direction: column; gap: 0;
+  }
+  .prob-col.before { background: var(--bg-card); border-right: 1px solid var(--border-mid); }
+  .prob-col.after  { background: var(--accent-soft); }
+
+  .prob-col-head {
+    display: flex; align-items: center; gap: 10px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border-mid);
+    margin-bottom: 24px;
+  }
+  .prob-col-dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  }
+  .prob-col-dot.err { background: var(--danger); }
+  .prob-col-dot.ok  { background: var(--accent); }
+  .prob-col-ttl {
+    font-size: 12px; font-weight: 600; letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+  .prob-col-ttl.err { color: var(--danger); }
+  .prob-col-ttl.ok  { color: var(--accent); }
+
+  .prob-items { display: flex; flex-direction: column; gap: 0; }
+
+  .prob-item {
+    padding: 18px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .prob-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .prob-item:first-child { padding-top: 0; }
+
+  .prob-item-title {
+    font-family: var(--font-b); font-size: 15px; font-weight: 600;
+    color: var(--ink); letter-spacing: -.01em;
+  }
+  .prob-item-desc {
+    font-size: 13px; color: var(--ink-3); line-height: 1.5;
+  }
+
+  .prob-item-title.after { color: var(--ink); }
+  .prob-item-desc.after  { color: var(--ink-2); }
+
+  /* ════════════════ FEATURES — BENTO GRID ════════════════ */
+  #features { padding: 120px 0; background: var(--bg-alt); }
+
+  .feat-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 40px; margin-bottom: 48px;
+  }
+  .feat-head-left { width: 480px; flex-shrink: 0; }
+  .feat-head-right {
+    flex-shrink: 0;
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  /* Bento container */
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 16px;
+  }
+
+  /* Base cell */
+  .bc {
+    background: var(--bg-card);
+    border: 1px solid var(--border-mid);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    transition: border-color .25s, box-shadow .25s;
+  }
+  .bc:hover {
+    border-color: var(--border-str);
+    box-shadow: 0 8px 32px rgba(11,11,12,.08);
+  }
+
+  /* Grid placements — Row 1 */
+  .bc-campaigns   { grid-column: span 7; }
+  .bc-tasks       { grid-column: span 5; }
+  /* Row 2 */
+  .bc-suppliers   { grid-column: span 5; }
+  .bc-budget-lg   { grid-column: span 7; }
+  /* Row 3 */
+  .bc-dam-lg      { grid-column: span 8; }
+  .bc-resources   { grid-column: span 4; }
+
+  /* Cell text area (bottom of each card) */
+  .bc-body {
+    padding: 24px 28px 28px;
+    border-top: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  /* Cell header text */
+  .bc-label {
+    font-size: 11px; text-transform: uppercase; letter-spacing: .08em;
+    color: var(--accent); font-weight: 600; margin-bottom: 6px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .bc-label::before {
+    content: ''; width: 12px; height: 2px;
+    background: var(--accent); border-radius: 2px;
+  }
+  .bc-title {
+    font-family: var(--font-b); font-size: 20px; font-weight: 700;
+    color: var(--ink); letter-spacing: -.02em; line-height: 1.2;
+    margin-bottom: 6px;
+  }
+  .bc-desc {
+    font-size: 13px; color: var(--ink-3); line-height: 1.5;
+    margin-bottom: 14px;
+  }
+  .bc-link {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 13px; font-weight: 500;
+    color: var(--accent); text-decoration: none; transition: gap .2s;
+  }
+  .bc-link:hover { gap: 8px; }
+
+  /* Visual zone (top of each card) */
+  .bc-visual {
+    flex: 1;
+    overflow: hidden;
+    background: var(--bg-card-2);
+    min-height: 0;
+  }
+
+  /* Large cell gets taller visual */
+  .bc-campaigns  .bc-visual { min-height: 280px; }
+  .bc-tasks      .bc-visual { min-height: 180px; }
+  .bc-suppliers  .bc-visual { min-height: 160px; }
+  .bc-budget-lg  .bc-visual { min-height: 260px; }
+  .bc-dam-lg     .bc-visual { min-height: 260px; }
+  .bc-resources  .bc-visual { min-height: 200px; }
+
+  .bento-kanban {
+    padding: 24px 28px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+    height: 100%;
+    align-content: start;
+  }
+  .bk-col-head {
+    font-size: 10px; text-transform: uppercase; letter-spacing: .07em;
+    color: var(--ink-4); font-weight: 600; padding-bottom: 8px;
+    border-bottom: 1px solid var(--border); margin-bottom: 4px;
+  }
+  .bk-card {
+    background: var(--bg-card-2);
+    border: 1px solid var(--border);
+    border-radius: 6px; padding: 8px 10px;
+    font-size: 11px; color: var(--ink); font-weight: 500;
+    margin-bottom: 6px;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .bk-card-tag {
+    font-size: 10px; padding: 1px 6px;
+    border-radius: 100px; font-weight: 600; display: inline-block;
+    width: fit-content;
+  }
+  .bk-tag-p { background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent-mid); }
+  .bk-tag-l { background: var(--success-bg); color: var(--success); }
+  .bk-tag-r { background: var(--warning-bg); color: var(--warning); }
+
+  .bk-progress {
+    height: 2px; background: var(--bg-alt);
+    border-radius: 2px; overflow: hidden; margin-top: 4px;
+  }
+  .bk-progress-fill {
+    height: 100%; background: var(--accent); border-radius: 2px;
+  }
+
+  .bento-schedule {
+    padding: 20px 24px;
+    display: flex; flex-direction: column; gap: 8px;
+    height: 100%; overflow: hidden;
+  }
+  .bs-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px;
+    background: var(--bg-card); border: 1px solid var(--border-mid);
+    border-radius: 8px;
+  }
+  .bs-row.conflict { border-color: rgba(220,38,38,.2); background: rgba(220,38,38,.03); }
+  .bs-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .bs-name { font-size: 12px; color: var(--ink); flex: 1; font-weight: 500; }
+  .bs-time { font-size: 11px; color: var(--ink-4); white-space: nowrap; }
+  .bs-badge {
+    font-size: 11px; padding: 2px 8px; border-radius: 100px; font-weight: 600;
+  }
+  .bs-badge.ok  { background: var(--success-bg); color: var(--success); }
+  .bs-badge.err { background: var(--error-bg); color: var(--error); }
+
+  /* ── Suppliers CRM mockup ── */
+  .bento-suppliers {
+    padding: 18px 22px;
+    display: flex; flex-direction: column; gap: 8px;
+    height: 100%; overflow: hidden;
+  }
+  .bsup-row {
+    display: grid; grid-template-columns: 1fr 72px 72px 80px;
+    gap: 8px; align-items: center;
+    padding: 10px 14px;
+    background: var(--bg-card); border: 1px solid var(--border-mid);
+    border-radius: 8px; transition: border-color .2s;
+  }
+  .bsup-row:hover { border-color: var(--border-str); }
+  .bsup-row.head {
+    background: var(--bg-card-2); border-color: var(--border);
+    padding: 6px 14px;
+  }
+  .bsup-row.head span {
+    font-size: 10px; color: var(--ink-4);
+    text-transform: uppercase; letter-spacing: .07em; font-weight: 600;
+  }
+  .bsup-info { display: flex; flex-direction: column; gap: 1px; }
+  .bsup-name { font-size: 12px; color: var(--ink); font-weight: 600; }
+  .bsup-type { font-size: 10px; color: var(--ink-4); }
+  .bsup-score-cell {
+    font-family: var(--font-d); font-size: 14px; font-weight: 800; text-align: center;
+  }
+  .bsup-score-cell.hi  { color: var(--success); }
+  .bsup-score-cell.mid { color: var(--warning); }
+  .bsup-score-cell.lo  { color: var(--danger); }
+  .bsup-deliveries { font-size: 11px; color: var(--ink-3); text-align: center; }
+  .bsup-badge {
+    font-size: 10px; padding: 2px 8px; border-radius: 100px;
+    font-weight: 600; text-align: center;
+  }
+  .bsup-badge.ok  { background: var(--success-bg); color: var(--success); }
+  .bsup-badge.wn  { background: var(--warning-bg); color: var(--warning); }
+  .bsup-badge.lo  { background: var(--danger-bg);  color: var(--danger); }
+
+  /* ── Budget large mockup — chart primary ── */
+  .bento-budget-lg {
+    padding: 20px 24px; height: 100%;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .bbl-chart-area {
+    flex: 1; display: flex; flex-direction: column; gap: 10px;
+  }
+  .bbl-chart-top {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .bbl-chart-title {
+    font-size: 11px; color: var(--ink-4); text-transform: uppercase;
+    letter-spacing: .07em; font-weight: 600;
+  }
+  .bbl-chart-legend {
+    display: flex; gap: 12px; font-size: 10px; color: var(--ink-3);
+  }
+  .bbl-chart-legend span { display: flex; align-items: center; gap: 4px; }
+  .bbl-ldot { width: 6px; height: 6px; border-radius: 50%; }
+  .bbl-bars {
+    flex: 1; display: flex; align-items: flex-end; gap: 10px;
+    padding-bottom: 2px;
+  }
+  .bbl-bar-group {
+    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0;
+  }
+  .bbl-bar-pair { display: flex; gap: 4px; align-items: flex-end; width: 100%; }
+  .bbl-bar { border-radius: 4px 4px 0 0; flex: 1; min-height: 4px; }
+  .bbl-bar.pl { background: var(--bg-deep); }
+  .bbl-bar.ac { background: var(--accent); opacity: .85; }
+  .bbl-bar.ov { background: var(--danger); opacity: .85; }
+  .bbl-bar-name {
+    font-size: 9px; color: var(--ink-4); text-align: center;
+    margin-top: 5px; text-transform: uppercase; letter-spacing: .04em;
+  }
+  .bbl-divider {
+    height: 1px; background: var(--border); flex-shrink: 0;
+  }
+  .bbl-suggestions {
+    display: flex; flex-direction: column; gap: 6px; flex-shrink: 0;
+  }
+  .bbl-suggestion {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 12px;
+    background: var(--bg-card); border: 1px solid var(--border-mid);
+    border-radius: 8px;
+  }
+  .bbl-sug-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    flex-shrink: 0; background: var(--accent);
+  }
+  .bbl-sug-dot.warn { background: var(--warning); }
+  .bbl-sug-text { font-size: 11px; color: var(--ink-2); flex: 1; }
+  .bbl-sug-val {
+    font-family: var(--font-d); font-size: 12px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .bbl-sug-val.sav { color: var(--accent); }
+  .bbl-sug-val.neg { color: var(--danger); }
+
+  .bento-heatmap {
+    padding: 20px 24px; height: 100%;
+    display: flex; flex-direction: column; gap: 8px; justify-content: center;
+  }
+  .bhm-row {
+    display: flex; align-items: center; gap: 8px;
+  }
+  .bhm-name { font-size: 11px; color: var(--ink-3); width: 54px; flex-shrink: 0; text-align: right; }
+  .bhm-cells { display: flex; gap: 4px; flex: 1; }
+  .bhm-cell {
+    flex: 1; height: 18px; border-radius: 4px;
+  }
+  .bhm-0 { background: var(--border); }
+  .bhm-1 { background: rgba(151,76,255,.12); }
+  .bhm-2 { background: rgba(151,76,255,.28); }
+  .bhm-3 { background: rgba(151,76,255,.50); }
+  .bhm-4 { background: var(--accent); }
+  .bhm-5 { background: var(--danger); }
+
+  .bento-rights {
+    padding: 12px 16px; height: 100%;
+    display: flex; flex-direction: column; gap: 5px; justify-content: center;
+  }
+  .bdr-row {
+    display: flex; align-items: center; gap: 8px;
+    padding: 5px 8px;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 5px;
+  }
+  .bdr-name { font-size: 10px; color: var(--ink); flex: 1; font-weight: 500; }
+  .bdr-status {
+    font-size: 10px; padding: 1px 6px; border-radius: 100px; font-weight: 600;
+  }
+  .bdr-ok  { background: var(--success-bg); color: var(--success); }
+  .bdr-wn  { background: var(--warning-bg); color: var(--warning); }
+  .bdr-ex  { background: var(--error-bg);   color: var(--error); }
+
+  /* ── Budget large mockup ── */
+  .bento-budget-lg {
+    padding: 24px 28px; height: 100%;
+    display: flex; gap: 16px; align-items: stretch;
+  }
+  .bbl-left {
+    flex: 1; display: flex; flex-direction: column; gap: 10px;
+  }
+  .bbl-card {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px;
+    background: var(--bg-card); border: 1px solid var(--border-mid);
+    border-radius: 10px; flex: 1;
+  }
+  .bbl-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .bbl-icon.p { background: var(--accent-soft); border: 1px solid var(--accent-mid); }
+  .bbl-icon.g { background: var(--success-bg); }
+  .bbl-icon.w { background: var(--warning-bg); }
+  .bbl-info { flex: 1; }
+  .bbl-label { font-size: 11px; color: var(--ink-4); margin-bottom: 2px; }
+  .bbl-val { font-family: var(--font-d); font-size: 15px; font-weight: 800; }
+  .bbl-val.neu { color: var(--ink); }
+  .bbl-val.pos { color: var(--success); }
+  .bbl-val.neg { color: var(--error); }
+  .bbl-val.sav { color: var(--accent); }
+
+  .bbl-right {
+    width: 180px; flex-shrink: 0;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .bbl-chart-label {
+    font-size: 10px; color: var(--ink-4); text-transform: uppercase;
+    letter-spacing: .06em; margin-bottom: 4px;
+  }
+  .bbl-bars {
+    display: flex; align-items: flex-end; gap: 6px;
+    flex: 1;
+  }
+  .bbl-bar-group {
+    flex: 1; display: flex; flex-direction: column; gap: 2px; align-items: center;
+  }
+  .bbl-bar-pair { display: flex; gap: 3px; align-items: flex-end; width: 100%; }
+  .bbl-bar { border-radius: 4px 4px 0 0; flex: 1; }
+  .bbl-bar.pl { background: var(--border-str); }
+  .bbl-bar.ac { background: var(--accent); }
+  .bbl-bar.ov { background: var(--error); }
+  .bbl-bar-name { font-size: 9px; color: var(--ink-4); text-align: center; margin-top: 4px; }
+  .bbl-legend {
+    display: flex; gap: 10px; flex-wrap: wrap;
+    font-size: 10px; color: var(--ink-3); padding-top: 8px;
+    border-top: 1px solid var(--border);
+  }
+  .bbl-legend span { display: flex; align-items: center; gap: 4px; }
+  .bbl-ldot { width: 6px; height: 6px; border-radius: 50%; }
+
+  /* ── DAM large mockup ── */
+  .bento-dam-lg {
+    padding: 24px 28px; height: 100%;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .bdl-filters {
+    display: flex; gap: 6px; flex-wrap: wrap;
+  }
+  .bdl-filter {
+    font-size: 11px; padding: 4px 12px;
+    border-radius: 100px; border: 1px solid var(--border-mid);
+    color: var(--ink-3); background: var(--bg-card); cursor: pointer;
+    font-weight: 500; transition: all .2s;
+  }
+  .bdl-filter.active {
+    background: var(--accent-soft); border-color: var(--accent-mid);
+    color: var(--accent);
+  }
+  .bdl-table {
+    flex: 1; display: flex; flex-direction: column; gap: 6px;
+    overflow: hidden;
+  }
+  .bdl-row {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    gap: 8px; align-items: center;
+    padding: 10px 14px;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 8px; transition: border-color .2s;
+  }
+  .bdl-row:hover { border-color: var(--border-mid); }
+  .bdl-row.head {
+    background: var(--bg-card-2); padding: 7px 14px;
+    border-radius: 6px;
+  }
+  .bdl-row.head span { font-size: 10px; color: var(--ink-4); text-transform: uppercase; letter-spacing: .07em; font-weight: 600; }
+  .bdl-name { font-size: 12px; color: var(--ink); font-weight: 500; }
+  .bdl-badge {
+    font-size: 10px; padding: 2px 8px; border-radius: 100px;
+    font-weight: 600; width: fit-content;
+  }
+  .bdl-badge.ok  { background: var(--success-bg); color: var(--success); }
+  .bdl-badge.wn  { background: var(--warning-bg); color: var(--warning); }
+  .bdl-badge.ex  { background: var(--danger-bg);  color: var(--danger); }
+  .bdl-date { font-size: 11px; color: var(--ink-3); }
+  .bdl-date.ex { color: var(--danger); }
+  .bdl-date.wn { color: var(--warning); }
+  .bdl-terr { font-size: 11px; color: var(--ink-4); }
+
+  /* ════════════════ DAM ════════════════ */
+  #dam { padding: 120px 0; background: var(--bg); }
+
+  .dam-grid {
+    display: grid; grid-template-columns: 1fr 1.2fr;
+    gap: 80px; align-items: center; margin-top: 56px;
+  }
+
+  .dam-list {
+    margin-top: 28px; list-style: none;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .dam-list li {
+    font-size: 14px; color: var(--ink-2);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .dam-list li::before {
+    content: ''; width: 5px; height: 5px;
+    background: var(--accent); border-radius: 50%; flex-shrink: 0;
+  }
+
+  /* Rights table — light */
+  .rt {
+    background: var(--bg-card);
+    border: 1px solid var(--border-str);
+    border-radius: var(--r); overflow: hidden;
+    box-shadow: 0 4px 20px rgba(11,11,12,.06);
+  }
+  .rt-head {
+    display: grid; grid-template-columns: 1.5fr 1fr 1fr .8fr;
+    padding: 11px 18px;
+    background: var(--bg-card-2); border-bottom: 1px solid var(--border-mid);
+    font-size: 11px; color: var(--ink-4);
+    text-transform: uppercase; letter-spacing: .07em; font-weight: 600;
+  }
+  .rt-row {
+    display: grid; grid-template-columns: 1.5fr 1fr 1fr .8fr;
+    padding: 13px 18px; border-bottom: 1px solid var(--border);
+    align-items: center; transition: background .2s;
+  }
+  .rt-row:last-child { border-bottom: none; }
+  .rt-row:hover { background: var(--bg-card-2); }
+
+  .ra { font-size: 13px; color: var(--ink); font-weight: 500; }
+  .rv { font-size: 12px; font-weight: 600; }
+  .rv.ok { color: var(--success); }
+  .rv.wn { color: var(--warning); }
+  .rv.ex { color: var(--error); }
+  .rtr   { font-size: 12px; color: var(--ink-3); }
+
+  /* ════════════════ WORKFLOW — Stripe-style stats ════════════════ */
+  #workflow { padding: 120px 0; background: var(--bg-alt); }
+
+  .wf-top { text-align: center; margin-bottom: 80px; }
+  .wf-top .lbl { justify-content: center; }
+  .wf-top p.ss { margin: 0 auto; }
+
+  .wf-body {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
+  }
+
+  /* Left: stat tabs */
+  .wf-stats { display: flex; flex-direction: column; gap: 0; }
+
+  .wf-stat {
+    padding: 24px 0 24px 0;
+    border-bottom: 1px solid var(--border-mid);
+    cursor: pointer;
+    display: flex; flex-direction: column; gap: 6px;
+    transition: all .2s;
+    position: relative;
+  }
+  .wf-stat:first-child { border-top: 1px solid var(--border-mid); }
+
+  .wf-stat-step {
+    font-size: 11px; font-weight: 700; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--ink-4);
+    transition: color .3s;
+  }
+  .wf-stat.active .wf-stat-step { color: var(--accent); }
+
+  .wf-stat-title {
+    font-family: var(--font-b); font-size: 18px; font-weight: 600;
+    color: var(--ink-3); letter-spacing: -.01em;
+    transition: color .3s;
+  }
+  .wf-stat.active .wf-stat-title { color: var(--ink); }
+
+  .wf-stat-desc {
+    font-size: 14px; color: var(--ink-4); line-height: 1.6;
+    max-height: 0; overflow: hidden;
+    transition: max-height .4s ease, opacity .3s;
+    opacity: 0;
+  }
+  .wf-stat.active .wf-stat-desc { max-height: 80px; opacity: 1; }
+
+  .wf-stat-bar {
+    position: absolute; left: 0; bottom: -1px;
+    height: 2px; background: var(--accent);
+    width: 0; transition: width .5s ease;
+  }
+  .wf-stat.active .wf-stat-bar { width: 100%; }
+
+  /* Right: animated panel */
+  .wf-panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border-mid);
+    border-radius: 16px; overflow: hidden;
+    min-height: 360px;
+    box-shadow: 0 8px 40px rgba(11,11,12,.08);
+    position: relative;
+  }
+
+  .wf-panel-slide {
+    position: absolute; inset: 0;
+    opacity: 0; transform: translateY(12px);
+    transition: opacity .4s ease, transform .4s ease;
+    pointer-events: none;
+    padding: 32px 36px;
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .wf-panel-slide.active {
+    opacity: 1; transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .wf-panel-label {
+    font-size: 11px; text-transform: uppercase; letter-spacing: .08em;
+    color: var(--accent); font-weight: 600;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .wf-panel-label::before {
+    content: ''; width: 12px; height: 2px;
+    background: var(--accent); border-radius: 2px;
+  }
+
+  /* Panel 1 — Brief */
+  .wf-brief-fields { display: flex; flex-direction: column; gap: 10px; }
+  .wf-field {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px;
+    background: var(--bg-card-2); border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .wf-field-lbl { font-size: 12px; color: var(--ink-4); width: 100px; flex-shrink: 0; }
+  .wf-field-val { font-size: 13px; color: var(--ink); font-weight: 500; }
+  .wf-field-tag {
+    margin-left: auto; font-size: 11px; padding: 2px 8px;
+    border-radius: 100px; font-weight: 600;
+    background: var(--accent-soft); color: var(--accent); border: 1px solid var(--accent-mid);
+  }
+
+  /* Panel 2 — Assign */
+  .wf-assign-rows { display: flex; flex-direction: column; gap: 8px; }
+  .wf-assign-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 14px;
+    background: var(--bg-card-2); border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .wf-avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; color: #fff; flex-shrink: 0;
+  }
+  .wf-avatar.ext {
+    background: var(--bg-deep); color: var(--ink-3);
+    border: 1px solid var(--border-mid);
+  }
+  .wf-assign-name { font-size: 12px; color: var(--ink); font-weight: 500; flex: 1; }
+  .wf-assign-task { font-size: 11px; color: var(--ink-3); }
+  .wf-assign-status {
+    font-size: 10px; padding: 2px 7px; border-radius: 100px; font-weight: 600;
+  }
+  .wf-assign-status.ok  { background: var(--success-bg); color: var(--success); }
+  .wf-assign-status.wt  { background: var(--warning-bg); color: var(--warning); }
+
+  /* Panel 3 — Monitor */
+  .wf-monitor { display: flex; flex-direction: column; gap: 12px; }
+  .wf-monitor-kpis { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+  .wf-kpi {
+    background: var(--bg-card-2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 16px;
+  }
+  .wf-kpi-val {
+    font-family: var(--font-d); font-size: 24px; font-weight: 800; color: var(--ink);
+    margin-bottom: 2px;
+  }
+  .wf-kpi-val.ok  { color: var(--success); }
+  .wf-kpi-val.warn { color: var(--warning); }
+  .wf-kpi-lbl { font-size: 11px; color: var(--ink-4); }
+  .wf-alert {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px;
+    background: rgba(224,123,57,.06); border: 1px solid rgba(224,123,57,.2);
+    border-radius: 8px;
+  }
+  .wf-alert-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--danger); flex-shrink: 0; }
+  .wf-alert-txt { font-size: 12px; color: var(--ink-2); }
+
+  /* Panel 4 — Deliver */
+  .wf-deliver { display: flex; flex-direction: column; gap: 10px; }
+  .wf-deliver-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px;
+    background: var(--bg-card-2); border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .wf-check {
+    width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+  }
+  .wf-check.done { background: var(--success-bg); color: var(--success); border: 1.5px solid var(--success); }
+  .wf-check.acc  { background: var(--accent-soft); color: var(--accent); border: 1.5px solid var(--accent); }
+  .wf-deliver-txt { font-size: 13px; color: var(--ink); font-weight: 500; }
+  .wf-deliver-sub { font-size: 11px; color: var(--ink-4); margin-top: 1px; }
+
+  /* Animated dots visualization */
+  .wf-dots-canvas {
+    position: absolute; inset: 0;
+    pointer-events: none; overflow: hidden; border-radius: 16px;
+  }
+
+  /* ════════════════ BUDGET ════════════════ */
+  #budget { padding: 120px 0; background: var(--bg); }
+
+  .bud-grid {
+    display: grid; grid-template-columns: 1.1fr 1fr;
+    gap: 80px; align-items: center; margin-top: 56px;
+  }
+
+  .bud-list { display: flex; flex-direction: column; gap: 10px; }
+  .bud-feat {
+    margin-top: 28px; list-style: none;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .bud-feat li {
+    font-size: 14px; color: var(--ink-2);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .bud-feat li::before {
+    content: ''; width: 5px; height: 5px;
+    background: var(--accent); border-radius: 50%; flex-shrink: 0;
+  }
+
+  .bud-card {
+    display: flex; align-items: center; gap: 16px;
+    padding: 16px 20px; background: var(--bg-card);
+    border: 1px solid var(--border-mid); border-radius: var(--r);
+    box-shadow: 0 2px 8px rgba(11,11,12,.04); transition: all .2s;
+  }
+  .bud-card:hover { border-color: var(--border-str); box-shadow: 0 4px 16px rgba(11,11,12,.07); }
+
+  .bud-ic {
+    width: 42px; height: 42px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+  }
+  .bud-ic.p { background: var(--accent-soft); border: 1px solid var(--accent-mid); }
+  .bud-ic.g { background: var(--success-bg); }
+  .bud-ic.w { background: var(--warning-bg); }
+
+  .bud-info { flex: 1; }
+  .bud-t { font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 2px; }
+  .bud-s { font-size: 12px; color: var(--ink-4); }
+
+  .bud-amt { font-family: var(--font-d); font-size: 15px; font-weight: 700; }
+  .bud-amt.neu { color: var(--ink); }
+  .bud-amt.pos { color: var(--success); }
+  .bud-amt.neg { color: var(--error); }
+  .bud-amt.sav { color: var(--accent); }
+
+  /* ════════════════ TESTIMONIAL ════════════════ */
+  #testimonial {
+    padding: 100px 0; text-align: center;
+    background: var(--bg-deep);
+    border-top: 1px solid var(--border-mid);
+    border-bottom: 1px solid var(--border-mid);
+  }
+
+  .test-inner { max-width: 680px; margin: 0 auto; }
+
+  .qm {
+    font-family: var(--font-d); font-size: 72px; line-height: .5;
+    color: var(--accent); opacity: .35; margin-bottom: 28px; display: block;
+  }
+  .qt {
+    font-family: var(--font-d);
+    font-size: 28px; font-weight: 500;
+    color: var(--ink); line-height: 1.4; letter-spacing: -0.02em; margin-bottom: 32px;
+  }
+  .qa { display: flex; align-items: center; justify-content: center; gap: 12px; }
+  .qav {
+    width: 40px; height: 40px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-d); font-size: 13px; font-weight: 700; color: #fff;
+  }
+  .qn { font-size: 14px; font-weight: 500; color: var(--ink); }
+  .qr { font-size: 12px; color: var(--ink-3); }
+
+  /* ════════════════ CTA ════════════════ */
+  #cta {
+    padding: 120px 0; text-align: center;
+    background: var(--bg-alt); position: relative; overflow: hidden;
+  }
+  #cta::before {
+    content: ''; position: absolute;
+    top: -60px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(ellipse, var(--accent-glow), transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-inner { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
+  .cta-inner .lbl { justify-content: center; }
+
+  .cta-t {
+    font-family: var(--font-d);
+    font-size: clamp(40px, 4.5vw, 58px);
+    font-weight: 700; letter-spacing: -0.03em; line-height: 1.05;
+    color: var(--ink); margin-bottom: 16px;
+  }
+  .cta-s { font-size: 17px; color: var(--ink-3); margin-bottom: 40px; font-weight: 300; }
+  .cta-acts { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; }
+  .cta-note { margin-top: 16px; font-size: 12px; color: var(--ink-4); }
+
+  /* ════════════════ FOOTER ════════════════ */
+  footer {
+    padding: 48px 0;
+    border-top: 1px solid var(--border-mid);
+    background: var(--bg);
+  }
+  .foot-in {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 24px;
+  }
+  .foot-logo {
+    font-family: var(--font-b); font-size: 18px; font-weight: 600;
+    color: var(--ink); letter-spacing: -.5px;
+  }
+  .foot-logo span { color: var(--accent); }
+
+  .foot-links { display: flex; gap: 28px; list-style: none; }
+  .foot-links a {
+    font-size: 13px; color: var(--ink-3); text-decoration: none; transition: color .2s;
+  }
+  .foot-links a:hover { color: var(--ink); }
+
+  .foot-copy { font-size: 12px; color: var(--ink-4); }
+
+  /* ════════════════ ANIMATIONS ════════════════ */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .fu  { opacity: 0; animation: fadeUp .6s ease forwards; }
+  .d1  { animation-delay: .1s; } .d2 { animation-delay: .2s; }
+  .d3  { animation-delay: .3s; } .d4 { animation-delay: .4s; }
+
+  /* ════════════════ RESPONSIVE ════════════════ */
+  @media (max-width: 900px) {
+    nav { padding: 0 24px; }
+    .nav-links { display: none; }
+    .hero-inner { grid-template-columns: 1fr; gap: 48px; padding: 60px 24px; }
+    .hero-visual { display: none; }
+    .container { padding: 0 24px; }
+    .prob-grid, .dam-grid, .bud-grid { grid-template-columns: 1fr; gap: 40px; }
+    .feat-grid { grid-template-columns: 1fr; }
+    .wf-steps { grid-template-columns: 1fr 1fr; }
+    .wf-steps::before { display: none; }
+    section { padding: 80px 0 !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ NAV ═══════════ -->
+<nav>
+  <a href="#" class="logo">threly<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#features">Product</a></li>
+    <li><a href="#workflow">How it works</a></li>
+    <li><a href="#testimonial">Customers</a></li>
+  </ul>
+  <div class="nav-cta">
+    <a href="#" class="btn-ghost">Log in</a>
+    <a href="#cta" class="btn-primary">Get early access →</a>
+  </div>
+</nav>
+
+<!-- ═══════════ HERO — bg: #F5F5F5 ═══════════ -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+
+    <div>
+      <div class="badge fu">Operating System for Creative Production</div>
+      <h1 class="ht fu d1">Your production<br>is messy.<br><span class="acc">Fix it.</span></h1>
+      <p class="hs fu d2">threly replaces Excel, WhatsApp, Notion and email chains with one system to plan, execute, and monitor visual content production.</p>
+      <div class="h-actions fu d3">
+        <a href="#cta" class="btn-primary btn-lg">Get early access →</a>
+        <a href="#features" class="btn-ghost btn-lg">See how it works</a>
+      </div>
+      <div class="h-stats fu d4">
+        <div>
+          <div class="stat-n">6<span>x</span></div>
+          <div class="stat-l">Tools replaced</div>
+        </div>
+        <div>
+          <div class="stat-n">40<span>%</span></div>
+          <div class="stat-l">Time saved</div>
+        </div>
+        <div>
+          <div class="stat-n">0</div>
+          <div class="stat-l">Production delays</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- UI MOCKUP — light theme -->
+    <div class="hero-visual fu d2">
+      <div class="ui-card">
+        <div class="ui-bar">
+          <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+          <span class="ui-bar-t">threly — Campaign Hub</span>
+        </div>
+        <div class="ui-body">
+          <div class="ui-head">
+            <span class="ui-head-t">Q2 Campaigns</span>
+            <span class="ui-tag">8 active</span>
+          </div>
+          <div class="ui-row act">
+            <div class="ui-dot" style="background:var(--accent)"></div>
+            <span class="ui-name">SS25 Editorial — Lookbook</span>
+            <span class="ui-date">May 12</span>
+            <span class="ui-s prod">In Production</span>
+          </div>
+          <div class="ui-row">
+            <div class="ui-dot" style="background:var(--success)"></div>
+            <span class="ui-name">Summer Campaign — E-commerce</span>
+            <span class="ui-date">Apr 28</span>
+            <span class="ui-s live">Live</span>
+          </div>
+          <div class="ui-row">
+            <div class="ui-dot" style="background:var(--warning)"></div>
+            <span class="ui-name">Brand Film — FW25</span>
+            <span class="ui-date">Jun 03</span>
+            <span class="ui-s rev">Review</span>
+          </div>
+          <div class="ui-row">
+            <div class="ui-dot" style="background:var(--accent-light)"></div>
+            <span class="ui-name">Influencer Kit — Summer</span>
+            <span class="ui-date">May 19</span>
+            <span class="ui-s prod">In Production</span>
+          </div>
+          <div class="ui-prog">
+            <div class="ui-prog-l">
+              <span>SS25 Lookbook — Progress</span><span>68%</span>
+            </div>
+            <div class="ui-bar2">
+              <div class="ui-bar2-f" style="width:68%"></div>
+            </div>
+          </div>
+          <div class="ui-mini">
+            <div class="ui-mini-c">
+              <div class="ui-mini-l">Tasks open</div>
+              <div class="ui-mini-v p">24</div>
+            </div>
+            <div class="ui-mini-c">
+              <div class="ui-mini-l">Completed</div>
+              <div class="ui-mini-v g">51</div>
+            </div>
+            <div class="ui-mini-c">
+              <div class="ui-mini-l">Overdue</div>
+              <div class="ui-mini-v w">3</div>
+            </div>
+            <div class="ui-mini-c">
+              <div class="ui-mini-l">Suppliers</div>
+              <div class="ui-mini-v">7</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════ TRUSTED — bg: #EBEBEB ═══════════ -->
+<div class="trusted">
+  <div class="container">
+    <p class="trusted-lbl">Trusted by production teams at</p>
+    <div class="trusted-row">
+      <span class="t-logo">Massimo Dutti</span>
+      <span class="t-logo">Inditex</span>
+      <span class="t-logo">Oysho</span>
+      <span class="t-logo">Mango</span>
+      <span class="t-logo">Stradivarius</span>
+      <span class="t-logo">Pull&amp;Bear</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ PROBLEM — bg: #F5F5F5 ═══════════ -->
+<section id="problem">
+  <div class="container">
+    <div class="prob-header">
+      <div class="lbl">The problem</div>
+      <h2 class="st">You're running a production<br>system on the wrong tools.</h2>
+      <p class="ss">Creative production teams rely on 6+ disconnected tools. The result is chaos, miscommunication, and delays — every cycle.</p>
+    </div>
+
+    <div class="prob-cols">
+      <div class="prob-col before">
+        <div class="prob-col-head">
+          <div class="prob-col-dot err"></div>
+          <span class="prob-col-ttl err">Right now</span>
+        </div>
+        <div class="prob-items">
+          <div class="prob-item">
+            <div class="prob-item-title">Spreadsheets everywhere</div>
+            <div class="prob-item-desc">Campaign plans, asset lists, budgets — all in different files, always outdated.</div>
+          </div>
+          <div class="prob-item">
+            <div class="prob-item-title">WhatsApp as a PM tool</div>
+            <div class="prob-item-desc">Critical decisions lost in group chats. No trace, no accountability.</div>
+          </div>
+          <div class="prob-item">
+            <div class="prob-item-title">Drive chaos</div>
+            <div class="prob-item-desc">No one knows which file is final. Assets expire without notice.</div>
+          </div>
+          <div class="prob-item">
+            <div class="prob-item-title">Email as briefing tool</div>
+            <div class="prob-item-desc">Briefs over email. Suppliers confirm via reply-all. Nothing is tracked.</div>
+          </div>
+        </div>
+      </div>
+      <div class="prob-col after">
+        <div class="prob-col-head">
+          <div class="prob-col-dot ok"></div>
+          <span class="prob-col-ttl ok">With threly</span>
+        </div>
+        <div class="prob-items">
+          <div class="prob-item">
+            <div class="prob-item-title after">One campaign hub</div>
+            <div class="prob-item-desc after">Every campaign, timeline and task in one place. Always up to date.</div>
+          </div>
+          <div class="prob-item">
+            <div class="prob-item-title after">Supplier coordination built in</div>
+            <div class="prob-item-desc after">Invite vendors, assign deliverables, track status — no email needed.</div>
+          </div>
+          <div class="prob-item">
+            <div class="prob-item-title after">Smart asset rights management</div>
+            <div class="prob-item-desc after">Know exactly what can be used, where, and until when.</div>
+          </div>
+          <div class="prob-item">
+            <div class="prob-item-title after">Real-time production intelligence</div>
+            <div class="prob-item-desc after">See bottlenecks before they become delays. Act, don't react.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FEATURES — bg: #EBEBEB ═══════════ -->
+<section id="features">
+  <div class="container">
+
+    <div class="feat-head">
+      <div class="feat-head-left">
+        <div class="lbl">The solution</div>
+        <h2 class="st">One system for your entire production.</h2>
+        <p class="ss">Six integrated tools. Zero tab-switching. Built for the way creative teams actually work.</p>
+      </div>
+      <div class="feat-head-right">
+        <a href="#cta" class="btn-primary">Get early access →</a>
+      </div>
+    </div>
+
+    <div class="bento">
+
+      <!-- CAMPAIGN MANAGEMENT — large left -->
+      <div class="bc bc-campaigns">
+        <div class="bc-visual">
+          <div class="bento-kanban">
+            <div>
+              <div class="bk-col-head">Planning</div>
+              <div class="bk-card">
+                <div class="bk-card-tag bk-tag-p">Editorial</div>
+                FW25 Lookbook
+                <div class="bk-progress"><div class="bk-progress-fill" style="width:20%"></div></div>
+              </div>
+              <div class="bk-card">
+                <div class="bk-card-tag bk-tag-p">Commercial</div>
+                Holiday Campaign
+                <div class="bk-progress"><div class="bk-progress-fill" style="width:10%"></div></div>
+              </div>
+            </div>
+            <div>
+              <div class="bk-col-head">In Production</div>
+              <div class="bk-card">
+                <div class="bk-card-tag bk-tag-p">Editorial</div>
+                SS25 Lookbook
+                <div class="bk-progress"><div class="bk-progress-fill" style="width:68%"></div></div>
+              </div>
+              <div class="bk-card">
+                <div class="bk-card-tag bk-tag-p">Commercial</div>
+                Summer E-comm
+                <div class="bk-progress"><div class="bk-progress-fill" style="width:85%"></div></div>
+              </div>
+            </div>
+            <div>
+              <div class="bk-col-head">Live</div>
+              <div class="bk-card">
+                <div class="bk-card-tag bk-tag-l">Live</div>
+                SS24 Lookbook
+                <div class="bk-progress"><div class="bk-progress-fill" style="width:100%"></div></div>
+              </div>
+              <div class="bk-card">
+                <div class="bk-card-tag bk-tag-r">Review</div>
+                Brand Film FW25
+                <div class="bk-progress"><div class="bk-progress-fill" style="width:92%"></div></div>
+              </div>
+            </div>
+          </div><!-- /bento-kanban -->
+        </div><!-- /bc-visual -->
+        <div class="bc-body">
+          <div class="bc-label">Campaign Management</div>
+          <div class="bc-title">Plan every campaign.<br>End to end.</div>
+          <div class="bc-desc">Kanban, calendar, and timeline views for editorial and commercial productions.</div>
+          <a href="threly-campaign-management.html" class="bc-link">Learn more →</a>
+        </div>
+      </div>
+
+      <!-- TASK MANAGEMENT — top right -->
+      <div class="bc bc-tasks">
+        <div class="bc-visual">
+          <div class="bento-schedule">
+            <div class="bs-row">
+              <div class="bs-dot" style="background:var(--accent)"></div>
+              <span class="bs-name">Photoshoot — Studio A</span>
+              <span class="bs-time">09:00–13:00</span>
+              <span class="bs-badge ok">Confirmed</span>
+            </div>
+            <div class="bs-row conflict">
+              <div class="bs-dot" style="background:var(--error)"></div>
+              <span class="bs-name">Retouching delivery</span>
+              <span class="bs-time">13:00–14:00</span>
+              <span class="bs-badge err">Conflict</span>
+            </div>
+            <div class="bs-row">
+              <div class="bs-dot" style="background:var(--success)"></div>
+              <span class="bs-name">Art Director review</span>
+              <span class="bs-time">15:00–16:00</span>
+              <span class="bs-badge ok">On track</span>
+            </div>
+          </div>
+        </div><!-- /bc-visual -->
+        <div class="bc-body">
+          <div class="bc-label">Smart Tasks</div>
+          <div class="bc-title">Scheduling that detects conflicts automatically.</div>
+          <a href="threly-smart-tasks.html" class="bc-link">Learn more →</a>
+        </div>
+      </div>
+
+      <!-- SUPPLIER COLLABORATION — row 2 left -->
+      <div class="bc bc-suppliers">
+        <div class="bc-visual">
+          <div class="bento-suppliers">
+            <div class="bsup-row head">
+              <span>Supplier</span>
+              <span>Score</span>
+              <span>On-time</span>
+              <span>Status</span>
+            </div>
+            <div class="bsup-row">
+              <div class="bsup-info">
+                <span class="bsup-name">Studio Blanc</span>
+                <span class="bsup-type">Photography</span>
+              </div>
+              <span class="bsup-score-cell hi">9.4</span>
+              <span class="bsup-deliveries">94%</span>
+              <span class="bsup-badge ok">Preferred</span>
+            </div>
+            <div class="bsup-row">
+              <div class="bsup-info">
+                <span class="bsup-name">Retouch Co.</span>
+                <span class="bsup-type">Post-production</span>
+              </div>
+              <span class="bsup-score-cell mid">7.1</span>
+              <span class="bsup-deliveries">78%</span>
+              <span class="bsup-badge wn">Review</span>
+            </div>
+            <div class="bsup-row">
+              <div class="bsup-info">
+                <span class="bsup-name">FastPrint</span>
+                <span class="bsup-type">Production</span>
+              </div>
+              <span class="bsup-score-cell lo">5.8</span>
+              <span class="bsup-deliveries">61%</span>
+              <span class="bsup-badge lo">At risk</span>
+            </div>
+            <div class="bsup-row">
+              <div class="bsup-info">
+                <span class="bsup-name">Lumière Films</span>
+                <span class="bsup-type">Video</span>
+              </div>
+              <span class="bsup-score-cell hi">8.9</span>
+              <span class="bsup-deliveries">91%</span>
+              <span class="bsup-badge ok">Preferred</span>
+            </div>
+          </div>
+        </div><!-- /bc-visual -->
+        <div class="bc-body">
+          <div class="bc-label">Suppliers</div>
+          <div class="bc-title">Manage every vendor. Track every delivery.</div>
+          <a href="threly-suppliers.html" class="bc-link">Learn more →</a>
+        </div>
+      </div>
+
+      <!-- BUDGET INTELLIGENCE — row 2 right (large) -->
+      <div class="bc bc-budget-lg">
+        <div class="bc-visual">
+          <div class="bento-budget-lg">
+            <!-- Chart primary -->
+            <div class="bbl-chart-area">
+              <div class="bbl-chart-top">
+                <span class="bbl-chart-title">Budget vs Actual — SS25 Lookbook</span>
+                <div class="bbl-chart-legend">
+                  <span><div class="bbl-ldot" style="background:var(--bg-deep)"></div>Planned</span>
+                  <span><div class="bbl-ldot" style="background:var(--accent)"></div>Actual</span>
+                  <span><div class="bbl-ldot" style="background:var(--danger)"></div>Overage</span>
+                </div>
+              </div>
+              <div class="bbl-bars">
+                <div class="bbl-bar-group">
+                  <div class="bbl-bar-pair">
+                    <div class="bbl-bar pl" style="height:60px"></div>
+                    <div class="bbl-bar ac" style="height:52px"></div>
+                  </div>
+                  <div class="bbl-bar-name">Studio</div>
+                </div>
+                <div class="bbl-bar-group">
+                  <div class="bbl-bar-pair">
+                    <div class="bbl-bar pl" style="height:80px"></div>
+                    <div class="bbl-bar ov" style="height:100px"></div>
+                  </div>
+                  <div class="bbl-bar-name">Photo</div>
+                </div>
+                <div class="bbl-bar-group">
+                  <div class="bbl-bar-pair">
+                    <div class="bbl-bar pl" style="height:44px"></div>
+                    <div class="bbl-bar ac" style="height:32px"></div>
+                  </div>
+                  <div class="bbl-bar-name">Post</div>
+                </div>
+                <div class="bbl-bar-group">
+                  <div class="bbl-bar-pair">
+                    <div class="bbl-bar pl" style="height:36px"></div>
+                    <div class="bbl-bar ac" style="height:34px"></div>
+                  </div>
+                  <div class="bbl-bar-name">Travel</div>
+                </div>
+                <div class="bbl-bar-group">
+                  <div class="bbl-bar-pair">
+                    <div class="bbl-bar pl" style="height:50px"></div>
+                    <div class="bbl-bar ac" style="height:28px"></div>
+                  </div>
+                  <div class="bbl-bar-name">Casting</div>
+                </div>
+              </div>
+            </div>
+            <!-- Divider -->
+            <div class="bbl-divider"></div>
+            <!-- Suggestions secondary -->
+            <div class="bbl-suggestions">
+              <div class="bbl-suggestion">
+                <div class="bbl-sug-dot warn"></div>
+                <span class="bbl-sug-text">Photography over budget by €3,400</span>
+                <span class="bbl-sug-val neg">+€3,400</span>
+              </div>
+              <div class="bbl-suggestion">
+                <div class="bbl-sug-dot"></div>
+                <span class="bbl-sug-text">Reallocate from post-production</span>
+                <span class="bbl-sug-val sav">Save €2,800</span>
+              </div>
+            </div>
+          </div>
+        </div><!-- /bc-visual -->
+        <div class="bc-body">
+          <div class="bc-label">Budget Intelligence</div>
+          <div class="bc-title">From static budgets to live decisions.</div>
+          <div class="bc-desc">Auto-generate from briefs. Track deviations in real time. Know when to reallocate.</div>
+          <a href="threly-budget.html" class="bc-link">Learn more →</a>
+        </div>
+      </div>
+
+      <!-- DAM — row 3 left (large) -->
+      <div class="bc bc-dam-lg">
+        <div class="bc-visual">
+          <div class="bento-dam-lg">
+            <div class="bdl-filters">
+              <span class="bdl-filter active">All assets</span>
+              <span class="bdl-filter">Social</span>
+              <span class="bdl-filter">Web</span>
+              <span class="bdl-filter">Marketplace</span>
+              <span class="bdl-filter">Expiring soon</span>
+            </div>
+            <div class="bdl-table">
+              <div class="bdl-row head">
+                <span>Asset</span>
+                <span>Channel</span>
+                <span>Status</span>
+                <span>Expires</span>
+                <span>Territory</span>
+              </div>
+              <div class="bdl-row">
+                <span class="bdl-name">SS25_Look01_RGB.jpg</span>
+                <span class="bdl-date">Social</span>
+                <span class="bdl-badge ok">Active ✓</span>
+                <span class="bdl-date">Dec 2025</span>
+                <span class="bdl-terr">EU</span>
+              </div>
+              <div class="bdl-row">
+                <span class="bdl-name">Campaign_Hero_Web.png</span>
+                <span class="bdl-date">Web</span>
+                <span class="bdl-badge wn">Expiring ⚠</span>
+                <span class="bdl-date wn">Jun 2025</span>
+                <span class="bdl-terr">Global</span>
+              </div>
+              <div class="bdl-row">
+                <span class="bdl-name">Model_Elena_GW24.jpg</span>
+                <span class="bdl-date">Marketplace</span>
+                <span class="bdl-badge ex">Expired ✗</span>
+                <span class="bdl-date ex">Apr 2025</span>
+                <span class="bdl-terr">US</span>
+              </div>
+            </div>
+          </div>
+        </div><!-- /bc-visual -->
+        <div class="bc-body">
+          <div class="bc-label">Digital Asset Management</div>
+          <div class="bc-title">Your assets have rights. Know them.</div>
+          <div class="bc-desc">Track usage rights per channel, territory and supplier. Get alerts before anything expires.</div>
+          <a href="threly-dam.html" class="bc-link">Learn more →</a>
+        </div>
+      </div>
+
+      <!-- RESOURCE ALLOCATION — row 3 right -->
+      <div class="bc bc-resources">
+        <div class="bc-visual">
+          <div class="bento-heatmap">
+            <div class="bhm-row">
+              <div class="bhm-name">Laura</div>
+              <div class="bhm-cells">
+                <div class="bhm-cell bhm-3"></div><div class="bhm-cell bhm-4"></div>
+                <div class="bhm-cell bhm-5"></div><div class="bhm-cell bhm-4"></div>
+                <div class="bhm-cell bhm-2"></div><div class="bhm-cell bhm-1"></div>
+                <div class="bhm-cell bhm-0"></div>
+              </div>
+            </div>
+            <div class="bhm-row">
+              <div class="bhm-name">Marcos</div>
+              <div class="bhm-cells">
+                <div class="bhm-cell bhm-1"></div><div class="bhm-cell bhm-2"></div>
+                <div class="bhm-cell bhm-2"></div><div class="bhm-cell bhm-3"></div>
+                <div class="bhm-cell bhm-4"></div><div class="bhm-cell bhm-3"></div>
+                <div class="bhm-cell bhm-2"></div>
+              </div>
+            </div>
+            <div class="bhm-row">
+              <div class="bhm-name">Inés</div>
+              <div class="bhm-cells">
+                <div class="bhm-cell bhm-0"></div><div class="bhm-cell bhm-1"></div>
+                <div class="bhm-cell bhm-3"></div><div class="bhm-cell bhm-4"></div>
+                <div class="bhm-cell bhm-4"></div><div class="bhm-cell bhm-5"></div>
+                <div class="bhm-cell bhm-3"></div>
+              </div>
+            </div>
+            <div class="bhm-row">
+              <div class="bhm-name">Daniela</div>
+              <div class="bhm-cells">
+                <div class="bhm-cell bhm-2"></div><div class="bhm-cell bhm-2"></div>
+                <div class="bhm-cell bhm-1"></div><div class="bhm-cell bhm-2"></div>
+                <div class="bhm-cell bhm-3"></div><div class="bhm-cell bhm-2"></div>
+                <div class="bhm-cell bhm-1"></div>
+              </div>
+            </div>
+          </div>
+        </div><!-- /bc-visual -->
+        <div class="bc-body">
+          <div class="bc-label">Resource Allocation</div>
+          <div class="bc-title">See who's<br>overloaded.</div>
+          <div class="bc-desc">Visual heatmaps that surface bottlenecks before they break your sprint.</div>
+          <a href="threly-resources.html" class="bc-link">Learn more →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ WORKFLOW — bg: #EBEBEB ═══════════ -->
+<section id="workflow">
+  <div class="container">
+    <div class="wf-top">
+      <div class="lbl">How it works</div>
+      <h2 class="st">Plan. Shoot. Deliver.<br>Without chaos.</h2>
+      <p class="ss">Four steps from creative brief to published campaign — built into the system.</p>
+    </div>
+
+    <div class="wf-body">
+      <!-- Left: clickable stats -->
+      <div class="wf-stats">
+        <div class="wf-stat active" data-step="0">
+          <div class="wf-stat-step">Step 01</div>
+          <div class="wf-stat-title">Brief the campaign</div>
+          <div class="wf-stat-desc">Define concept, timeline, budget, and deliverables. threly auto-generates the production structure from your brief.</div>
+          <div class="wf-stat-bar"></div>
+        </div>
+        <div class="wf-stat" data-step="1">
+          <div class="wf-stat-step">Step 02</div>
+          <div class="wf-stat-title">Assign &amp; coordinate</div>
+          <div class="wf-stat-desc">Distribute tasks to internal team and external suppliers. Everyone sees their responsibilities in real time.</div>
+          <div class="wf-stat-bar"></div>
+        </div>
+        <div class="wf-stat" data-step="2">
+          <div class="wf-stat-step">Step 03</div>
+          <div class="wf-stat-title">Monitor production</div>
+          <div class="wf-stat-desc">Track progress, spot delays, and get alerts before they become problems. Full visibility, zero surprises.</div>
+          <div class="wf-stat-bar"></div>
+        </div>
+        <div class="wf-stat" data-step="3">
+          <div class="wf-stat-step">Step 04</div>
+          <div class="wf-stat-title">Deliver &amp; learn</div>
+          <div class="wf-stat-desc">Publish on time. Assets stored with rights. Campaign data feeds into your next production automatically.</div>
+          <div class="wf-stat-bar"></div>
+        </div>
+      </div>
+
+      <!-- Right: animated panels -->
+      <div class="wf-panel">
+        <canvas class="wf-dots-canvas" id="wfCanvas"></canvas>
+
+        <!-- Panel 0: Brief -->
+        <div class="wf-panel-slide active" data-panel="0">
+          <div class="wf-panel-label">Campaign brief</div>
+          <div class="wf-brief-fields">
+            <div class="wf-field">
+              <span class="wf-field-lbl">Campaign</span>
+              <span class="wf-field-val">SS25 Lookbook — Editorial</span>
+              <span class="wf-field-tag">New</span>
+            </div>
+            <div class="wf-field">
+              <span class="wf-field-lbl">Go-live date</span>
+              <span class="wf-field-val">May 12, 2025</span>
+            </div>
+            <div class="wf-field">
+              <span class="wf-field-lbl">Budget</span>
+              <span class="wf-field-val">€48,000 — Auto-generated</span>
+            </div>
+            <div class="wf-field">
+              <span class="wf-field-lbl">Deliverables</span>
+              <span class="wf-field-val">24 tasks created automatically</span>
+            </div>
+            <div class="wf-field">
+              <span class="wf-field-lbl">Suppliers</span>
+              <span class="wf-field-val">3 vendors suggested by threly</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 1: Assign -->
+        <div class="wf-panel-slide" data-panel="1">
+          <div class="wf-panel-label">Task assignment</div>
+          <div class="wf-assign-rows">
+            <div class="wf-assign-row">
+              <div class="wf-avatar">LR</div>
+              <div>
+                <div class="wf-assign-name">Laura Ruiz</div>
+                <div class="wf-assign-task">Creative direction — 3 tasks</div>
+              </div>
+              <span class="wf-assign-status ok">Confirmed</span>
+            </div>
+            <div class="wf-assign-row">
+              <div class="wf-avatar">MC</div>
+              <div>
+                <div class="wf-assign-name">Marcos Cano</div>
+                <div class="wf-assign-task">Production coordination — 5 tasks</div>
+              </div>
+              <span class="wf-assign-status ok">Confirmed</span>
+            </div>
+            <div class="wf-assign-row">
+              <div class="wf-avatar ext">SB</div>
+              <div>
+                <div class="wf-assign-name">Studio Blanc</div>
+                <div class="wf-assign-task">Photography — Shoot day</div>
+              </div>
+              <span class="wf-assign-status wt">Pending</span>
+            </div>
+            <div class="wf-assign-row">
+              <div class="wf-avatar ext">RC</div>
+              <div>
+                <div class="wf-assign-name">Retouch Co.</div>
+                <div class="wf-assign-task">Post-production — 72h delivery</div>
+              </div>
+              <span class="wf-assign-status wt">Pending</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 2: Monitor -->
+        <div class="wf-panel-slide" data-panel="2">
+          <div class="wf-panel-label">Live production status</div>
+          <div class="wf-monitor">
+            <div class="wf-monitor-kpis">
+              <div class="wf-kpi">
+                <div class="wf-kpi-val ok">68%</div>
+                <div class="wf-kpi-lbl">Overall progress</div>
+              </div>
+              <div class="wf-kpi">
+                <div class="wf-kpi-val warn">3</div>
+                <div class="wf-kpi-lbl">Tasks overdue</div>
+              </div>
+              <div class="wf-kpi">
+                <div class="wf-kpi-val">7</div>
+                <div class="wf-kpi-lbl">Days to go-live</div>
+              </div>
+            </div>
+            <div class="wf-alert">
+              <div class="wf-alert-dot"></div>
+              <span class="wf-alert-txt">Retouching delivery delayed — may affect go-live date</span>
+            </div>
+            <div class="wf-alert" style="background:var(--accent-soft);border-color:var(--accent-mid);">
+              <div class="wf-alert-dot" style="background:var(--accent)"></div>
+              <span class="wf-alert-txt">threly suggests reassigning 2 tasks to avoid bottleneck</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 3: Deliver -->
+        <div class="wf-panel-slide" data-panel="3">
+          <div class="wf-panel-label">Campaign delivered</div>
+          <div class="wf-deliver">
+            <div class="wf-deliver-item">
+              <div class="wf-check done">✓</div>
+              <div>
+                <div class="wf-deliver-txt">Published on time</div>
+                <div class="wf-deliver-sub">May 12, 2025 — 09:00 AM</div>
+              </div>
+            </div>
+            <div class="wf-deliver-item">
+              <div class="wf-check done">✓</div>
+              <div>
+                <div class="wf-deliver-txt">87 assets stored with rights</div>
+                <div class="wf-deliver-sub">Licensed for EU social & web</div>
+              </div>
+            </div>
+            <div class="wf-deliver-item">
+              <div class="wf-check done">✓</div>
+              <div>
+                <div class="wf-deliver-txt">Budget closed at €45,200</div>
+                <div class="wf-deliver-sub">€2,800 under — saved by threly suggestion</div>
+              </div>
+            </div>
+            <div class="wf-deliver-item">
+              <div class="wf-check acc">→</div>
+              <div>
+                <div class="wf-deliver-txt">Insights added to next campaign</div>
+                <div class="wf-deliver-sub">FW25 brief pre-filled with learnings</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ TESTIMONIAL — bg: #E2E2E2 ═══════════ -->
+<section id="testimonial">
+  <div class="container">
+    <div class="test-inner">
+      <span class="qm">"</span>
+      <p class="qt">Before threly, we were running 12-person productions on WhatsApp. Now we can see the entire quarter from one screen.</p>
+      <div class="qa">
+        <div class="qav">SR</div>
+        <div>
+          <div class="qn">Sara Rodríguez</div>
+          <div class="qr">Head of Creative Operations, fashion brand</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CTA — bg: #EBEBEB ═══════════ -->
+<section id="cta">
+  <div class="container">
+    <div class="cta-inner">
+      <div class="lbl">Get started</div>
+      <h2 class="cta-t">Ready to bring calm<br>to the chaos?</h2>
+      <p class="cta-s">Join production teams replacing 6 tools with one system. No setup fees. No long contracts.</p>
+      <div class="cta-acts">
+        <a href="#" class="btn-primary btn-lg">Request early access →</a>
+        <a href="#" class="btn-ghost btn-lg">Talk to the team</a>
+      </div>
+      <p class="cta-note">Currently onboarding fashion &amp; e-commerce brands. Limited spots.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer>
+  <div class="container">
+    <div class="foot-in">
+      <div class="foot-logo">threly<span>.</span></div>
+      <ul class="foot-links">
+        <li><a href="#">Features</a></li>
+        <li><a href="#">Pricing</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Privacy</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+      <span class="foot-copy">© 2025 threly. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── Scroll reveal ──
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.bc, .prob-item, .bsup-row').forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(16px)';
+    el.style.transition = `opacity .5s ease ${(i % 5) * .06}s, transform .5s ease ${(i % 5) * .06}s`;
+    obs.observe(el);
+  });
+
+  // ── Workflow tabs ──
+  const stats = document.querySelectorAll('.wf-stat');
+  const panels = document.querySelectorAll('.wf-panel-slide');
+
+  let autoTimer = null;
+  let currentStep = 0;
+
+  function activateStep(idx) {
+    currentStep = idx;
+    stats.forEach((s, i) => s.classList.toggle('active', i === idx));
+    panels.forEach((p, i) => p.classList.toggle('active', i === idx));
+    spawnDots();
+  }
+
+  stats.forEach((s, i) => {
+    s.addEventListener('click', () => {
+      clearInterval(autoTimer);
+      activateStep(i);
+      startAuto();
+    });
+  });
+
+  function startAuto() {
+    autoTimer = setInterval(() => {
+      activateStep((currentStep + 1) % 4);
+    }, 4000);
+  }
+  startAuto();
+
+  // ── Animated dots on panel ──
+  const canvas = document.getElementById('wfCanvas');
+  let dots = [];
+
+  function resizeCanvas() {
+    if (!canvas) return;
+    const panel = canvas.parentElement;
+    canvas.width  = panel.offsetWidth;
+    canvas.height = panel.offsetHeight;
+  }
+
+  function spawnDots() {
+    if (!canvas) return;
+    resizeCanvas();
+    const count = 18;
+    dots = Array.from({ length: count }, () => ({
+      x: Math.random() * canvas.width,
+      y: canvas.height + 8,
+      size: Math.random() * 3 + 1.5,
+      speed: Math.random() * 1.2 + 0.5,
+      opacity: Math.random() * 0.5 + 0.15,
+      hue: Math.random() > 0.5 ? 0 : 1 // 0=accent, 1=light
+    }));
+  }
+
+  function drawDots() {
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    dots.forEach(d => {
+      d.y -= d.speed;
+      d.opacity -= 0.003;
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, d.size, 0, Math.PI * 2);
+      ctx.fillStyle = d.hue === 0
+        ? `rgba(151,76,255,${d.opacity})`
+        : `rgba(192,132,252,${d.opacity})`;
+      ctx.fill();
+    });
+    dots = dots.filter(d => d.opacity > 0 && d.y > -10);
+    requestAnimationFrame(drawDots);
+  }
+
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+  spawnDots();
+  drawDots();
+</script>
+</body>
+</html>
+
+Subelo a github, comitt y push
