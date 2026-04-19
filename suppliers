@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supplier Collaboration — threly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#F5F5F5;--bg-alt:#EBEBEB;--bg-deep:#E2E2E2;--bg-card:#FFFFFF;--bg-card-2:#F9F9F9;--ink:#0B0B0C;--ink-2:#2E2E2E;--ink-3:#6B6B6B;--ink-4:#9A9A9A;--border:rgba(11,11,12,0.07);--border-mid:rgba(11,11,12,0.13);--border-str:rgba(11,11,12,0.18);--accent:#974CFF;--accent-hover:#8240e8;--accent-glow:rgba(151,76,255,0.15);--accent-soft:rgba(151,76,255,0.07);--accent-mid:rgba(151,76,255,0.16);--accent-light:#c084fc;--success:#16A34A;--success-bg:rgba(22,163,74,0.08);--warning:#B45309;--warning-bg:rgba(180,83,9,0.08);--danger:#E07B39;--danger-bg:rgba(224,123,57,0.10);--font:'Plus Jakarta Sans',sans-serif;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+  ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--border-mid);border-radius:4px;}
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;height:64px;padding:0 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(245,245,245,0.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+  .nav-left{display:flex;align-items:center;gap:32px;}.logo{font-size:18px;font-weight:700;color:var(--ink);text-decoration:none;letter-spacing:-0.3px;}.logo span{color:var(--accent);}
+  .nav-back{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-3);text-decoration:none;transition:color .2s;}.nav-back:hover{color:var(--ink);}.nav-back::before{content:'←';font-size:14px;}
+  .nav-feature{font-size:13px;color:var(--ink-4);padding-left:32px;border-left:1px solid var(--border-mid);}.nav-feature span{color:var(--ink-2);font-weight:500;}
+  .btn-primary{padding:8px 20px;background:var(--accent);border:none;border-radius:6px;color:#fff;font-family:var(--font);font-size:14px;font-weight:500;cursor:pointer;text-decoration:none;transition:all .2s;display:inline-flex;align-items:center;}.btn-primary:hover{background:var(--accent-hover);transform:translateY(-1px);box-shadow:0 6px 20px var(--accent-glow);}
+  .btn-ghost{padding:10px 24px;background:transparent;border:1px solid var(--border-mid);border-radius:6px;color:var(--ink-2);font-family:var(--font);font-size:15px;cursor:pointer;text-decoration:none;transition:all .2s;}.btn-ghost:hover{background:var(--bg-alt);}
+  .btn-lg{padding:12px 28px;font-size:15px;}
+  #hero{padding:160px 48px 80px;text-align:center;max-width:860px;margin:0 auto;}
+  .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;background:var(--accent-soft);border:1px solid var(--accent-mid);border-radius:100px;font-size:11px;color:var(--accent);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:32px;}
+  .hero-title{font-size:clamp(48px,6vw,80px);font-weight:700;line-height:1.02;letter-spacing:-0.03em;color:var(--ink);margin-bottom:24px;}.hero-title em{font-style:normal;color:var(--accent);}
+  .hero-sub{font-size:19px;color:var(--ink-3);font-weight:300;line-height:1.7;max-width:580px;margin:0 auto 40px;}
+  .hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+  .hero-mockup-wrap{padding:0 48px 80px;max-width:1200px;margin:0 auto;}
+  .browser-frame{background:var(--bg-card);border:1px solid var(--border-str);border-radius:16px;overflow:hidden;box-shadow:0 32px 80px rgba(11,11,12,0.12),0 4px 16px var(--accent-glow);}
+  .browser-bar{display:flex;align-items:center;gap:8px;padding:14px 20px;background:var(--bg-card-2);border-bottom:1px solid var(--border);}
+  .b-dot{width:10px;height:10px;border-radius:50%;}.b-dot.r{background:#EF4444;}.b-dot.y{background:#F59E0B;}.b-dot.g{background:#22C55E;}
+  .b-url{flex:1;margin:0 16px;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:5px 14px;font-size:12px;color:var(--ink-4);text-align:center;}
+  .stats-bar{display:flex;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg-card);}
+  .stat-item{flex:1;padding:32px 48px;border-right:1px solid var(--border);text-align:center;}.stat-item:last-child{border-right:none;}
+  .stat-num{font-size:44px;font-weight:800;color:var(--ink);letter-spacing:-0.03em;line-height:1;margin-bottom:6px;}.stat-num span{color:var(--accent);}
+  .stat-label{font-size:13px;color:var(--ink-3);}
+  #story{padding:120px 0;background:var(--bg-alt);}
+  .story-inner{max-width:1200px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+  .story-points{display:flex;flex-direction:column;gap:0;}
+  .story-point{padding:40px 0;border-bottom:1px solid var(--border-mid);opacity:0.35;transition:opacity .4s;cursor:pointer;}.story-point:first-child{border-top:1px solid var(--border-mid);}.story-point.active{opacity:1;}
+  .sp-step{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;opacity:0;transition:opacity .3s;}.story-point.active .sp-step{opacity:1;}
+  .sp-title{font-size:26px;font-weight:700;color:var(--ink);letter-spacing:-0.02em;line-height:1.2;margin-bottom:12px;}
+  .sp-desc{font-size:15px;color:var(--ink-3);line-height:1.7;}
+  .sp-bar{height:2px;background:var(--accent);width:0;margin-top:24px;transition:width .5s ease;border-radius:2px;}.story-point.active .sp-bar{width:100%;}
+  .story-panel-wrap{position:sticky;top:100px;}
+  .story-panel{background:var(--bg-card);border:1px solid var(--border-mid);border-radius:16px;overflow:hidden;box-shadow:0 12px 48px rgba(11,11,12,.09);min-height:400px;position:relative;}
+  .story-panel-header{padding:14px 20px;background:var(--bg-card-2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+  .sph-title{font-size:12px;color:var(--ink-3);flex:1;}.sph-tag{font-size:10px;padding:2px 8px;border-radius:100px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent-mid);font-weight:600;}
+  .panel-slide{position:absolute;inset:0;top:49px;opacity:0;transition:opacity .4s;padding:24px;pointer-events:none;}.panel-slide.active{opacity:1;pointer-events:auto;}
+  #before-after{padding:120px 0;background:var(--bg);}
+  .ba-inner{max-width:1100px;margin:0 auto;padding:0 48px;}.ba-header{text-align:center;margin-bottom:64px;}
+  .section-lbl{display:inline-flex;align-items:center;gap:8px;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);font-weight:600;margin-bottom:16px;}.section-lbl::before{content:'';width:14px;height:2px;background:var(--accent);border-radius:2px;}
+  .ba-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border-mid);border:1px solid var(--border-mid);border-radius:16px;overflow:hidden;}
+  .ba-col{padding:40px 44px;background:var(--bg-card);}.ba-col.after{background:var(--accent-soft);}
+  .ba-col-head{display:flex;align-items:center;gap:10px;padding-bottom:24px;border-bottom:1px solid var(--border-mid);margin-bottom:24px;}
+  .ba-dot{width:8px;height:8px;border-radius:50%;}.ba-dot.err{background:var(--danger);}.ba-dot.ok{background:var(--accent);}
+  .ba-col-ttl{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;}.ba-col-ttl.err{color:var(--danger);}.ba-col-ttl.ok{color:var(--accent);}
+  .ba-item{padding:18px 0;border-bottom:1px solid var(--border);}.ba-item:last-child{border-bottom:none;padding-bottom:0;}.ba-item:first-child{padding-top:0;}
+  .ba-item-title{font-size:15px;font-weight:600;color:var(--ink);margin-bottom:4px;}.ba-item-desc{font-size:13px;color:var(--ink-3);line-height:1.5;}
+  #cta{padding:120px 48px;text-align:center;background:var(--bg-alt);position:relative;overflow:hidden;}
+  #cta::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(151,76,255,.12),transparent 70%);pointer-events:none;}
+  .cta-inner{max-width:580px;margin:0 auto;position:relative;z-index:1;}
+  .cta-title{font-size:clamp(38px,4vw,54px);font-weight:700;letter-spacing:-0.03em;line-height:1.05;color:var(--ink);margin-bottom:16px;}
+  .cta-sub{font-size:17px;color:var(--ink-3);margin-bottom:36px;font-weight:300;}
+  .cta-actions{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;}
+  .cta-note{margin-top:14px;font-size:12px;color:var(--ink-4);}
+  footer{padding:40px 48px;border-top:1px solid var(--border);background:var(--bg);}
+  .foot-in{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;}
+  .foot-logo{font-size:16px;font-weight:700;color:var(--ink);}.foot-logo span{color:var(--accent);}
+  .foot-copy{font-size:12px;color:var(--ink-4);}.foot-back{font-size:13px;color:var(--ink-3);text-decoration:none;transition:color .2s;}.foot-back:hover{color:var(--ink);}
+  /* supplier-specific */
+  .sup-table{display:flex;flex-direction:column;gap:0;}
+  .sup-head{display:grid;grid-template-columns:1.5fr .7fr .7fr .8fr 1fr;gap:8px;padding:8px 14px;background:var(--bg-card-2);border-radius:6px;font-size:10px;color:var(--ink-4);text-transform:uppercase;letter-spacing:.07em;font-weight:600;margin-bottom:6px;}
+  .sup-row{display:grid;grid-template-columns:1.5fr .7fr .7fr .8fr 1fr;gap:8px;align-items:center;padding:12px 14px;background:var(--bg-card-2);border:1px solid var(--border-mid);border-radius:8px;margin-bottom:6px;transition:border-color .2s;}
+  .sup-row:hover{border-color:var(--border-str);}
+  .sup-info{}.sup-name{font-size:13px;font-weight:600;color:var(--ink);}.sup-type{font-size:11px;color:var(--ink-4);}
+  .sup-score{font-size:15px;font-weight:800;text-align:center;}.sup-score.hi{color:var(--success);}.sup-score.mid{color:var(--warning);}.sup-score.lo{color:var(--danger);}
+  .sup-pct{font-size:12px;color:var(--ink-3);text-align:center;}
+  .sup-badge{font-size:10px;padding:2px 8px;border-radius:100px;font-weight:600;text-align:center;}
+  .sup-badge.pref{background:var(--success-bg);color:var(--success);}.sup-badge.rev{background:var(--warning-bg);color:var(--warning);}.sup-badge.risk{background:var(--danger-bg);color:var(--danger);}
+  .sup-acts{font-size:11px;color:var(--accent);font-weight:500;cursor:pointer;}
+  .brief-card{background:var(--bg-card-2);border:1px solid var(--border-mid);border-radius:10px;padding:16px;margin-bottom:8px;}
+  .brief-card.active{border-color:var(--accent-mid);background:var(--accent-soft);}
+  .bc-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+  .bc-name{font-size:13px;font-weight:600;color:var(--ink);}
+  .bc-status{font-size:10px;padding:2px 8px;border-radius:100px;font-weight:600;}
+  .bc-status.sent{background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent-mid);}
+  .bc-status.ack{background:var(--success-bg);color:var(--success);}
+  .bc-status.pen{background:var(--warning-bg);color:var(--warning);}
+  .bc-detail{font-size:11px;color:var(--ink-3);line-height:1.4;}
+  .perf-row{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:8px;margin-bottom:6px;}
+  .perf-name{font-size:12px;font-weight:600;color:var(--ink);width:100px;flex-shrink:0;}
+  .perf-bar-wrap{flex:1;height:6px;background:var(--bg-deep);border-radius:3px;overflow:hidden;}
+  .perf-bar{height:100%;border-radius:3px;background:var(--accent);}
+  .perf-val{font-size:12px;font-weight:700;color:var(--ink);width:36px;text-align:right;flex-shrink:0;}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-left">
+    <a href="threly.html" class="logo">threly<span>.</span></a>
+    <a href="threly.html" class="nav-back">All features</a>
+    <span class="nav-feature">→ <span>Supplier Collaboration</span></span>
+  </div>
+  <a href="#cta" class="btn-primary">Get early access →</a>
+</nav>
+
+<div id="hero">
+  <div class="hero-eyebrow">Supplier Collaboration</div>
+  <h1 class="hero-title">Your vendors.<br><em>Inside the system.</em></h1>
+  <p class="hero-sub">Stop coordinating suppliers over email. Brief once, track deliverables, score performance and build the operational intelligence to choose better every time.</p>
+  <div class="hero-actions">
+    <a href="#cta" class="btn-primary btn-lg">Get early access →</a>
+    <a href="#story" class="btn-ghost btn-lg">See how it works</a>
+  </div>
+</div>
+
+<div class="hero-mockup-wrap">
+  <div class="browser-frame">
+    <div class="browser-bar">
+      <div class="b-dot r"></div><div class="b-dot y"></div><div class="b-dot g"></div>
+      <div class="b-url">app.threly.io / suppliers</div>
+    </div>
+    <div style="padding:28px 32px;min-height:380px;background:var(--bg-card)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <span style="font-size:17px;font-weight:700;color:var(--ink)">Supplier Index</span>
+        <span style="font-size:12px;color:var(--ink-4)">12 suppliers · 3 campaigns active</span>
+      </div>
+      <div class="sup-table">
+        <div class="sup-head"><span>Supplier</span><span>Score</span><span>On-time</span><span>Status</span><span>Actions</span></div>
+        <div class="sup-row"><div class="sup-info"><div class="sup-name">Studio Blanc</div><div class="sup-type">Photography</div></div><div class="sup-score hi">9.4</div><div class="sup-pct">94%</div><div class="sup-badge pref">Preferred</div><div class="sup-acts">Brief →</div></div>
+        <div class="sup-row"><div class="sup-info"><div class="sup-name">Lumière Films</div><div class="sup-type">Video</div></div><div class="sup-score hi">8.9</div><div class="sup-pct">91%</div><div class="sup-badge pref">Preferred</div><div class="sup-acts">Brief →</div></div>
+        <div class="sup-row"><div class="sup-info"><div class="sup-name">Retouch Co.</div><div class="sup-type">Post-production</div></div><div class="sup-score mid">7.1</div><div class="sup-pct">78%</div><div class="sup-badge rev">Review</div><div class="sup-acts">View →</div></div>
+        <div class="sup-row"><div class="sup-info"><div class="sup-name">FastPrint</div><div class="sup-type">Production</div></div><div class="sup-score lo">5.8</div><div class="sup-pct">61%</div><div class="sup-badge risk">At risk</div><div class="sup-acts">Alert →</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat-item"><div class="stat-num">0</div><div class="stat-label">Supplier briefs lost in email</div></div>
+  <div class="stat-item"><div class="stat-num">94<span>%</span></div><div class="stat-label">On-time delivery with top suppliers</div></div>
+  <div class="stat-item"><div class="stat-num">3<span>x</span></div><div class="stat-label">Faster supplier onboarding</div></div>
+  <div class="stat-item"><div class="stat-num">∞</div><div class="stat-label">Operational intelligence. Built over time.</div></div>
+</div>
+
+<section id="story">
+  <div class="story-inner">
+    <div class="story-points" id="storyPoints">
+      <div class="story-point active" data-panel="0">
+        <div class="sp-step">01 — Supplier CRM</div>
+        <h3 class="sp-title">One profile<br>per vendor.</h3>
+        <p class="sp-desc">Every supplier has a profile in threly — history, past campaigns, contacts, scores and notes. You build operational intelligence with every production.</p>
+        <div class="sp-bar"></div>
+      </div>
+      <div class="story-point" data-panel="1">
+        <div class="sp-step">02 — Brief & assign</div>
+        <h3 class="sp-title">Brief once.<br>Everything tracked.</h3>
+        <p class="sp-desc">Send briefs directly from threly. Suppliers confirm, submit deliverables and communicate inside the platform. No more email chains.</p>
+        <div class="sp-bar"></div>
+      </div>
+      <div class="story-point" data-panel="2">
+        <div class="sp-step">03 — Performance index</div>
+        <h3 class="sp-title">Know who<br>to trust.</h3>
+        <p class="sp-desc">threly scores suppliers on on-time delivery, quality and responsiveness. Over time you build the data to make better decisions on every campaign.</p>
+        <div class="sp-bar"></div>
+      </div>
+      <div class="story-point" data-panel="3">
+        <div class="sp-step">04 — Alerts & renewals</div>
+        <h3 class="sp-title">Never miss a<br>deadline or renewal.</h3>
+        <p class="sp-desc">Automatic alerts for late deliverables, contract renewals and performance dips. threly flags the issue before it becomes a problem.</p>
+        <div class="sp-bar"></div>
+      </div>
+    </div>
+    <div class="story-panel-wrap">
+      <div class="story-panel">
+        <div class="story-panel-header">
+          <div class="b-dot r" style="width:8px;height:8px;border-radius:50%"></div><div class="b-dot y" style="width:8px;height:8px;border-radius:50%"></div><div class="b-dot g" style="width:8px;height:8px;border-radius:50%"></div>
+          <span class="sph-title">threly — Supplier view</span>
+          <span class="sph-tag" id="panelTag">Supplier profile</span>
+        </div>
+        <div class="panel-slide active" data-panel="0">
+          <div style="padding:4px 0">
+            <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px">
+              <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-light));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0">SB</div>
+              <div><div style="font-size:15px;font-weight:700;color:var(--ink)">Studio Blanc</div><div style="font-size:12px;color:var(--ink-4)">Photography · Paris</div></div>
+              <div style="margin-left:auto;font-size:22px;font-weight:800;color:var(--success)">9.4</div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px">
+              <div style="padding:10px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:8px;text-align:center"><div style="font-size:16px;font-weight:700;color:var(--ink)">18</div><div style="font-size:10px;color:var(--ink-4)">Campaigns</div></div>
+              <div style="padding:10px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:8px;text-align:center"><div style="font-size:16px;font-weight:700;color:var(--success)">94%</div><div style="font-size:10px;color:var(--ink-4)">On-time</div></div>
+              <div style="padding:10px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:8px;text-align:center"><div style="font-size:16px;font-weight:700;color:var(--accent)">4.8</div><div style="font-size:10px;color:var(--ink-4)">Quality</div></div>
+            </div>
+            <div style="font-size:11px;color:var(--ink-4);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em;font-weight:600">Recent campaigns</div>
+            <div style="font-size:12px;color:var(--ink-2);padding:8px 12px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:6px;margin-bottom:4px">SS25 Lookbook — In progress</div>
+            <div style="font-size:12px;color:var(--ink-3);padding:8px 12px;background:var(--bg-card-2);border:1px solid var(--border);border-radius:6px">FW24 Editorial — Completed ✓</div>
+          </div>
+        </div>
+        <div class="panel-slide" data-panel="1">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div class="brief-card active"><div class="bc-header"><span class="bc-name">SS25 Lookbook — Photography brief</span><span class="bc-status sent">Sent</span></div><div class="bc-detail">Shoot date: May 8–9 · Location: Studio A · 24 looks · Delivery: May 12</div></div>
+            <div class="brief-card"><div class="bc-header"><span class="bc-name">Retouching brief — Post SS25</span><span class="bc-status ack">Acknowledged</span></div><div class="bc-detail">120 selects · RAW + JPEG · Delivery: May 14 · Contact: Marc D.</div></div>
+            <div class="brief-card"><div class="bc-header"><span class="bc-name">FW25 Lookbook — Photography brief</span><span class="bc-status pen">Draft</span></div><div class="bc-detail">Shoot date: Aug 20–22 · TBC · 32 looks estimated</div></div>
+          </div>
+        </div>
+        <div class="panel-slide" data-panel="2">
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="font-size:11px;color:var(--ink-4);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:8px">Performance index</div>
+            <div class="perf-row"><span class="perf-name">Studio Blanc</span><div class="perf-bar-wrap"><div class="perf-bar" style="width:94%"></div></div><span class="perf-val" style="color:var(--success)">9.4</span></div>
+            <div class="perf-row"><span class="perf-name">Lumière Films</span><div class="perf-bar-wrap"><div class="perf-bar" style="width:89%"></div></div><span class="perf-val" style="color:var(--success)">8.9</span></div>
+            <div class="perf-row"><span class="perf-name">Retouch Co.</span><div class="perf-bar-wrap"><div class="perf-bar" style="width:71%;background:var(--warning)"></div></div><span class="perf-val" style="color:var(--warning)">7.1</span></div>
+            <div class="perf-row"><span class="perf-name">FastPrint</span><div class="perf-bar-wrap"><div class="perf-bar" style="width:58%;background:var(--danger)"></div></div><span class="perf-val" style="color:var(--danger)">5.8</span></div>
+          </div>
+        </div>
+        <div class="panel-slide" data-panel="3">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="padding:12px 14px;background:var(--danger-bg);border:1px solid rgba(224,123,57,.25);border-radius:8px"><div style="font-size:11px;font-weight:700;color:var(--danger);margin-bottom:4px">Delivery overdue</div><div style="font-size:12px;color:var(--ink-2)">Retouch Co. — SS25 selects 2 days late. Go-live at risk.</div></div>
+            <div style="padding:12px 14px;background:var(--warning-bg);border:1px solid rgba(180,83,9,.2);border-radius:8px"><div style="font-size:11px;font-weight:700;color:var(--warning);margin-bottom:4px">Contract renewal</div><div style="font-size:12px;color:var(--ink-2)">Studio Blanc — frame agreement expires in 14 days.</div></div>
+            <div style="padding:12px 14px;background:var(--accent-soft);border:1px solid var(--accent-mid);border-radius:8px"><div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:4px">Performance drop</div><div style="font-size:12px;color:var(--ink-2)">FastPrint score fell from 7.2 to 5.8 over last 3 campaigns.</div></div>
+            <div style="padding:12px 14px;background:var(--success-bg);border:1px solid rgba(22,163,74,.2);border-radius:8px"><div style="font-size:11px;font-weight:700;color:var(--success);margin-bottom:4px">Recommended supplier</div><div style="font-size:12px;color:var(--ink-2)">Lumière Films available for FW25 Brand Film slot.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="before-after"><div class="ba-inner">
+  <div class="ba-header"><div class="section-lbl">Before & after</div><h2 style="font-size:clamp(36px,3.8vw,52px);font-weight:700;letter-spacing:-0.03em;color:var(--ink);line-height:1.06">This is what changes<br>when you use threly.</h2></div>
+  <div class="ba-grid">
+    <div class="ba-col"><div class="ba-col-head"><div class="ba-dot err"></div><span class="ba-col-ttl err">Without threly</span></div><div style="display:flex;flex-direction:column;gap:0">
+      <div class="ba-item"><div class="ba-item-title">Briefs sent over email</div><div class="ba-item-desc">Attachments, reply-all threads, version confusion. Nothing is trackable.</div></div>
+      <div class="ba-item"><div class="ba-item-title">No supplier performance data</div><div class="ba-item-desc">You choose suppliers based on gut feel. No record of past performance.</div></div>
+      <div class="ba-item"><div class="ba-item-title">Late deliveries surprise you</div><div class="ba-item-desc">You find out when the deadline has already passed.</div></div>
+      <div class="ba-item"><div class="ba-item-title">Contacts scattered across tools</div><div class="ba-item-desc">Supplier info lives in spreadsheets, emails and people's heads.</div></div>
+    </div></div>
+    <div class="ba-col after"><div class="ba-col-head"><div class="ba-dot ok"></div><span class="ba-col-ttl ok">With threly</span></div><div style="display:flex;flex-direction:column;gap:0">
+      <div class="ba-item"><div class="ba-item-title">Briefs sent and tracked in threly</div><div class="ba-item-desc">One brief, one thread, one status. Suppliers work inside the system.</div></div>
+      <div class="ba-item"><div class="ba-item-title">Performance index built automatically</div><div class="ba-item-desc">Every campaign adds data. You always know who to trust with what.</div></div>
+      <div class="ba-item"><div class="ba-item-title">Alerts before deadlines are missed</div><div class="ba-item-desc">threly flags delivery risks before they hit your go-live date.</div></div>
+      <div class="ba-item"><div class="ba-item-title">Supplier CRM built into production</div><div class="ba-item-desc">Every vendor has a profile. History, scores and contacts in one place.</div></div>
+    </div></div>
+  </div>
+</div></section>
+
+<section id="cta"><div class="cta-inner">
+  <div class="section-lbl" style="justify-content:center">Get started</div>
+  <h2 class="cta-title">Build the supplier network<br>your production deserves.</h2>
+  <p class="cta-sub">Join production teams replacing 6 tools with one system.</p>
+  <div class="cta-actions"><a href="#" class="btn-primary btn-lg">Request early access →</a><a href="#" class="btn-ghost btn-lg">Talk to the team</a></div>
+  <p class="cta-note">Currently onboarding fashion & e-commerce brands. Limited spots.</p>
+</div></section>
+
+<footer><div class="foot-in">
+  <div class="foot-logo">threly<span>.</span></div>
+  <a href="threly.html" class="foot-back">← Back to homepage</a>
+  <span class="foot-copy">© 2025 threly. All rights reserved.</span>
+</div></footer>
+
+<script>
+  const points=document.querySelectorAll('.story-point'),slides=document.querySelectorAll('.panel-slide'),tags=['Supplier profile','Brief & assign','Performance index','Alerts & renewals'];
+  function activate(idx){points.forEach((p,i)=>p.classList.toggle('active',i===idx));slides.forEach((s,i)=>s.classList.toggle('active',i===idx));document.getElementById('panelTag').textContent=tags[idx];}
+  points.forEach((p,i)=>p.addEventListener('click',()=>activate(i)));
+  const story=document.getElementById('story');
+  window.addEventListener('scroll',()=>{if(!story)return;const r=story.getBoundingClientRect();const progress=Math.max(0,Math.min(1,-r.top/(story.offsetHeight-window.innerHeight)));activate(Math.min(3,Math.floor(progress*4)));});
+</script>
+</body></html>
