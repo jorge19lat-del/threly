@@ -1241,11 +1241,29 @@
   }
   .btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 6px 20px var(--accent-glow); }
 
+  /* ── FEATURE HERO WRAPPER — full-width section ── */
+  .fh-wrap {
+    position: relative;
+    overflow: hidden;
+    background: var(--bg);
+  }
+
+  /* Centered glow for feature heroes */
+  .hero-glow-c {
+    position: absolute;
+    top: -100px; left: 50%;
+    transform: translateX(-50%);
+    width: 700px; height: 600px;
+    background: radial-gradient(ellipse, var(--accent-glow), transparent 70%);
+    pointer-events: none;
+  }
+
   /* ── HERO ── */
   #hero.fu {
     padding: 160px 48px 100px;
     text-align: center;
     max-width: 860px; margin: 0 auto;
+    position: relative; z-index: 1;
   }
 
   .hero-eyebrow {
@@ -2396,15 +2414,19 @@
 
 <div id="page-campaigns" class="page">
 <!-- HERO -->
-<div id="hero" class="fu">
-  <div class="hero-eyebrow">Campaign Management</div>
-  <h1 class="hero-title">Every campaign.<br><em>One place.</em></h1>
-  <p class="hero-sub">Stop managing productions across spreadsheets, chats and emails. threly gives your team a single source of truth from brief to go-live.</p>
-  <div class="hero-actions">
-    <a href="#cta" class="btn-primary btn-lg">Get early access →</a>
-    <a href="#story" class="btn-ghost btn-lg">See how it works</a>
+<section class="fh-wrap">
+  <div class="hero-grid"></div>
+  <div class="hero-glow-c"></div>
+  <div id="hero" class="fu">
+    <div class="hero-eyebrow">Campaign Management</div>
+    <h1 class="hero-title">Every campaign.<br><em>One place.</em></h1>
+    <p class="hero-sub">Stop managing productions across spreadsheets, chats and emails. threly gives your team a single source of truth from brief to go-live.</p>
+    <div class="hero-actions">
+      <a href="#cta" class="btn-primary btn-lg">Get early access →</a>
+      <a href="#story" class="btn-ghost btn-lg">See how it works</a>
+    </div>
   </div>
-</div>
+</section>
 
 <!-- HERO MOCKUP — full width browser frame -->
 <div class="hero-mockup-wrap fu d2">
@@ -2787,17 +2809,21 @@
 </div>
 
 <div id="page-tasks" class="page">
-<div id="hero">
-  <div class="hero-eyebrow">Smart Task Management</div>
-  <h1 class="hero-title">Zero conflicts.<br><em>Zero overload.</em></h1>
-  <p class="hero-sub">Tasks that know who owns them, how long they take, and when they clash. threly schedules your team automatically so nothing falls through.</p>
-  <div class="hero-actions">
-    <a href="#cta" class="btn-primary btn-lg">Get early access →</a>
-    <a href="#story" class="btn-ghost btn-lg">See how it works</a>
+<section class="fh-wrap">
+  <div class="hero-grid"></div>
+  <div class="hero-glow-c"></div>
+  <div id="hero" class="fu">
+    <div class="hero-eyebrow">Smart Task Management</div>
+    <h1 class="hero-title">Zero conflicts.<br><em>Zero overload.</em></h1>
+    <p class="hero-sub">Tasks that know who owns them, how long they take, and when they clash. threly schedules your team automatically so nothing falls through.</p>
+    <div class="hero-actions">
+      <a href="#cta" class="btn-primary btn-lg">Get early access →</a>
+      <a href="#story" class="btn-ghost btn-lg">See how it works</a>
+    </div>
   </div>
-</div>
+</section>
 
-<div class="hero-mockup-wrap">
+<div class="hero-mockup-wrap fu d2">
   <div class="browser-frame">
     <div class="browser-bar">
       <div class="b-dot r"></div><div class="b-dot y"></div><div class="b-dot g"></div>
@@ -2981,17 +3007,21 @@
 </div>
 
 <div id="page-suppliers" class="page">
-<div id="hero">
-  <div class="hero-eyebrow">Supplier Collaboration</div>
-  <h1 class="hero-title">Your vendors.<br><em>Inside the system.</em></h1>
-  <p class="hero-sub">Stop coordinating suppliers over email. Brief once, track deliverables, score performance and build the operational intelligence to choose better every time.</p>
-  <div class="hero-actions">
-    <a href="#cta" class="btn-primary btn-lg">Get early access →</a>
-    <a href="#story" class="btn-ghost btn-lg">See how it works</a>
+<section class="fh-wrap">
+  <div class="hero-grid"></div>
+  <div class="hero-glow-c"></div>
+  <div id="hero" class="fu">
+    <div class="hero-eyebrow">Supplier Collaboration</div>
+    <h1 class="hero-title">Your vendors.<br><em>Inside the system.</em></h1>
+    <p class="hero-sub">Stop coordinating suppliers over email. Brief once, track deliverables, score performance and build the operational intelligence to choose better every time.</p>
+    <div class="hero-actions">
+      <a href="#cta" class="btn-primary btn-lg">Get early access →</a>
+      <a href="#story" class="btn-ghost btn-lg">See how it works</a>
+    </div>
   </div>
-</div>
+</section>
 
-<div class="hero-mockup-wrap">
+<div class="hero-mockup-wrap fu d2">
   <div class="browser-frame">
     <div class="browser-bar">
       <div class="b-dot r"></div><div class="b-dot y"></div><div class="b-dot g"></div>
@@ -3135,13 +3165,20 @@
 </div>
 
 <div id="page-budget" class="page">
-<div id="hero">
-  <div class="hero-eyebrow">Budget Intelligence</div>
-  <h1 class="hero-title">No more budgets<br><em>wrong by Monday.</em></h1>
-  <p class="hero-sub">Auto-generate budgets from briefs, track deviations in real time and get actionable suggestions before overruns become problems.</p>
-  <div class="hero-actions"><a href="#cta" class="btn-primary btn-lg">Get early access →</a><a href="#story" class="btn-ghost btn-lg">See how it works</a></div>
-</div>
-<div class="hero-mockup-wrap">
+<section class="fh-wrap">
+  <div class="hero-grid"></div>
+  <div class="hero-glow-c"></div>
+  <div id="hero" class="fu">
+    <div class="hero-eyebrow">Budget Intelligence</div>
+    <h1 class="hero-title">No more budgets<br><em>wrong by Monday.</em></h1>
+    <p class="hero-sub">Auto-generate budgets from briefs, track deviations in real time and get actionable suggestions before overruns become problems.</p>
+    <div class="hero-actions">
+      <a href="#cta" class="btn-primary btn-lg">Get early access →</a>
+      <a href="#story" class="btn-ghost btn-lg">See how it works</a>
+    </div>
+  </div>
+</section>
+<div class="hero-mockup-wrap fu d2">
   <div class="browser-frame">
     <div class="browser-bar"><div class="b-dot r"></div><div class="b-dot y"></div><div class="b-dot g"></div><div class="b-url">app.threly.io / budget</div></div>
     <div style="padding:28px 32px;min-height:380px;background:var(--bg-card);display:flex;gap:32px">
@@ -3239,13 +3276,20 @@
 </div>
 
 <div id="page-dam" class="page">
-<div id="hero">
-  <div class="hero-eyebrow">Digital Asset Management</div>
-  <h1 class="hero-title">Your assets have rights.<br><em>Know them.</em></h1>
-  <p class="hero-sub">Most teams don't know if their assets are licensed for social, web or marketplace — or until when. threly makes rights management automatic and visible.</p>
-  <div class="hero-actions"><a href="#cta" class="btn-primary btn-lg">Get early access →</a><a href="#story" class="btn-ghost btn-lg">See how it works</a></div>
-</div>
-<div class="hero-mockup-wrap">
+<section class="fh-wrap">
+  <div class="hero-grid"></div>
+  <div class="hero-glow-c"></div>
+  <div id="hero" class="fu">
+    <div class="hero-eyebrow">Digital Asset Management</div>
+    <h1 class="hero-title">Your assets have rights.<br><em>Know them.</em></h1>
+    <p class="hero-sub">Most teams don't know if their assets are licensed for social, web or marketplace — or until when. threly makes rights management automatic and visible.</p>
+    <div class="hero-actions">
+      <a href="#cta" class="btn-primary btn-lg">Get early access →</a>
+      <a href="#story" class="btn-ghost btn-lg">See how it works</a>
+    </div>
+  </div>
+</section>
+<div class="hero-mockup-wrap fu d2">
   <div class="browser-frame">
     <div class="browser-bar"><div class="b-dot r"></div><div class="b-dot y"></div><div class="b-dot g"></div><div class="b-url">app.threly.io / assets</div></div>
     <div style="padding:28px 32px;min-height:380px;background:var(--bg-card)">
@@ -3336,13 +3380,20 @@
 </div>
 
 <div id="page-resources" class="page">
-<div id="hero">
-  <div class="hero-eyebrow">Resource Allocation</div>
-  <h1 class="hero-title">See who's overloaded<br><em>before they are.</em></h1>
-  <p class="hero-sub">Visual heatmaps of your entire team's capacity. Spot bottlenecks, redistribute work and protect your go-live dates — before the problem becomes a crisis.</p>
-  <div class="hero-actions"><a href="#cta" class="btn-primary btn-lg">Get early access →</a><a href="#story" class="btn-ghost btn-lg">See how it works</a></div>
-</div>
-<div class="hero-mockup-wrap">
+<section class="fh-wrap">
+  <div class="hero-grid"></div>
+  <div class="hero-glow-c"></div>
+  <div id="hero" class="fu">
+    <div class="hero-eyebrow">Resource Allocation</div>
+    <h1 class="hero-title">See who's overloaded<br><em>before they are.</em></h1>
+    <p class="hero-sub">Visual heatmaps of your entire team's capacity. Spot bottlenecks, redistribute work and protect your go-live dates — before the problem becomes a crisis.</p>
+    <div class="hero-actions">
+      <a href="#cta" class="btn-primary btn-lg">Get early access →</a>
+      <a href="#story" class="btn-ghost btn-lg">See how it works</a>
+    </div>
+  </div>
+</section>
+<div class="hero-mockup-wrap fu d2">
   <div class="browser-frame">
     <div class="browser-bar"><div class="b-dot r"></div><div class="b-dot y"></div><div class="b-dot g"></div><div class="b-url">app.threly.io / resources</div></div>
     <div style="padding:28px 32px;min-height:380px;background:var(--bg-card)">
